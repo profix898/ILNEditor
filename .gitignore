@@ -1,5 +1,4 @@
 # Explicit folders (ILN-Editor Project)
-packages
 
 # User-specific files
 *.user
@@ -39,6 +38,9 @@ packages
 _ReSharper*
 _dotCover*
 *.dotCover
+
+# NuGet Packages Directory
+packages
 
 # Report and Backup files
 _UpgradeReport_Files/
