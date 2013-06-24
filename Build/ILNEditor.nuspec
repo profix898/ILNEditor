@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>ILNEditor</id>
+        <version>0.1.1</version>
+        <authors>Thilo Wawrzik</authors>
+        <projectUrl>http://github.com/profix898/ILNEditor</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Editor for ILNumerics scene graphs and plotcubes</description>
+        <dependencies>
+            <dependency id="ILNumerics.32Bit" version="3.0.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="Release\ILNEditor.dll" target="lib\net40\ILNEditor.dll" />
+    </files>
+</package>
