@@ -10,36 +10,72 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    internal class ILLinePlotWrapper : ILGroupWrapper
+    internal class ILSurfaceWrapper : ILGroupWrapper
     {
-        private readonly ILLinesWrapper line;
-        private readonly ILMarkerWrapper marker;
         private readonly ReadOnlyCollection<float> positions;
-        private readonly ILLinePlot source;
+        private readonly ILSurface source;
+        private readonly ILLinesWrapper wireframe;
 
-        public ILLinePlotWrapper(ILLinePlot source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? GetLinePlotLabelFromLegend(source, editor.Panel) : name)
+        public ILSurfaceWrapper(ILSurface source, ILPanelEditor editor, string path, string name = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? GetSurfaceLabelFromLegend(source, editor.Panel) : name)
         {
             this.source = source;
 
-            line = new ILLinesWrapper(source.Line, editor, FullName);
-            marker = new ILMarkerWrapper(source.Marker, editor, FullName);
+            wireframe = new ILLinesWrapper(source.Wireframe, editor, FullName, "Wireframe");
             positions = new ReadOnlyCollection<float>(source.Positions.ToList());
 
             source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
         }
 
         [Category("Format")]
-        public ILLinesWrapper Line
+        public ILSurface.ColorModes ColorMode
         {
-            get { return line; }
+            get { return source.ColorMode; }
+            set { source.ColorMode = value; }
         }
 
         [Category("Format")]
-        public ILMarkerWrapper Marker
+        public Colormaps Colormap
         {
-            get { return marker; }
+            get { return source.Colormap.Type; }
+            //set { source.Colormap = new ILColormap(value); }
+            // TODO: Does not affect rendering result
         }
+
+        [Category("Format")]
+        public ILLinesWrapper Wireframe
+        {
+            get { return wireframe; }
+        }
+
+        [Category("Rendering")]
+        public bool? UseLighting
+        {
+            get { return source.UseLighting; }
+            set { source.UseLighting = value; }
+        }
+
+        #region Helper
+
+        private static string GetSurfaceLabelFromLegend(ILSurface source, ILPanel panel)
+        {
+            // Find index of ILLinePlot
+            var plotCube = panel.Scene.First<ILPlotCube>();
+            IEnumerable<ILSurface> surfaces = plotCube.Find<ILSurface>();
+            int index = surfaces.TakeWhile(surface => surface != source).Count();
+
+            var legend = panel.Scene.First<ILLegend>();
+            if (legend != null)
+            {
+                // Get text from ILLegendItem at the index
+                if (legend.Items.Children.Count() > index)
+                    return String.Format("Surface(\"{0}\")", legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
+            }
+
+            return String.Format("Surface#{0}", index + 1);
+        }
+
+        #endregion
 
         [Category("Positions")]
         [TypeConverter(typeof(PositionsConverter))]
@@ -48,28 +84,6 @@ namespace ILNEditor.Drawing.Plotting
             // TODO: Make this editable
             get { return positions; }
         }
-
-        #region Helper
-
-        private static string GetLinePlotLabelFromLegend(ILLinePlot source, ILPanel panel)
-        {
-            // Find index of ILLinePlot
-            var plotCube = panel.Scene.First<ILPlotCube>();
-            IEnumerable<ILLinePlot> linePlots = plotCube.Find<ILLinePlot>();
-            int index = linePlots.TakeWhile(linePlot => linePlot != source).Count();
-
-            var legend = panel.Scene.First<ILLegend>();
-            if (legend != null)
-            {
-                // Get text from ILLegendItem at the index
-                if (legend.Items.Children.Count() > index)
-                    return String.Format("LinePlot(\"{0}\")", legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
-            }
-
-            return String.Format("LinePlot#{0}", index + 1);
-        }
-
-        #endregion
 
         #region Nested type: PositionsConverter
 

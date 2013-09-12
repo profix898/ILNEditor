@@ -36,8 +36,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ILNumerics32">
-      <HintPath>..\packages\ILNumerics.32Bit.3.0.0.0\lib\ILNumerics32.dll</HintPath>
+    <Reference Include="ILNumerics">
+      <HintPath>..\packages\ILNumerics.3.2.2.0\lib\ILNumerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,11 +47,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawing\ILGroupWrapper.cs" />
+    <Compile Include="Drawing\ILScreenObjectWrapper.cs" />
+    <Compile Include="Drawing\ILShapeWrapper.cs" />
+    <Compile Include="Drawing\ILWrapperBase.cs" />
     <Compile Include="Drawing\Plotting\ILAxisCollectionWrapper.cs" />
     <Compile Include="Drawing\ILLabelWrapper.cs" />
     <Compile Include="Drawing\ILLimitsWrapper.cs" />
+    <Compile Include="Drawing\Plotting\ILLegendWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILLinePlotWrapper.cs" />
     <Compile Include="Drawing\ILLinesWrapper.cs" />
+    <Compile Include="Drawing\Plotting\ILSurfaceWrapper.cs" />
+    <Compile Include="IILPanelEditor.cs" />
     <Compile Include="WrapperMap.cs" />
     <Compile Include="Drawing\Plotting\ILAxisWrapper.cs" />
     <Compile Include="Drawing\ILDrawableWrapper.cs" />
@@ -61,11 +67,11 @@
     <Compile Include="Drawing\Plotting\ILScaleModesWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILTickWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILTickCollectionWrapper.cs" />
-    <Compile Include="EditorForm.cs">
+    <Compile Include="Editors\ILPanelEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditorForm.Designer.cs">
-      <DependentUpon>EditorForm.cs</DependentUpon>
+    <Compile Include="Editors\ILPanelEditorForm.Designer.cs">
+      <DependentUpon>ILPanelEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ILPanelEditor.cs" />
     <Compile Include="TypeConverters\PointFConverter.cs" />
@@ -73,14 +79,13 @@
     <Compile Include="TypeConverters\Vector3Converter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EditorForm.resx">
-      <DependentUpon>EditorForm.cs</DependentUpon>
+    <EmbeddedResource Include="Editors\ILPanelEditorForm.resx">
+      <DependentUpon>ILPanelEditorForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

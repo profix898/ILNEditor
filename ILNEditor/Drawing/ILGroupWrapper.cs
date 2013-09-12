@@ -1,19 +1,17 @@
-﻿using System.ComponentModel;
-using System.Drawing;
+﻿using System;
+using System.ComponentModel;
 using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
-    internal abstract class ILGroupWrapper : ILNodeWrapper
+    internal class ILGroupWrapper : ILNodeWrapper
     {
-        private readonly ILPanelEditor editor;
         private readonly ILGroup source;
 
-        protected ILGroupWrapper(ILGroup source, ILPanelEditor editor)
-            : base(source, editor)
+        public ILGroupWrapper(ILGroup source, ILPanelEditor editor, string path, string name = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Group" : name)
         {
             this.source = source;
-            this.editor = editor;
         }
 
         #region ILGroup
@@ -26,7 +24,7 @@ namespace ILNEditor.Drawing
             set { source.Transform = value; }
         }
 
-        //public ILNodeCollectionWrapper Childs{}
+        //public ILNodeCollectionWrapper Children{}
 
         [Category("Format")]
         public float? Alpha
@@ -35,12 +33,12 @@ namespace ILNEditor.Drawing
             set { source.Alpha = value; }
         }
 
-        [Category("Format")]
-        public Color? ColorOverride
-        {
-            get { return source.ColorOverride; }
-            set { source.ColorOverride = value; }
-        }
+        //[Category("Format")]
+        //public Color? ColorOverride
+        //{
+        //    get { return source.ColorOverride; }
+        //    set { source.ColorOverride = value; }
+        //}
 
         #endregion
     }

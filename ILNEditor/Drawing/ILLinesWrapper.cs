@@ -8,14 +8,12 @@ namespace ILNEditor.Drawing
     [TypeConverter(typeof(ILLinesConverter))]
     internal class ILLinesWrapper : ILDrawableWrapper
     {
-        private readonly ILPanelEditor editor;
         private readonly ILLines source;
 
-        public ILLinesWrapper(ILLines source, ILPanelEditor editor)
-            : base(source, editor)
+        public ILLinesWrapper(ILLines source, ILPanelEditor editor, string path, string name = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Lines" : name)
         {
             this.source = source;
-            this.editor = editor;
         }
 
         #region ILLines
@@ -68,7 +66,7 @@ namespace ILNEditor.Drawing
                     var lines = (ILLinesWrapper) value;
                     string color = lines.Color.HasValue ? (lines.Color.Value.IsKnownColor ? lines.Color.Value.ToKnownColor().ToString() : lines.Color.Value.ToString()) : "";
 
-                    return String.Format("Line ({0}, {1}, {2})", color, lines.DashStyle, lines.Width);
+                    return String.Format("{0} ({1}, {2}, {3})", lines.Name, color, lines.DashStyle, lines.Width);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

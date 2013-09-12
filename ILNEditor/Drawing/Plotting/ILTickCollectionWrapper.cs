@@ -12,17 +12,15 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(ILTickCollectionConverter))]
     internal class ILTickCollectionWrapper : ILGroupWrapper
     {
-        private readonly ILPanelEditor editor;
         private readonly ILTickCollection source;
         private readonly ReadOnlyCollection<ILTickWrapper> ticks;
 
-        public ILTickCollectionWrapper(ILTickCollection source, ILPanelEditor editor)
-            : base(source, editor)
+        public ILTickCollectionWrapper(ILTickCollection source, ILPanelEditor editor, string path, string name = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Ticks" : name)
         {
             this.source = source;
-            this.editor = editor;
 
-            ticks = new ReadOnlyCollection<ILTickWrapper>(((IEnumerable<ILTick>) source).Select(tick => new ILTickWrapper(tick, editor)).ToList());
+            ticks = new ReadOnlyCollection<ILTickWrapper>(((IEnumerable<ILTick>) source).Select(tick => new ILTickWrapper(tick, editor, path)).ToList());
         }
 
         #region ILTickCollection
@@ -40,13 +38,6 @@ namespace ILNEditor.Drawing.Plotting
         {
             get { return source.DefaultTickLabelSize; }
             set { source.DefaultTickLabelSize = value; }
-        }
-
-        [Category("Format")]
-        public Font DefaultFont
-        {
-            get { return source.DefaultFont; }
-            set { source.DefaultFont = value; }
         }
 
         [Category("Ticks")]
@@ -85,7 +76,7 @@ namespace ILNEditor.Drawing.Plotting
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
                 if (destType == typeof(string) && value is ILTickCollectionWrapper)
-                    return "Ticks";
+                    return ((ILTickCollectionWrapper) value).Name;
 
                 return base.ConvertTo(context, culture, value, destType);
             }

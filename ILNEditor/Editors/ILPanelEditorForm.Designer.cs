@@ -1,6 +1,6 @@
-﻿namespace ILNEditor
+﻿namespace ILNEditor.Editors
 {
-    sealed partial class EditorForm
+    sealed partial class ILPanelEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -51,36 +51,40 @@
             // 
             this.splitContainer.Panel2.Controls.Add(this.propertyGrid);
             this.splitContainer.Size = new System.Drawing.Size(684, 411);
-            this.splitContainer.SplitterDistance = 228;
+            this.splitContainer.SplitterDistance = 200;
             this.splitContainer.TabIndex = 0;
             // 
             // treeView
             // 
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.HideSelection = false;
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(228, 411);
+            this.treeView.PathSeparator = ":";
+            this.treeView.Size = new System.Drawing.Size(200, 411);
             this.treeView.TabIndex = 0;
+            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             // 
             // propertyGrid
             // 
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(452, 411);
+            this.propertyGrid.Size = new System.Drawing.Size(480, 411);
             this.propertyGrid.TabIndex = 0;
+            this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
-            // EditorForm
+            // ILPanelEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 411);
             this.Controls.Add(this.splitContainer);
-            this.Name = "EditorForm";
+            this.Name = "ILPanelEditorForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Scene Graph Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditorForm_FormClosing);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();

@@ -8,21 +8,19 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(ILAxisCollectionConverter))]
     internal class ILAxisCollectionWrapper : ILGroupWrapper
     {
-        private readonly ILPanelEditor editor;
         private readonly ILAxisCollection source;
         private readonly ILAxisWrapper xAxis;
         private readonly ILAxisWrapper yAxis;
         private readonly ILAxisWrapper zAxis;
 
-        public ILAxisCollectionWrapper(ILAxisCollection source, ILPanelEditor editor)
-            : base(source, editor)
+        public ILAxisCollectionWrapper(ILAxisCollection source, ILPanelEditor editor, string path, string name = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "AxisCollection" : name)
         {
             this.source = source;
-            this.editor = editor;
 
-            xAxis = new ILAxisWrapper(source.XAxis, editor);
-            yAxis = new ILAxisWrapper(source.YAxis, editor);
-            zAxis = new ILAxisWrapper(source.ZAxis, editor);
+            xAxis = new ILAxisWrapper(source.XAxis, editor, FullName);
+            yAxis = new ILAxisWrapper(source.YAxis, editor, FullName);
+            zAxis = new ILAxisWrapper(source.ZAxis, editor, FullName);
         }
 
         #region ILPlotCube
@@ -54,7 +52,7 @@ namespace ILNEditor.Drawing.Plotting
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
                 if (destType == typeof(string) && value is ILAxisCollectionWrapper)
-                    return "Axis Collection";
+                    return ((ILAxisCollectionWrapper) value).Name;
 
                 return base.ConvertTo(context, culture, value, destType);
             }
