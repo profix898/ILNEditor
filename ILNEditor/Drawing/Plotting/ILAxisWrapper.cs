@@ -11,7 +11,6 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(ILAxisConverter))]
     internal class ILAxisWrapper : ILGroupWrapper
     {
-        private readonly ILPanelEditor editor;
         private readonly ILLinesWrapper gridMajor;
         private readonly ILLinesWrapper gridMinor;
         private readonly ILLabelWrapper label;
@@ -19,19 +18,18 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILAxis source;
         private readonly ILTickCollectionWrapper ticks;
 
-        public ILAxisWrapper(ILAxis source, ILPanelEditor editor)
-            : base(source, editor)
+        public ILAxisWrapper(ILAxis source, ILPanelEditor editor, string path, string name = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? source.AxisName.ToString() : name)
         {
             this.source = source;
-            this.editor = editor;
 
-            label = new ILLabelWrapper(source.Label, editor);
-            scaleLabel = new ILLabelWrapper(source.ScaleLabel, editor);
-            ticks = new ILTickCollectionWrapper(source.Ticks, editor);
-            gridMajor = new ILLinesWrapper(source.GridMajor, editor);
-            gridMinor = new ILLinesWrapper(source.GridMinor, editor);
+            label = new ILLabelWrapper(source.Label, editor, FullName, "Label");
+            scaleLabel = new ILLabelWrapper(source.ScaleLabel, editor, FullName, "ScaleLabel");
+            ticks = new ILTickCollectionWrapper(source.Ticks, editor, FullName);
+            gridMajor = new ILLinesWrapper(source.GridMajor, editor, FullName, "GridMajor");
+            gridMinor = new ILLinesWrapper(source.GridMinor, editor, FullName, "GridMinor");
 
-            source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickPropertyForm(this, source.AxisName.ToString(), args);
+            source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
         }
 
         #region ILAxis

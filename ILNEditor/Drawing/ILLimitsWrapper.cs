@@ -6,15 +6,14 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILLimitsConverter))]
-    public class ILLimitsWrapper
+    internal class ILLimitsWrapper : ILWrapperBase
     {
-        private readonly ILPanelEditor editor;
         private readonly ILLimits source;
 
-        public ILLimitsWrapper(ILLimits source, ILPanelEditor editor)
+        public ILLimitsWrapper(ILLimits source, ILPanelEditor editor, string path, string name = null)
+            : base(editor, path, String.IsNullOrEmpty(name) ? "Limits" : name)
         {
             this.source = source;
-            this.editor = editor;
         }
 
         #region ILLimits
@@ -80,7 +79,8 @@ namespace ILNEditor.Drawing
                 {
                     var limits = (ILLimitsWrapper) value;
 
-                    return String.Format("Limits (X:{0:F}/{1:F}, Y:{2:F}/{3:F}, Z:{4:F}/{5:F})", limits.XMin, limits.XMax, limits.YMin, limits.YMax, limits.ZMin, limits.ZMax);
+                    return String.Format("{0} (X:{1:F}/{2:F}, Y:{3:F}/{4:F}, Z:{5:F}/{6:F})", limits.Name, limits.XMin, limits.XMax, limits.YMin, limits.YMax, limits.ZMin,
+                                         limits.ZMax);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

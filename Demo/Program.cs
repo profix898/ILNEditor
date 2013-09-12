@@ -10,7 +10,7 @@ namespace Demo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ILPanelForm());
+            Application.Run(new DemoForm());
         }
     }
 }

@@ -6,24 +6,23 @@ using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
-    internal class ILPlotCubeWrapper
+    internal class ILPlotCubeWrapper : ILWrapperBase
     {
         private readonly ILAxisCollectionWrapper axes;
-        private readonly ILPanelEditor editor;
         private readonly ILLimitsWrapper limits;
         private readonly ILLinesWrapper lines;
         private readonly ILScaleModesWrapper scaleModes;
         private readonly ILPlotCube source;
 
-        public ILPlotCubeWrapper(ILPlotCube source, ILPanelEditor editor)
+        public ILPlotCubeWrapper(ILPlotCube source, ILPanelEditor editor, string path, string name = null)
+            : base(editor, path, String.IsNullOrEmpty(name) ? "PlotCube" : name)
         {
             this.source = source;
-            this.editor = editor;
 
-            axes = new ILAxisCollectionWrapper(source.Axes, editor);
-            scaleModes = new ILScaleModesWrapper(source.ScaleModes, editor);
-            limits = new ILLimitsWrapper(source.Limits, editor);
-            lines = new ILLinesWrapper(source.Lines, editor);
+            axes = new ILAxisCollectionWrapper(source.Axes, Editor, FullName);
+            scaleModes = new ILScaleModesWrapper(source.ScaleModes, Editor, FullName);
+            limits = new ILLimitsWrapper(source.Limits, Editor, FullName);
+            lines = new ILLinesWrapper(source.Lines, Editor, FullName, "Box");
 
             source.MouseClick += PlotCube_MouseClick;
             source.MouseDoubleClick += (sender, args) =>
@@ -31,14 +30,8 @@ namespace ILNEditor.Drawing.Plotting
                 if (!args.DirectionUp)
                     return;
 
-                editor.MouseDoubleClickPropertyForm(this, "PlotCube", args);
+                Editor.MouseDoubleClickShowEditor(this, args);
             };
-
-            foreach (ILLinePlot linePlot in editor.Panel.Scene.Find<ILLinePlot>())
-            {
-                var linePlotClosure = new ILLinePlotWrapper(linePlot, editor);
-                linePlot.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickPropertyForm(linePlotClosure, "LinePlot", args);
-            }
         }
 
         private void PlotCube_MouseClick(object sender, ILMouseEventArgs e)
@@ -49,27 +42,27 @@ namespace ILNEditor.Drawing.Plotting
             var contextMenu = new ContextMenu();
             contextMenu.MenuItems.Add("Reset View", (o, args) =>
             {
-                editor.Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
-                editor.Panel.Refresh();
+                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
+                Editor.Panel.Refresh();
             });
             contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add("X-Y Plane", (o, args) =>
             {
-                editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Identity;
-                editor.Panel.Refresh();
+                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Identity;
+                Editor.Panel.Refresh();
             });
             contextMenu.MenuItems.Add("X-Z Plane", (o, args) =>
             {
-                editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
-                editor.Panel.Refresh();
+                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
+                Editor.Panel.Refresh();
             });
             contextMenu.MenuItems.Add("Y-Z Plane", (o, args) =>
             {
-                editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
-                editor.Panel.Refresh();
+                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
+                Editor.Panel.Refresh();
             });
 
-            contextMenu.Show(editor.Panel, e.Location);
+            contextMenu.Show(Editor.Panel, e.Location);
 
             e.Cancel = true;
         }

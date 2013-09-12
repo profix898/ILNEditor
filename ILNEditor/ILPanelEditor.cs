@@ -1,51 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using ILNEditor.Drawing.Plotting;
+using ILNEditor.Drawing;
+using ILNEditor.Editors;
 using ILNumerics.Drawing;
-using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor
 {
-    public class ILPanelEditor
+    public sealed class ILPanelEditor : IDisposable
     {
         private readonly ILPanel ilPanel;
-        private readonly WrapperMap wrapperMap = new WrapperMap();
-        private readonly List<object> wrappers = new List<object>();
+        private bool disposed;
+        private IILPanelEditor editor;
 
-        private EditorForm propertyForm;
+        private WrapperMap wrapperMap = new WrapperMap();
+        private List<ILWrapperBase> wrappers = new List<ILWrapperBase>();
 
-        public ILPanelEditor(ILPanel ilPanel)
+        public ILPanelEditor(ILPanel ilPanel, IILPanelEditor editor = null)
         {
             this.ilPanel = ilPanel;
+            this.editor = editor ?? new ILPanelEditorForm(this);
+            this.editor.PropertyChanged += (o, args) =>
+            {
+                ilPanel.Refresh();
+                ilPanel.Refresh(); // TODO: Need to refresh twice -> Bug in ILNumerics?
+            };
+        }
 
-            Update();
+        public WrapperMap WrapperMap
+        {
+            [DebuggerStepThrough]
+            get { return wrapperMap; }
         }
 
         public void Update()
         {
             wrappers.Clear();
-            Traverse(ilPanel.Scene.First<ILGroup>());
-        }
 
-        private void Traverse(ILGroup group)
-        {
-            foreach (ILNode node in group.Childs)
-            {
-                if (node is ILPlotCube)
-                    wrappers.Add(new ILPlotCubeWrapper(node as ILPlotCube, this));
-                else if (node is ILGroup)
-                    Traverse(node as ILGroup);
-                else
-                {
-                    Type nodeType = node.GetType();
+            Traverse(String.Empty, ilPanel.Scene.First<ILGroup>());
 
-                    if (wrapperMap.ContainsKey(nodeType))
-                        wrappers.Add(Activator.CreateInstance(wrapperMap[nodeType], node, this));
-                    else if (nodeType.BaseType != null && nodeType.BaseType != typeof(object) && wrapperMap.ContainsKey(nodeType.BaseType))
-                        wrappers.Add(Activator.CreateInstance(wrapperMap[nodeType.BaseType], node, this));
-                }
-            }
+            editor.UpdateNodes();
         }
 
         #region Internals
@@ -56,16 +50,79 @@ namespace ILNEditor
             get { return ilPanel; }
         }
 
-        internal void MouseDoubleClickPropertyForm(object sender, string label, ILMouseEventArgs e)
+        internal List<ILWrapperBase> Wrappers
         {
-            if (propertyForm != null)
-                propertyForm.Dispose();
+            [DebuggerStepThrough]
+            get { return wrappers; }
+        }
 
-            propertyForm = new EditorForm(sender, label);
-            propertyForm.Closed += (o, args) => ilPanel.Refresh();
-            propertyForm.Show();
+        internal void MouseDoubleClickShowEditor(object sender, ILMouseEventArgs e)
+        {
+            if (!(sender is ILWrapperBase))
+                return;
 
+            ShowEditor(((ILWrapperBase) sender).FullName);
             e.Cancel = true;
+        }
+
+        internal void ShowEditor(string node = null)
+        {
+            if (!String.IsNullOrEmpty(node))
+                editor.SelectNode(node);
+
+            if (!editor.Visible)
+                editor.Show();
+        }
+
+        #endregion
+
+        #region Private
+
+        private void Traverse(string path, ILGroup group)
+        {
+            foreach (ILNode node in group.Children)
+            {
+                Type nodeType = node.GetType();
+                var childGroup = node as ILGroup;
+
+                if (wrapperMap.ContainsKey(nodeType)) // NodeType is mapped
+                {
+                    var wrapper = (ILWrapperBase) Activator.CreateInstance(wrapperMap[nodeType], node, this, path, null);
+                    if (childGroup != null && wrapper.TraverseChildren && childGroup.Children.Count > 0)
+                        Traverse(wrapper.FullName, childGroup);
+                }
+                else if (nodeType.BaseType != null && nodeType.BaseType != typeof(object) && wrapperMap.ContainsKey(nodeType.BaseType)) // Only BaseType is mapped
+                {
+                    var wrapper = (ILWrapperBase) Activator.CreateInstance(wrapperMap[nodeType.BaseType], node, this, path, nodeType.Name);
+                    if (childGroup != null && wrapper.TraverseChildren && childGroup.Children.Count > 0)
+                        Traverse(wrapper.FullName, childGroup);
+                }
+                else if (childGroup != null && childGroup.Children.Count > 0)
+                    Traverse(String.IsNullOrEmpty(path) ? nodeType.Name : path + ":" + nodeType.Name, childGroup);
+            }
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                editor.Hide();
+                editor.Dispose();
+            }
+
+            editor = null;
+            wrapperMap = null;
+            wrappers = null;
+
+            disposed = true;
+        }
+
+        ~ILPanelEditor()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -74,7 +131,20 @@ namespace ILNEditor
 
         public static ILPanelEditor AttachTo(ILPanel ilPanel)
         {
-            return new ILPanelEditor(ilPanel);
+            var editor = new ILPanelEditor(ilPanel);
+            editor.Update();
+
+            return editor;
+        }
+
+        #endregion
+
+        #region Implementation of IDisposable
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

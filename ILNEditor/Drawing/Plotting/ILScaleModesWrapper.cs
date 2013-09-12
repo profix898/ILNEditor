@@ -7,15 +7,14 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILScaleModesConverter))]
-    internal class ILScaleModesWrapper
+    internal class ILScaleModesWrapper : ILWrapperBase
     {
-        private readonly ILPanelEditor editor;
         private readonly ILScaleModes source;
 
-        public ILScaleModesWrapper(ILScaleModes source, ILPanelEditor editor)
+        public ILScaleModesWrapper(ILScaleModes source, ILPanelEditor editor, string path, string name = null)
+            : base(editor, path, String.IsNullOrEmpty(name) ? "ScaleModes" : name)
         {
             this.source = source;
-            this.editor = editor;
         }
 
         #region ILScaleModes
@@ -53,7 +52,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var scaleModes = (ILScaleModesWrapper) value;
 
-                    return String.Format("ScaleModes (X:{0}, Y:{1}, Z:{2})", scaleModes.XAxisScale, scaleModes.YAxisScale, scaleModes.ZAxisScale);
+                    return String.Format("{0} (X:{1}, Y:{2}, Z:{3})", scaleModes.Name, scaleModes.XAxisScale, scaleModes.YAxisScale, scaleModes.ZAxisScale);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

@@ -9,21 +9,19 @@ namespace ILNEditor.Drawing
     [TypeConverter(typeof(ILLabelConverter))]
     internal class ILLabelWrapper : ILDrawableWrapper
     {
-        private readonly ILPanelEditor editor;
         private readonly ILLabel source;
 
-        public ILLabelWrapper(ILLabel source, ILPanelEditor editor)
-            : base(source, editor)
+        public ILLabelWrapper(ILLabel source, ILPanelEditor editor, string path, string name = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Label" : name)
         {
             this.source = source;
-            this.editor = editor;
 
             source.MouseDoubleClick += (sender, args) =>
             {
                 if (!args.DirectionUp)
                     return;
 
-                editor.MouseDoubleClickPropertyForm(this, "Label", args);
+                editor.MouseDoubleClickShowEditor(this, args);
             };
         }
 
@@ -56,7 +54,7 @@ namespace ILNEditor.Drawing
                     var label = (ILLabelWrapper) value;
                     string color = label.Color.HasValue ? (label.Color.Value.IsKnownColor ? label.Color.Value.ToKnownColor().ToString() : label.Color.Value.ToString()) : "";
 
-                    return String.Format("Label ({0}, {1} {2}pt, {3})", label.Text, label.Font.Name, (int) label.Font.SizeInPoints, color);
+                    return String.Format("{0} ({1}, {2} {3}pt, {4})", label.Name, label.Text, label.Font.Name, (int) label.Font.SizeInPoints, color);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

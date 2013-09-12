@@ -1,20 +1,20 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
-    internal class ILTickWrapper
+    internal class ILTickWrapper : ILWrapperBase
     {
-        private readonly ILPanelEditor editor;
         private readonly ILLabelWrapper label;
         private readonly ILTick source;
 
-        public ILTickWrapper(ILTick source, ILPanelEditor editor)
+        public ILTickWrapper(ILTick source, ILPanelEditor editor, string path, string name = null)
+            : base(editor, path, String.IsNullOrEmpty(name) ? "Tick" : name)
         {
             this.source = source;
-            this.editor = editor;
 
-            label = new ILLabelWrapper(source.Label, editor);
+            label = new ILLabelWrapper(source.Label, editor, path);
         }
 
         #region ILTick
