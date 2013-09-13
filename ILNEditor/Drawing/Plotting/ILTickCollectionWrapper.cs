@@ -12,14 +12,17 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(ILTickCollectionConverter))]
     internal class ILTickCollectionWrapper : ILGroupWrapper
     {
+        private readonly ILLinesWrapper lines;
         private readonly ILTickCollection source;
         private readonly ReadOnlyCollection<ILTickWrapper> ticks;
 
         public ILTickCollectionWrapper(ILTickCollection source, ILPanelEditor editor, string path, string name = null)
             : base(source, editor, path, String.IsNullOrEmpty(name) ? "Ticks" : name)
         {
-            this.source = source;
+            // ILTickCollection needs to be accessed from SceneSyncRoot (instead of Scene)
+            this.source = editor.Panel.SceneSyncRoot.FindById<ILTickCollection>(source.ID);
 
+            lines = new ILLinesWrapper(this.source.Lines, editor, FullName, ILTickCollection.TickLinesTag);
             ticks = new ReadOnlyCollection<ILTickWrapper>(((IEnumerable<ILTick>) source).Select(tick => new ILTickWrapper(tick, editor, path)).ToList());
         }
 
@@ -38,6 +41,12 @@ namespace ILNEditor.Drawing.Plotting
         {
             get { return source.DefaultTickLabelSize; }
             set { source.DefaultTickLabelSize = value; }
+        }
+
+        [Category("Format")]
+        public ILLinesWrapper Lines
+        {
+            get { return lines; }
         }
 
         [Category("Ticks")]

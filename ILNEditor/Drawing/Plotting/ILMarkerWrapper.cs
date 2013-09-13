@@ -10,6 +10,7 @@ namespace ILNEditor.Drawing.Plotting
     internal class ILMarkerWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper border;
+        private readonly ILTrianglesWrapper fill;
         private readonly ILMarker source;
 
         public ILMarkerWrapper(ILMarker source, ILPanelEditor editor, string path, string name = null)
@@ -17,7 +18,8 @@ namespace ILNEditor.Drawing.Plotting
         {
             this.source = source;
 
-            border = new ILLinesWrapper(source.Border, editor, path);
+            fill = new ILTrianglesWrapper(source.Fill, editor, FullName, ILMarker.DefaultFillTag);
+            border = new ILLinesWrapper(source.Border, editor, path, ILMarker.DefaultBorderTag);
         }
 
         [Category("Marker")]
@@ -32,6 +34,12 @@ namespace ILNEditor.Drawing.Plotting
         {
             get { return source.Position; }
             set { source.Position = value; }
+        }
+
+        [Category("Marker")]
+        public ILTrianglesWrapper Fill
+        {
+            get { return fill; }
         }
 
         [Category("Marker")]

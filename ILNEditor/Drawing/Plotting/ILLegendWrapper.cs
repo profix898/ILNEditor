@@ -10,7 +10,7 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILLegend source;
 
         public ILLegendWrapper(ILLegend source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Legend" : name)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? ILLegend.LegendTag : name)
         {
             this.source = source;
         }

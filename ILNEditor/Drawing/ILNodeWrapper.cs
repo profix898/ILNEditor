@@ -9,7 +9,7 @@ namespace ILNEditor.Drawing
         private readonly ILNode source;
 
         protected ILNodeWrapper(ILNode source, ILPanelEditor editor, string path, string name = null)
-            : base(editor, path, String.IsNullOrEmpty(name) ? "Node" : name)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Node" : name)
         {
             this.source = source;
         }

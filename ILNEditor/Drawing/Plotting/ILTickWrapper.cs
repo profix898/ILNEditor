@@ -11,11 +11,11 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILTick source;
 
         public ILTickWrapper(ILTick source, ILPanelEditor editor, string path, string name = null)
-            : base(editor, path, String.IsNullOrEmpty(name) ? "Tick" : name)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Tick" : name)
         {
             this.source = source;
 
-            label = new ILLabelWrapper(source.Label, editor, path);
+            label = new ILLabelWrapper(source.Label, editor, path, ILTickCollection.TickLabelTag);
         }
 
         #region ILTick

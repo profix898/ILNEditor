@@ -20,13 +20,13 @@ namespace ILNEditor.Drawing.Plotting
         public ILSurfaceWrapper(ILSurface source, ILPanelEditor editor, string path, string name = null)
             : base(source, editor, path, String.IsNullOrEmpty(name) ? GetSurfaceLabelFromLegend(source, editor.Panel) : name)
         {
-            this.source = source;
+            this.source = editor.Panel.SceneSyncRoot.FindById<ILSurface>(source.ID);
 
-            fill = new ILTrianglesWrapper(source.Fill, editor, FullName, "Fill");
-            wireframe = new ILLinesWrapper(source.Wireframe, editor, FullName, "Wireframe");
+            fill = new ILTrianglesWrapper(source.Fill, editor, FullName, ILSurface.FillTag);
+            wireframe = new ILLinesWrapper(source.Wireframe, editor, FullName, ILSurface.WireframeTag);
             positions = new ReadOnlyCollection<float>(source.Positions.ToList());
 
-            source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
+            this.source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
         }
 
         [Category("Format")]
@@ -40,8 +40,7 @@ namespace ILNEditor.Drawing.Plotting
         public Colormaps Colormap
         {
             get { return source.Colormap.Type; }
-            //set { source.Colormap = new ILColormap(value); }
-            // TODO: Does not affect rendering result
+            set { source.Colormap = new ILColormap(value); } // TODO: Does not affect rendering result
         }
 
         [Category("Format")]
@@ -85,10 +84,10 @@ namespace ILNEditor.Drawing.Plotting
             {
                 // Get text from ILLegendItem at the index
                 if (legend.Items.Children.Count() > index)
-                    return String.Format("Surface(\"{0}\")", legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
+                    return String.Format("{0}(\"{1}\")", ILSurface.SurfaceDefaultTag, legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
             }
 
-            return String.Format("Surface#{0}", index + 1);
+            return String.Format("{0}#{1}", ILSurface.SurfaceDefaultTag, index + 1);
         }
 
         #endregion

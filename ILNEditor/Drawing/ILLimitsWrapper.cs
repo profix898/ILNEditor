@@ -11,7 +11,7 @@ namespace ILNEditor.Drawing
         private readonly ILLimits source;
 
         public ILLimitsWrapper(ILLimits source, ILPanelEditor editor, string path, string name = null)
-            : base(editor, path, String.IsNullOrEmpty(name) ? "Limits" : name)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Limits" : name)
         {
             this.source = source;
         }

@@ -7,7 +7,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    internal class ILPlotCubeWrapper : ILWrapperBase
+    internal class ILPlotCubeWrapper : ILCameraWrapper
     {
         private readonly ILAxisCollectionWrapper axes;
         private readonly ILLimitsWrapper limits;
@@ -16,17 +16,18 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILPlotCube source;
 
         public ILPlotCubeWrapper(ILPlotCube source, ILPanelEditor editor, string path, string name = null)
-            : base(editor, path, String.IsNullOrEmpty(name) ? "PlotCube" : name)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? ILPlotCube.DefaultTag : name)
         {
-            this.source = source;
+            // ILCamera needs to be accessed from SceneSyncRoot (instead of Scene)
+            this.source = editor.Panel.SceneSyncRoot.FindById<ILPlotCube>(source.ID);
 
             axes = new ILAxisCollectionWrapper(source.Axes, Editor, FullName);
             scaleModes = new ILScaleModesWrapper(source.ScaleModes, Editor, FullName);
             limits = new ILLimitsWrapper(source.Limits, Editor, FullName);
-            lines = new ILLinesWrapper(source.Lines, Editor, FullName, "Box");
+            lines = new ILLinesWrapper(source.Lines, Editor, FullName, "CubeLines");
 
-            source.MouseClick += PlotCube_MouseClick;
-            source.MouseDoubleClick += (sender, args) =>
+            this.source.MouseClick += PlotCube_MouseClick;
+            this.source.MouseDoubleClick += (sender, args) =>
             {
                 if (!args.DirectionUp)
                     return;

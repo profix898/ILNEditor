@@ -14,7 +14,7 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILAxisWrapper zAxis;
 
         public ILAxisCollectionWrapper(ILAxisCollection source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "AxisCollection" : name)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? ILAxisCollection.DefaultTag : name)
         {
             this.source = source;
 

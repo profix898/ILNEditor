@@ -12,7 +12,7 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILScaleModes source;
 
         public ILScaleModesWrapper(ILScaleModes source, ILPanelEditor editor, string path, string name = null)
-            : base(editor, path, String.IsNullOrEmpty(name) ? "ScaleModes" : name)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "ScaleModes" : name)
         {
             this.source = source;
         }
