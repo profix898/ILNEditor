@@ -89,5 +89,59 @@ namespace ILNEditor.Editors
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e.ChangedItem.Label));
         }
+
+        private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+
+            //    // Hide context menu if no item is selected
+            //    if (propertyGrid.SelectedObject == null)
+            //    {
+            //        e.Cancel = true;
+            //        return;
+            //    }
+
+            //    // Get selected ILNode (equivalent to SelectedObject on propertyGrid, see treeView_AfterSelect)
+            //    var node = ((ILWrapperBase) propertyGrid.SelectedObject).Source as ILNode;
+
+            //    // Add/Remove is valid on ILNode objects only
+            //    if (node == null)
+            //    {
+            //        e.Cancel = true;
+            //        MessageBox.Show("Only ILNode objects can be added/removed.");
+            //        return;
+            //    }
+
+            //    // Add
+            //    var group = node as ILGroup;
+            //    if (group != null) // Can only add items to ILGroup nodes
+            //    {
+            //        miAdd.DropDownItems.Clear();
+            //        foreach (Type type in editor.WrapperMap.Keys.Where(type => type.GetConstructor(Type.EmptyTypes) != null))
+            //        {
+            //            Type typeClosure = type;
+            //            ToolStripItem item = miAdd.DropDownItems.Add(type.Name);
+            //            item.Click += (o, args) => AddNode(group, typeClosure);
+            //        }
+            //    }
+            //    else
+            //        miAdd.Enabled = false;
+
+            //    // Remove
+            //    miRemove.Click += (o, args) => RemoveNode(node);
+        }
+
+        //private void RemoveNode(ILNode node)
+        //{
+        //    propertyGrid.SelectedObject = null;
+        //    editor.Panel.Scene.Remove(node);
+        //    editor.Panel.Refresh();
+        //    editor.Update();
+        //}
+
+        //private void AddNode(ILGroup parent, Type type)
+        //{
+        //    parent.Children.Add((ILNode) Activator.CreateInstance(type));
+        //}
     }
 }

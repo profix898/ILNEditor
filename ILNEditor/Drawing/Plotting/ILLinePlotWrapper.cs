@@ -22,8 +22,8 @@ namespace ILNEditor.Drawing.Plotting
         {
             this.source = source;
 
-            line = new ILLinesWrapper(source.Line, editor, FullName);
-            marker = new ILMarkerWrapper(source.Marker, editor, FullName);
+            line = new ILLinesWrapper(source.Line, editor, FullName, ILLinePlot.LineTag);
+            marker = new ILMarkerWrapper(source.Marker, editor, FullName, ILLinePlot.MarkerTag);
             positions = new ReadOnlyCollection<float>(source.Positions.ToList());
 
             source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
@@ -63,10 +63,10 @@ namespace ILNEditor.Drawing.Plotting
             {
                 // Get text from ILLegendItem at the index
                 if (legend.Items.Children.Count() > index)
-                    return String.Format("LinePlot(\"{0}\")", legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
+                    return String.Format("{0}(\"{1}\")", ILLinePlot.LinePlotTag, legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
             }
 
-            return String.Format("LinePlot#{0}", index + 1);
+            return String.Format("{0}#{1}", ILLinePlot.LinePlotTag, index + 1);
         }
 
         #endregion

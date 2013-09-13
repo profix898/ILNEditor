@@ -23,11 +23,11 @@ namespace ILNEditor.Drawing.Plotting
         {
             this.source = source;
 
-            label = new ILLabelWrapper(source.Label, editor, FullName, "Label");
-            scaleLabel = new ILLabelWrapper(source.ScaleLabel, editor, FullName, "ScaleLabel");
-            ticks = new ILTickCollectionWrapper(source.Ticks, editor, FullName);
-            gridMajor = new ILLinesWrapper(source.GridMajor, editor, FullName, "GridMajor");
-            gridMinor = new ILLinesWrapper(source.GridMinor, editor, FullName, "GridMinor");
+            label = new ILLabelWrapper(source.Label, editor, FullName, ILAxis.LabelTag);
+            scaleLabel = new ILLabelWrapper(source.ScaleLabel, editor, FullName, ILAxis.ScaleLabelTag);
+            ticks = new ILTickCollectionWrapper(source.Ticks, editor, FullName, "TicksCollection");
+            gridMajor = new ILLinesWrapper(source.GridMajor, editor, FullName, ILAxis.GridMajorLinesTag);
+            gridMinor = new ILLinesWrapper(source.GridMinor, editor, FullName, ILAxis.GridMinorLinesTag);
 
             source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
         }

@@ -21,6 +21,7 @@ namespace ILNEditor
 
         private void AddDefaultMapping()
         {
+            Add(typeof(ILCamera), typeof(ILCameraWrapper));
             Add(typeof(ILGroup), typeof(ILGroupWrapper));
             Add(typeof(ILScreenObject), typeof(ILScreenObjectWrapper));
             Add(typeof(ILTriangles), typeof(ILTrianglesWrapper));

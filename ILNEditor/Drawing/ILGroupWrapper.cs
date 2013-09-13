@@ -23,7 +23,7 @@ namespace ILNEditor.Drawing
         public Matrix4 Transform
         {
             get { return source.Transform; }
-            set { source.Transform = value; }
+            //set { source.Transform = value; }
         }
 
         [Category("Format")]

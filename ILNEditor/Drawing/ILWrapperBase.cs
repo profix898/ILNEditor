@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace ILNEditor.Drawing
 {
@@ -10,14 +9,22 @@ namespace ILNEditor.Drawing
         private readonly ILPanelEditor editor;
         private readonly string name;
         private readonly string path;
+        private readonly object source;
 
-        protected ILWrapperBase(ILPanelEditor editor, string path, string name)
+        protected ILWrapperBase(object source, ILPanelEditor editor, string path, string name)
         {
+            this.source = source;
             this.editor = editor;
             this.path = path;
             this.name = name;
 
             editor.Wrappers.Add(this);
+        }
+
+        internal object Source
+        {
+            [DebuggerStepThrough]
+            get { return source; }
         }
 
         internal ILPanelEditor Editor

@@ -12,12 +12,12 @@ namespace ILNEditor.Drawing
         private readonly ILLinesWrapper wireframe;
 
         public ILSphereWrapper(ILSphere source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Sphere" : name)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? ILSphere.DefaultSphereTag : name)
         {
             this.source = source;
 
-            fill = new ILTrianglesWrapper(source.Fill, editor, FullName, "Fill");
-            wireframe = new ILLinesWrapper(source.Wireframe, editor, FullName, "Wireframe");
+            fill = new ILTrianglesWrapper(source.Fill, editor, FullName, ILSphere.DefaultFillTag);
+            wireframe = new ILLinesWrapper(source.Wireframe, editor, FullName, ILSphere.DefaultWireframeTag);
         }
 
         #region ILSphere
