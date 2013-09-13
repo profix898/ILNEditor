@@ -6,6 +6,7 @@ using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     internal class ILPlotCubeWrapper : ILWrapperBase
     {
         private readonly ILAxisCollectionWrapper axes;

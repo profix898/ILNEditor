@@ -4,6 +4,7 @@ using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     internal class ILGroupWrapper : ILNodeWrapper
     {
         private readonly ILGroup source;
@@ -18,13 +19,12 @@ namespace ILNEditor.Drawing
 
         [Category("Format")]
         [Browsable(false)]
+        //[Editor(typeof(Matrix4Editor), typeof(UITypeEditor))]
         public Matrix4 Transform
         {
             get { return source.Transform; }
             set { source.Transform = value; }
         }
-
-        //public ILNodeCollectionWrapper Children{}
 
         [Category("Format")]
         public float? Alpha
@@ -33,13 +33,10 @@ namespace ILNEditor.Drawing
             set { source.Alpha = value; }
         }
 
-        //[Category("Format")]
-        //public Color? ColorOverride
-        //{
-        //    get { return source.ColorOverride; }
-        //    set { source.ColorOverride = value; }
-        //}
-
         #endregion
     }
+
+    //internal class Matrix4Editor : UITypeEditor
+    //{
+    //}
 }

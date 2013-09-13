@@ -6,6 +6,7 @@ using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     internal class ILScreenObjectWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper border;

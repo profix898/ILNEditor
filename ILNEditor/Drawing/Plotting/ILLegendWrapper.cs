@@ -4,6 +4,7 @@ using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     internal class ILLegendWrapper : ILScreenObjectWrapper
     {
         private readonly ILLegend source;

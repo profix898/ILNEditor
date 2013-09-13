@@ -42,8 +42,7 @@ namespace Demo
             // Dispose editor and reset scene
             if (editor != null)
                 editor.Dispose();
-            foreach (ILNode node in ilPanel.Scene.Find<ILNode>())
-                ilPanel.Scene.Remove(node);
+            ilPanel.Scene = new ILScene();
 
             // Add and render demo content
             switch ((DemoEnum) comboBoxDemo.SelectedIndex)
@@ -76,6 +75,8 @@ namespace Demo
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            ilPanel.Refresh();
 
             // Attach ILNEditor
             editor = ILPanelEditor.AttachTo(ilPanel);

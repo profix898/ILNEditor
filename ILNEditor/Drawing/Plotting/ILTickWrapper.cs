@@ -4,6 +4,7 @@ using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     internal class ILTickWrapper : ILWrapperBase
     {
         private readonly ILLabelWrapper label;

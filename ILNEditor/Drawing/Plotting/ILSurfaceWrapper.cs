@@ -12,6 +12,7 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(ExpandableObjectConverter))]
     internal class ILSurfaceWrapper : ILGroupWrapper
     {
+        private readonly ILTrianglesWrapper fill;
         private readonly ReadOnlyCollection<float> positions;
         private readonly ILSurface source;
         private readonly ILLinesWrapper wireframe;
@@ -21,6 +22,7 @@ namespace ILNEditor.Drawing.Plotting
         {
             this.source = source;
 
+            fill = new ILTrianglesWrapper(source.Fill, editor, FullName, "Fill");
             wireframe = new ILLinesWrapper(source.Wireframe, editor, FullName, "Wireframe");
             positions = new ReadOnlyCollection<float>(source.Positions.ToList());
 
@@ -43,6 +45,12 @@ namespace ILNEditor.Drawing.Plotting
         }
 
         [Category("Format")]
+        public ILTrianglesWrapper Fill
+        {
+            get { return fill; }
+        }
+
+        [Category("Format")]
         public ILLinesWrapper Wireframe
         {
             get { return wireframe; }
@@ -53,6 +61,14 @@ namespace ILNEditor.Drawing.Plotting
         {
             get { return source.UseLighting; }
             set { source.UseLighting = value; }
+        }
+
+        [Category("Positions")]
+        [TypeConverter(typeof(PositionsConverter))]
+        public ReadOnlyCollection<float> Positions
+        {
+            // TODO: Make this editable
+            get { return positions; }
         }
 
         #region Helper
@@ -76,14 +92,6 @@ namespace ILNEditor.Drawing.Plotting
         }
 
         #endregion
-
-        [Category("Positions")]
-        [TypeConverter(typeof(PositionsConverter))]
-        public ReadOnlyCollection<float> Positions
-        {
-            // TODO: Make this editable
-            get { return positions; }
-        }
 
         #region Nested type: PositionsConverter
 
