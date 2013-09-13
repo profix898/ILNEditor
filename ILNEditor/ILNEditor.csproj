@@ -49,6 +49,8 @@
     <Compile Include="Drawing\ILGroupWrapper.cs" />
     <Compile Include="Drawing\ILScreenObjectWrapper.cs" />
     <Compile Include="Drawing\ILShapeWrapper.cs" />
+    <Compile Include="Drawing\ILSphereWrapper.cs" />
+    <Compile Include="Drawing\ILTrianglesWrapper.cs" />
     <Compile Include="Drawing\ILWrapperBase.cs" />
     <Compile Include="Drawing\Plotting\ILAxisCollectionWrapper.cs" />
     <Compile Include="Drawing\ILLabelWrapper.cs" />

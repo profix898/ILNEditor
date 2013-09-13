@@ -22,12 +22,13 @@ namespace ILNEditor
         private void AddDefaultMapping()
         {
             Add(typeof(ILGroup), typeof(ILGroupWrapper));
-            Add(typeof(ILShape), typeof(ILShapeWrapper));
             Add(typeof(ILScreenObject), typeof(ILScreenObjectWrapper));
+            Add(typeof(ILTriangles), typeof(ILTrianglesWrapper));
 
             // Drawing
             Add(typeof(ILLabel), typeof(ILLabelWrapper));
             Add(typeof(ILLines), typeof(ILLinesWrapper));
+            Add(typeof(ILSphere), typeof(ILSphereWrapper));
 
             // Plotting
             Add(typeof(ILPlotCube), typeof(ILPlotCubeWrapper));
