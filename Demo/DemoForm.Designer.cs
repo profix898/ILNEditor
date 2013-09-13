@@ -33,6 +33,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxDemo = new System.Windows.Forms.ComboBox();
             this.ilPanel = new ILNumerics.Drawing.ILPanel();
+            this.btnFromXml = new System.Windows.Forms.Button();
+            this.btnToXml = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -49,6 +51,8 @@
             // 
             // splitContainer.Panel1
             // 
+            this.splitContainer.Panel1.Controls.Add(this.btnToXml);
+            this.splitContainer.Panel1.Controls.Add(this.btnFromXml);
             this.splitContainer.Panel1.Controls.Add(this.label1);
             this.splitContainer.Panel1.Controls.Add(this.comboBoxDemo);
             // 
@@ -90,6 +94,26 @@
             this.ilPanel.Size = new System.Drawing.Size(684, 427);
             this.ilPanel.TabIndex = 0;
             // 
+            // btnFromXml
+            // 
+            this.btnFromXml.Location = new System.Drawing.Point(597, 4);
+            this.btnFromXml.Name = "btnFromXml";
+            this.btnFromXml.Size = new System.Drawing.Size(75, 23);
+            this.btnFromXml.TabIndex = 2;
+            this.btnFromXml.Text = "FromXml";
+            this.btnFromXml.UseVisualStyleBackColor = true;
+            this.btnFromXml.Click += new System.EventHandler(this.btnFromXml_Click);
+            // 
+            // btnToXml
+            // 
+            this.btnToXml.Location = new System.Drawing.Point(516, 4);
+            this.btnToXml.Name = "btnToXml";
+            this.btnToXml.Size = new System.Drawing.Size(75, 23);
+            this.btnToXml.TabIndex = 2;
+            this.btnToXml.Text = "ToXml";
+            this.btnToXml.UseVisualStyleBackColor = true;
+            this.btnToXml.Click += new System.EventHandler(this.btnToXml_Click);
+            // 
             // DemoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -114,6 +138,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxDemo;
         private ILNumerics.Drawing.ILPanel ilPanel;
+        private System.Windows.Forms.Button btnToXml;
+        private System.Windows.Forms.Button btnFromXml;
 
     }
 }

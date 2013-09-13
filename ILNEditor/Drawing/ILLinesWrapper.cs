@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using ILNEditor.Serialization;
 using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
@@ -26,6 +27,7 @@ namespace ILNEditor.Drawing
         }
 
         [Category("Format")]
+        [SerializerWeight(10)] // De/Serialize last (setting Pattern/PatternScale/etc. forces DashStyle to 'UserPattern' -> we need to override this)
         public DashStyle DashStyle
         {
             get { return source.DashStyle; }
