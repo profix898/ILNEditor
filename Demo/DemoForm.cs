@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ILNEditor;
+using ILNEditor.Serialization;
 using ILNumerics;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
@@ -80,6 +81,37 @@ namespace Demo
 
             // Attach ILNEditor
             editor = ILPanelEditor.AttachTo(ilPanel);
+        }
+
+        private void btnToXml_Click(object sender, EventArgs e)
+        {
+            var fileDialog = new SaveFileDialog();
+            fileDialog.DefaultExt = "*.xml";
+            fileDialog.Filter = "XML Files (*.xml)|*.xml";
+            fileDialog.FileName = "scene-settings.xml";
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var serializer = new XmlSerializer();
+                editor.Serialize(serializer);
+                //string xmlString = serializer.SaveToString();
+                serializer.SaveToFile(fileDialog.FileName);
+            }
+        }
+
+        private void btnFromXml_Click(object sender, EventArgs e)
+        {
+            var fileDialog = new OpenFileDialog();
+            fileDialog.DefaultExt = "*.xml";
+            fileDialog.Filter = "XML Files (*.xml)|*.xml";
+            fileDialog.FileName = "scene-settings.xml";
+            fileDialog.CheckFileExists = true;
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var deserializer = new XmlDeserializer();
+                //deserializer.LoadFromString(xmlString);
+                deserializer.LoadFromFile(fileDialog.FileName);
+                editor.Deserialize(deserializer);
+            }
         }
     }
 }
