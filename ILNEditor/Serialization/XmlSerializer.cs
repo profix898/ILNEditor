@@ -72,5 +72,25 @@ namespace ILNEditor.Serialization
                 writer.Close();
             }
         }
+
+        #region StaticUtility
+
+        public static string SerializeToString(ILPanelEditor editor)
+        {
+            var serializer = new XmlSerializer();
+            editor.Serialize(serializer);
+
+            return serializer.SaveToString();
+        }
+
+        public static void SerializeToFile(ILPanelEditor editor, string filename)
+        {
+            var serializer = new XmlSerializer();
+            editor.Serialize(serializer);
+
+            serializer.SaveToFile(filename);
+        }
+
+        #endregion
     }
 }

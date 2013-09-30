@@ -62,6 +62,8 @@
     <Compile Include="Drawing\ILLinesWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILSurfaceWrapper.cs" />
     <Compile Include="IILPanelEditor.cs" />
+    <Compile Include="Serialization\DictionaryDeserializer.cs" />
+    <Compile Include="Serialization\DictionarySerializer.cs" />
     <Compile Include="Serialization\SerializableColor.cs" />
     <Compile Include="Serialization\SerializableFont.cs" />
     <Compile Include="Serialization\SerializerWeightAttribute.cs" />

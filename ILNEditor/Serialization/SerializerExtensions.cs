@@ -13,7 +13,7 @@ namespace ILNEditor.Serialization
         public static void Serialize(this ILPanelEditor editor, ISerializer serializer)
         {
             foreach (ILWrapperBase wrapper in editor.Wrappers)
-                SerializeInternal(editor, serializer, wrapper, GetProperties(wrapper), ToIdentifier(wrapper.FullName));
+                SerializeInternal(editor, serializer, wrapper, GetProperties(wrapper), wrapper.FullName);
         }
 
         private static void SerializeInternal(ILPanelEditor editor, ISerializer serializer, object instance, IEnumerable<PropertyInfo> properties, string path)
@@ -35,7 +35,7 @@ namespace ILNEditor.Serialization
                     }
 
                     if (property.CanWrite)
-                        serializer.Set(path.Split(':'), ToIdentifier(property.Name), value);
+                        serializer.Set(SplitPath(path), ToIdentifier(property.Name), value);
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace ILNEditor.Serialization
         public static void Deserialize(this ILPanelEditor editor, IDeserializer deserializer)
         {
             foreach (ILWrapperBase wrapper in editor.Wrappers)
-                DeserializeInternal(editor, deserializer, wrapper, GetProperties(wrapper), ToIdentifier(wrapper.FullName));
+                DeserializeInternal(editor, deserializer, wrapper, GetProperties(wrapper), wrapper.FullName);
         }
 
         private static void DeserializeInternal(ILPanelEditor editor, IDeserializer deserializer, object instance, IEnumerable<PropertyInfo> properties, string path)
@@ -55,7 +55,7 @@ namespace ILNEditor.Serialization
                     object value = property.GetValue(instance, null);
 
                     string configPrefixChild = String.Format("{0}:{1}", path, ToIdentifier(property.Name));
-                    if (deserializer.Contains(configPrefixChild.Split(':')))
+                    if (deserializer.Contains(SplitPath(configPrefixChild)))
                     {
                         PropertyInfo[] childProperties = GetProperties(value);
                         if (childProperties.Length > 0 && editor.WrapperMap.Values.Contains(value.GetType()))
@@ -67,12 +67,11 @@ namespace ILNEditor.Serialization
 
                     try
                     {
-                        property.SetValue(instance, deserializer.Get(path.Split(':'), property.Name, property.PropertyType), null);
+                        property.SetValue(instance, deserializer.Get(SplitPath(path), property.Name, property.PropertyType), null);
                     }
                     catch (XmlException)
                     {
                         // Exception in xml deserialization (e.g. element not found or not deserializable)
-                        int i = 0;
                     }
                 }
             }
@@ -94,9 +93,14 @@ namespace ILNEditor.Serialization
             }).ToArray();
         }
 
+        private static string[] SplitPath(string path)
+        {
+            return path.Split(':').Select(ToIdentifier).ToArray();
+        }
+
         private static string ToIdentifier(string input)
         {
-            return Regex.Replace(Regex.Replace(input, @"[^\u0000-\u007F]", ""), @"[^\w]", "").Replace("#", "");
+            return Regex.Replace(Regex.Replace(input, @"[^\u0000-\u007F^:]", ""), @"[^\w]", "").Replace("#", "");
         }
     }
 }
