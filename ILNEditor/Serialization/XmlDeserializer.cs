@@ -76,6 +76,24 @@ namespace ILNEditor.Serialization
             return parent;
         }
 
+        #region StaticUtility
+
+        public static void DeserializeFromString(ILPanelEditor editor, string xmlString)
+        {
+            var deserializer = new XmlDeserializer();
+            deserializer.LoadFromString(xmlString);
+            editor.Deserialize(deserializer);
+        }
+
+        public static void DeserializeFromFile(ILPanelEditor editor, string filename)
+        {
+            var deserializer = new XmlDeserializer();
+            deserializer.LoadFromFile(filename);
+            editor.Deserialize(deserializer);
+        }
+
+        #endregion
+
         #region Implementation of IDeserializer
 
         public bool Contains(string[] path)

@@ -53,7 +53,7 @@ namespace Demo
                     ILPlotCube plotCube = ilPanel.Scene.Add(new ILPlotCube());
                     plotCube.Add(new ILLinePlot(ILMath.tosingle(ILMath.randn(2, 200))));
                     plotCube.Add(new ILLinePlot(ILMath.tosingle(ILMath.randn(2, 200) + 5.0)));
-                    plotCube.Add(new ILLegend("Line 1", "Line 2")); // TODO: Legend not rendered/visible. Why?
+                    plotCube.Add(new ILLegend("Line 1", "Line 2"));
                 }
                     break;
                 case DemoEnum.SincSurface:
@@ -70,13 +70,13 @@ namespace Demo
                 case DemoEnum.GreenSphere:
                 {
                     ilPanel.Scene.Add(new ILSphere());
-                    // TODO: Sphere not rendered at all
                 }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
+            ilPanel.Scene.Configure();
             ilPanel.Refresh();
 
             // Attach ILNEditor
@@ -90,12 +90,7 @@ namespace Demo
             fileDialog.Filter = "XML Files (*.xml)|*.xml";
             fileDialog.FileName = "scene-settings.xml";
             if (fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var serializer = new XmlSerializer();
-                editor.Serialize(serializer);
-                //string xmlString = serializer.SaveToString();
-                serializer.SaveToFile(fileDialog.FileName);
-            }
+                XmlSerializer.SerializeToFile(editor, fileDialog.FileName);
         }
 
         private void btnFromXml_Click(object sender, EventArgs e)
@@ -106,12 +101,7 @@ namespace Demo
             fileDialog.FileName = "scene-settings.xml";
             fileDialog.CheckFileExists = true;
             if (fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var deserializer = new XmlDeserializer();
-                //deserializer.LoadFromString(xmlString);
-                deserializer.LoadFromFile(fileDialog.FileName);
-                editor.Deserialize(deserializer);
-            }
+                XmlDeserializer.DeserializeFromFile(editor, fileDialog.FileName);
         }
     }
 }
