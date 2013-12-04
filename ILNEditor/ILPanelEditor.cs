@@ -20,11 +20,7 @@ namespace ILNEditor
         {
             this.ilPanel = ilPanel;
             this.editor = editor ?? new ILPanelEditorForm(this);
-            this.editor.PropertyChanged += (o, args) =>
-            {
-                ilPanel.Refresh();
-                ilPanel.Refresh(); // TODO: Need to refresh twice -> Bug in ILNumerics?
-            };
+            this.editor.PropertyChanged += (o, args) => ilPanel.Refresh();
         }
 
         public WrapperMap WrapperMap
