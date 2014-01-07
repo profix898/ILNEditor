@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
+using ILNEditor.TypeExpanders;
 using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ILGroupConverter))]
     internal class ILGroupWrapper : ILNodeWrapper
     {
         private readonly ILGroup source;
@@ -18,12 +20,9 @@ namespace ILNEditor.Drawing
         #region ILGroup
 
         [Category("Format")]
-        [Browsable(false)]
-        //[Editor(typeof(Matrix4Editor), typeof(UITypeEditor))]
-        public Matrix4 Transform
+        public Matrix4Expander Transform
         {
-            get { return source.Transform; }
-            //set { source.Transform = value; }
+            get { return new Matrix4Expander(source, "Transform"); }
         }
 
         [Category("Format")]
@@ -34,9 +33,54 @@ namespace ILNEditor.Drawing
         }
 
         #endregion
-    }
 
-    //internal class Matrix4Editor : UITypeEditor
-    //{
-    //}
+        internal override void Traverse()
+        {
+            foreach (ILNode node in source.Children)
+            {
+                Type nodeType = node.GetType();
+                var childGroup = node as ILGroup;
+
+                if (Editor.WrapperMap.ContainsKey(nodeType)) // NodeType is mapped
+                {
+                    var wrapper = (ILWrapperBase) Activator.CreateInstance(Editor.WrapperMap[nodeType], node, Editor, FullName, null);
+                    if (childGroup != null && childGroup.Children.Count > 0)
+                        wrapper.Traverse();
+                }
+                else if (nodeType.BaseType != null && nodeType.BaseType != typeof(object) && Editor.WrapperMap.ContainsKey(nodeType.BaseType)) // Only BaseType is mapped
+                {
+                    var wrapper = (ILWrapperBase) Activator.CreateInstance(Editor.WrapperMap[nodeType.BaseType], node, Editor, FullName, nodeType.Name);
+                    if (childGroup != null && childGroup.Children.Count > 0)
+                        wrapper.Traverse();
+                }
+                else if (childGroup != null && childGroup.Children.Count > 0)
+                    new ILGroupWrapper(childGroup, Editor, FullName).Traverse();
+            }
+        }
+
+        protected void TraverseILGroupOnly()
+        {
+            foreach (ILNode node in source.Children)
+            {
+                var childGroup = node as ILGroup;
+                if (childGroup != null && childGroup.Children.Count > 0)
+                    new ILGroupWrapper(childGroup, Editor, FullName).Traverse();
+            }
+        }
+
+        #region Nested type: ILGroupConverter
+
+        private class ILGroupConverter : ExpandableObjectConverter
+        {
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+            {
+                if (destType == typeof(string) && value is ILGroupWrapper)
+                    return ((ILGroupWrapper) value).Name;
+
+                return base.ConvertTo(context, culture, value, destType);
+            }
+        }
+
+        #endregion
+    }
 }

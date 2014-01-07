@@ -4,12 +4,14 @@ using System.Diagnostics;
 namespace ILNEditor.Drawing
 {
     [DebuggerDisplay("FullName = {FullName}, WrapperType = {GetType().Name}")]
-    public abstract class ILWrapperBase
+    public abstract class ILWrapperBase : IDisposable
     {
         private readonly ILPanelEditor editor;
         private readonly string name;
         private readonly string path;
         private readonly object source;
+
+        private bool disposed;
 
         protected ILWrapperBase(object source, ILPanelEditor editor, string path, string name)
         {
@@ -51,9 +53,39 @@ namespace ILNEditor.Drawing
             get { return String.IsNullOrEmpty(path) ? name : path + ":" + name; }
         }
 
-        internal virtual bool TraverseChildren
+        internal virtual void Traverse()
         {
-            get { return true; }
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // Release managed resources
+                    editor.Wrappers.Remove(this);
+                }
+
+                // Release unmanaged resources
+            }
+
+            disposed = true;
+        }
+
+        ~ILWrapperBase()
+        {
+            Dispose(false);
+        }
+
+        #region Implementation of IDisposable
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }

@@ -11,10 +11,14 @@ namespace ILNEditor.Drawing
     {
         private readonly ILLines source;
 
+        private bool disposed;
+
         public ILLinesWrapper(ILLines source, ILPanelEditor editor, string path, string name = null)
             : base(source, editor, path, String.IsNullOrEmpty(name) ? "Lines" : name)
         {
             this.source = source;
+
+            this.source.MouseDoubleClick += OnMouseDoubleClick;
         }
 
         #region ILLines
@@ -53,6 +57,31 @@ namespace ILNEditor.Drawing
         {
             get { return source.Antialiasing; }
             set { source.Antialiasing = value; }
+        }
+
+        #endregion
+
+        private void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
+        {
+            if (!args.DirectionUp)
+                return;
+
+            Editor.MouseDoubleClickShowEditor(this, args);
+        }
+
+        #region Overrides of ILWrapperBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                    source.MouseDoubleClick -= OnMouseDoubleClick;
+
+                disposed = true;
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion

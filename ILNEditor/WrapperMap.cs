@@ -40,8 +40,8 @@ namespace ILNEditor
             Add(typeof(ILTick), typeof(ILTickWrapper));
             Add(typeof(ILTickCollection), typeof(ILTickCollectionWrapper));
             Add(typeof(ILMarker), typeof(ILMarkerWrapper));
-            //Add(typeof(ILLegendItem), typeof(ILLegendItemWrapper));
             Add(typeof(ILLegend), typeof(ILLegendWrapper));
+            Add(typeof(ILLegendItem), typeof(ILLegendItemWrapper));
 
             // Plot Types
             Add(typeof(ILLinePlot), typeof(ILLinePlotWrapper));

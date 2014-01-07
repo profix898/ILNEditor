@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using ILNEditor.Drawing;
 using ILNEditor.Editors;
 using ILNumerics.Drawing;
@@ -31,9 +32,10 @@ namespace ILNEditor
 
         public void Update()
         {
-            wrappers.Clear();
+            DisposeWrappers();
 
-            Traverse(String.Empty, ilPanel.Scene.First<ILGroup>());
+            // Traverse scene
+            new ILGroupWrapper(ilPanel.Scene.First<ILGroup>(), this, String.Empty, "ROOT").Traverse();
 
             editor.UpdateNodes();
         }
@@ -52,66 +54,77 @@ namespace ILNEditor
             get { return wrappers; }
         }
 
-        internal void MouseDoubleClickShowEditor(object sender, ILMouseEventArgs e)
+        internal ILWrapperBase FindWrapper(object item)
         {
-            if (!(sender is ILWrapperBase))
+            var ilNode = item as ILNode;
+            if (ilNode != null)
+                return FindWrapperById(ilNode.ID);
+
+            return wrappers.FirstOrDefault(wrapper => (wrapper.Source == item));
+        }
+
+        internal ILWrapperBase FindWrapperById(int id)
+        {
+            return wrappers.FirstOrDefault(wrapper =>
+            {
+                var wrappedNode = wrapper.Source as ILNode;
+                if (wrappedNode != null)
+                    return (wrappedNode.ID == id);
+
+                return false;
+            });
+        }
+
+        internal void MouseDoubleClickShowEditor(object sender, ILMouseEventArgs args)
+        {
+            // 1) In a 'standard' scene, the MouseDoubleClick handler of the original item is invoked -> use sender
+            // 2) In a ILPlotCube scene, the MouseDoubleClick handler of ILPlotCube is invoke (with original item in the ILMouseEventArgs.Target) -> lookup args.Target
+            object item = (FindWrapperById(args.Target.ID) ?? sender) as ILWrapperBase;
+            if (item == null)
                 return;
 
-            ShowEditor(((ILWrapperBase) sender).FullName);
-            e.Cancel = true;
+            ShowEditor(((ILWrapperBase) item).FullName);
+            args.Cancel = true;
         }
 
         internal void ShowEditor(string node = null)
         {
+            if (editor == null)
+                return;
+
             if (!String.IsNullOrEmpty(node))
                 editor.SelectNode(node);
 
-            if (!editor.Visible)
-                editor.Show();
+            editor.Show();
         }
 
         #endregion
 
         #region Private
 
-        private void Traverse(string path, ILGroup group)
+        private void DisposeWrappers()
         {
-            foreach (ILNode node in group.Children)
-            {
-                Type nodeType = node.GetType();
-                var childGroup = node as ILGroup;
-
-                if (wrapperMap.ContainsKey(nodeType)) // NodeType is mapped
-                {
-                    var wrapper = (ILWrapperBase) Activator.CreateInstance(wrapperMap[nodeType], node, this, path, null);
-                    if (childGroup != null && wrapper.TraverseChildren && childGroup.Children.Count > 0)
-                        Traverse(wrapper.FullName, childGroup);
-                }
-                else if (nodeType.BaseType != null && nodeType.BaseType != typeof(object) && wrapperMap.ContainsKey(nodeType.BaseType)) // Only BaseType is mapped
-                {
-                    var wrapper = (ILWrapperBase) Activator.CreateInstance(wrapperMap[nodeType.BaseType], node, this, path, nodeType.Name);
-                    if (childGroup != null && wrapper.TraverseChildren && childGroup.Children.Count > 0)
-                        Traverse(wrapper.FullName, childGroup);
-                }
-                else if (childGroup != null && childGroup.Children.Count > 0)
-                    Traverse(String.IsNullOrEmpty(path) ? nodeType.Name : path + ":" + nodeType.Name, childGroup);
-            }
+            // Dispose wrappers (unsubscribing events)
+            foreach (ILWrapperBase wrapper in wrappers.ToList())
+                wrapper.Dispose();
         }
 
         private void Dispose(bool disposing)
         {
-            if (disposed)
-                return;
-
-            if (disposing)
+            if (!disposed)
             {
-                editor.Hide();
-                editor.Dispose();
-            }
+                if (disposing)
+                {
+                    editor.Hide();
+                    editor.Dispose();
 
-            editor = null;
-            wrapperMap = null;
-            wrappers = null;
+                    DisposeWrappers();
+                }
+
+                editor = null;
+                wrapperMap = null;
+                wrappers = null;
+            }
 
             disposed = true;
         }

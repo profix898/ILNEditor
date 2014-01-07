@@ -24,7 +24,9 @@ namespace ILNEditor.Editors
 
         public new void Show()
         {
-            base.Show();
+            if (!Visible)
+                base.Show();
+
             BringToFront();
         }
 
