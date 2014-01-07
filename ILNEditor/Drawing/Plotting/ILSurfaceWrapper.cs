@@ -9,7 +9,7 @@ using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ILSurfaceConverter))]
     internal class ILSurfaceWrapper : ILGroupWrapper
     {
         private readonly ILTrianglesWrapper fill;
@@ -25,9 +25,9 @@ namespace ILNEditor.Drawing.Plotting
             fill = new ILTrianglesWrapper(source.Fill, editor, FullName, ILSurface.FillTag);
             wireframe = new ILLinesWrapper(source.Wireframe, editor, FullName, ILSurface.WireframeTag);
             positions = new ReadOnlyCollection<float>(source.Positions.ToList());
-
-            this.source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
         }
+
+        #region ILSurface
 
         [Category("Format")]
         public ILSurface.ColorModes ColorMode
@@ -40,7 +40,7 @@ namespace ILNEditor.Drawing.Plotting
         public Colormaps Colormap
         {
             get { return source.Colormap.Type; }
-            set { source.Colormap = new ILColormap(value); } // TODO: Does not affect rendering result
+            set { source.Colormap = new ILColormap(value); }
         }
 
         [Category("Format")]
@@ -70,6 +70,8 @@ namespace ILNEditor.Drawing.Plotting
             get { return positions; }
         }
 
+        #endregion
+
         #region Helper
 
         private static string GetSurfaceLabelFromLegend(ILSurface source, ILPanel panel)
@@ -92,6 +94,30 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
+        #region Overrides of ILGroupWrapper
+
+        internal override void Traverse()
+        {
+            // Do not traverse children
+        }
+
+        #endregion
+
+        #region Nested type: ILSurfaceConverter
+
+        private class ILSurfaceConverter : ExpandableObjectConverter
+        {
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+            {
+                if (destType == typeof(string) && value is ILSurfaceWrapper)
+                    return ((ILSurfaceWrapper) value).Name;
+
+                return base.ConvertTo(context, culture, value, destType);
+            }
+        }
+
+        #endregion
+
         #region Nested type: PositionsConverter
 
         private class PositionsConverter : ExpandableObjectConverter
@@ -107,15 +133,6 @@ namespace ILNEditor.Drawing.Plotting
 
                 return base.ConvertTo(context, culture, value, destType);
             }
-        }
-
-        #endregion
-
-        #region Overrides of ILWrapperBase
-
-        internal override bool TraverseChildren
-        {
-            get { return false; }
         }
 
         #endregion

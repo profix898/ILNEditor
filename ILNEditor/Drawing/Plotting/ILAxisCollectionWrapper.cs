@@ -23,7 +23,7 @@ namespace ILNEditor.Drawing.Plotting
             zAxis = new ILAxisWrapper(source.ZAxis, editor, FullName);
         }
 
-        #region ILPlotCube
+        #region ILAxisCollection
 
         [Category("Axis")]
         public ILAxisWrapper XAxis

@@ -22,6 +22,8 @@ namespace ILNEditor.Drawing.Plotting
             border = new ILLinesWrapper(source.Border, editor, path, ILMarker.DefaultBorderTag);
         }
 
+        #region ILMarker
+
         [Category("Marker")]
         public int Size
         {
@@ -54,6 +56,8 @@ namespace ILNEditor.Drawing.Plotting
             get { return source.Style; }
             set { source.Style = value; }
         }
+
+        #endregion
 
         #region Nested type: ILMarkerConverter
 

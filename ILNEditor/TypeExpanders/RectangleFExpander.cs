@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 
-namespace ILNEditor.TypeExpander
+namespace ILNEditor.TypeExpanders
 {
     [TypeConverter(typeof(RectangleFExpanderConverter))]
     internal class RectangleFExpander

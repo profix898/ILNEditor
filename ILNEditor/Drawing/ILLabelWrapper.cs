@@ -11,18 +11,14 @@ namespace ILNEditor.Drawing
     {
         private readonly ILLabel source;
 
+        private bool disposed;
+
         public ILLabelWrapper(ILLabel source, ILPanelEditor editor, string path, string name = null)
             : base(source, editor, path, String.IsNullOrEmpty(name) ? "Label" : name)
         {
             this.source = source;
 
-            source.MouseDoubleClick += (sender, args) =>
-            {
-                if (!args.DirectionUp)
-                    return;
-
-                editor.MouseDoubleClickShowEditor(this, args);
-            };
+            this.source.MouseDoubleClick += OnMouseDoubleClick;
         }
 
         #region ILLines
@@ -39,6 +35,28 @@ namespace ILNEditor.Drawing
         {
             get { return source.Font; }
             set { source.Font = value; }
+        }
+
+        #endregion
+
+        private void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
+        {
+            Editor.MouseDoubleClickShowEditor(this, args);
+        }
+
+        #region Overrides of ILWrapperBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                    source.MouseDoubleClick -= OnMouseDoubleClick;
+
+                disposed = true;
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion

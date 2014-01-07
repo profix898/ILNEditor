@@ -28,8 +28,6 @@ namespace ILNEditor.Drawing.Plotting
             ticks = new ILTickCollectionWrapper(source.Ticks, editor, FullName, "TicksCollection");
             gridMajor = new ILLinesWrapper(source.GridMajor, editor, FullName, ILAxis.GridMajorLinesTag);
             gridMinor = new ILLinesWrapper(source.GridMinor, editor, FullName, ILAxis.GridMinorLinesTag);
-
-            source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
         }
 
         #region ILAxis

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Forms;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ILPlotCubeConverter))]
     internal class ILPlotCubeWrapper : ILCameraWrapper
     {
         private readonly ILAxisCollectionWrapper axes;
@@ -14,6 +15,8 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILLinesWrapper lines;
         private readonly ILScaleModesWrapper scaleModes;
         private readonly ILPlotCube source;
+
+        private bool disposed;
 
         public ILPlotCubeWrapper(ILPlotCube source, ILPanelEditor editor, string path, string name = null)
             : base(source, editor, path, String.IsNullOrEmpty(name) ? ILPlotCube.DefaultTag : name)
@@ -26,47 +29,7 @@ namespace ILNEditor.Drawing.Plotting
             limits = new ILLimitsWrapper(source.Limits, Editor, FullName);
             lines = new ILLinesWrapper(source.Lines, Editor, FullName, "CubeLines");
 
-            this.source.MouseClick += PlotCube_MouseClick;
-            this.source.MouseDoubleClick += (sender, args) =>
-            {
-                if (!args.DirectionUp)
-                    return;
-
-                Editor.MouseDoubleClickShowEditor(this, args);
-            };
-        }
-
-        private void PlotCube_MouseClick(object sender, ILMouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Right)
-                return;
-
-            var contextMenu = new ContextMenu();
-            contextMenu.MenuItems.Add("Reset View", (o, args) =>
-            {
-                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
-                Editor.Panel.Refresh();
-            });
-            contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add("X-Y Plane", (o, args) =>
-            {
-                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Identity;
-                Editor.Panel.Refresh();
-            });
-            contextMenu.MenuItems.Add("X-Z Plane", (o, args) =>
-            {
-                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
-                Editor.Panel.Refresh();
-            });
-            contextMenu.MenuItems.Add("Y-Z Plane", (o, args) =>
-            {
-                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
-                Editor.Panel.Refresh();
-            });
-
-            contextMenu.Show(Editor.Panel, e.Location);
-
-            e.Cancel = true;
+            this.source.MouseClick += OnMouseClick;
         }
 
         #region ILPlotCube
@@ -130,11 +93,69 @@ namespace ILNEditor.Drawing.Plotting
             get { return lines; }
         }
 
-        [Category("Appearance")]
-        public Projection Projection
+        #endregion
+
+        private void OnMouseClick(object sender, ILMouseEventArgs e)
         {
-            get { return source.Projection; }
-            set { source.Projection = value; }
+            if (e.Button != MouseButtons.Right)
+                return;
+
+            var contextMenu = new ContextMenu();
+            contextMenu.MenuItems.Add("Reset View", (o, args) =>
+            {
+                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
+                Editor.Panel.Refresh();
+            });
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("X-Y Plane", (o, args) =>
+            {
+                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Identity;
+                Editor.Panel.Refresh();
+            });
+            contextMenu.MenuItems.Add("X-Z Plane", (o, args) =>
+            {
+                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
+                Editor.Panel.Refresh();
+            });
+            contextMenu.MenuItems.Add("Y-Z Plane", (o, args) =>
+            {
+                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
+                Editor.Panel.Refresh();
+            });
+
+            contextMenu.Show(Editor.Panel, e.Location);
+
+            e.Cancel = true;
+        }
+
+        #region Overrides of ILWrapperBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                    source.MouseClick -= OnMouseClick;
+
+                disposed = true;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region Nested type: ILPlotCubeConverter
+
+        private class ILPlotCubeConverter : ExpandableObjectConverter
+        {
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+            {
+                if (destType == typeof(string) && value is ILPlotCubeWrapper)
+                    return ((ILPlotCubeWrapper) value).Name;
+
+                return base.ConvertTo(context, culture, value, destType);
+            }
         }
 
         #endregion

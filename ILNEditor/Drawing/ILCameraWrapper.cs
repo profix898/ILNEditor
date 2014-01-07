@@ -1,21 +1,26 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using ILNEditor.TypeConverters;
-using ILNEditor.TypeExpander;
+using ILNEditor.TypeExpanders;
 using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ILCameraConverter))]
     internal class ILCameraWrapper : ILGroupWrapper
     {
         private readonly ILCamera source;
+
+        private bool disposed;
 
         public ILCameraWrapper(ILCamera source, ILPanelEditor editor, string path, string name = null)
             : base(source, editor, path, String.IsNullOrEmpty(name) ? "Camera" : name)
         {
             // ILCamera needs to be accessed from SceneSyncRoot (instead of Scene)
             this.source = editor.Panel.SceneSyncRoot.FindById<ILCamera>(source.ID);
+
+            this.source.MouseDoubleClick += OnMouseDoubleClick;
         }
 
         #region ILCamera
@@ -90,6 +95,46 @@ namespace ILNEditor.Drawing
         {
             get { return source.FieldOfView; }
             set { source.FieldOfView = value; }
+        }
+
+        #endregion
+
+        private void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
+        {
+            if (!args.DirectionUp || args.ShiftPressed)
+                return;
+
+            Editor.MouseDoubleClickShowEditor(this, args);
+        }
+
+        #region Overrides of ILWrapperBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                    source.MouseDoubleClick -= OnMouseDoubleClick;
+
+                disposed = true;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region Nested type: ILCameraConverter
+
+        private class ILCameraConverter : ExpandableObjectConverter
+        {
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+            {
+                if (destType == typeof(string) && value is ILCameraWrapper)
+                    return ((ILCameraWrapper) value).Name;
+
+                return base.ConvertTo(context, culture, value, destType);
+            }
         }
 
         #endregion

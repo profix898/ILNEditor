@@ -31,10 +31,10 @@
             this.components = new System.ComponentModel.Container();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
-            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.miRemove = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -55,7 +55,7 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.splitContainer.Size = new System.Drawing.Size(684, 411);
+            this.splitContainer.Size = new System.Drawing.Size(684, 511);
             this.splitContainer.SplitterDistance = 200;
             this.splitContainer.TabIndex = 0;
             // 
@@ -67,18 +67,9 @@
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
             this.treeView.PathSeparator = ":";
-            this.treeView.Size = new System.Drawing.Size(200, 411);
+            this.treeView.Size = new System.Drawing.Size(200, 511);
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-            // 
-            // propertyGrid
-            // 
-            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(480, 411);
-            this.propertyGrid.TabIndex = 0;
-            this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
             // contextMenuStrip
             // 
@@ -86,26 +77,35 @@
             this.miAdd,
             this.miRemove});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip.Size = new System.Drawing.Size(118, 48);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
             // miAdd
             // 
             this.miAdd.Name = "miAdd";
-            this.miAdd.Size = new System.Drawing.Size(152, 22);
+            this.miAdd.Size = new System.Drawing.Size(117, 22);
             this.miAdd.Text = "Add";
             // 
             // miRemove
             // 
             this.miRemove.Name = "miRemove";
-            this.miRemove.Size = new System.Drawing.Size(152, 22);
+            this.miRemove.Size = new System.Drawing.Size(117, 22);
             this.miRemove.Text = "Remove";
+            // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.Size = new System.Drawing.Size(480, 511);
+            this.propertyGrid.TabIndex = 0;
+            this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
             // ILPanelEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 411);
+            this.ClientSize = new System.Drawing.Size(684, 511);
             this.Controls.Add(this.splitContainer);
             this.Name = "ILPanelEditorForm";
             this.ShowIcon = false;

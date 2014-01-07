@@ -9,7 +9,7 @@ using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ILLinePlotConverter))]
     internal class ILLinePlotWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper line;
@@ -25,9 +25,9 @@ namespace ILNEditor.Drawing.Plotting
             line = new ILLinesWrapper(source.Line, editor, FullName, ILLinePlot.LineTag);
             marker = new ILMarkerWrapper(source.Marker, editor, FullName, ILLinePlot.MarkerTag);
             positions = new ReadOnlyCollection<float>(source.Positions.ToList());
-
-            source.MouseDoubleClick += (sender, args) => editor.MouseDoubleClickShowEditor(this, args);
         }
+
+        #region ILLinePlot
 
         [Category("Format")]
         public ILLinesWrapper Line
@@ -48,6 +48,8 @@ namespace ILNEditor.Drawing.Plotting
             // TODO: Make this editable
             get { return positions; }
         }
+
+        #endregion
 
         #region Helper
 
@@ -71,6 +73,21 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
+        #region Nested type: ILLinePlotConverter
+
+        private class ILLinePlotConverter : ExpandableObjectConverter
+        {
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+            {
+                if (destType == typeof(string) && value is ILLinePlotWrapper)
+                    return ((ILLinePlotWrapper) value).Name;
+
+                return base.ConvertTo(context, culture, value, destType);
+            }
+        }
+
+        #endregion
+
         #region Nested type: PositionsConverter
 
         private class PositionsConverter : ExpandableObjectConverter
@@ -86,15 +103,6 @@ namespace ILNEditor.Drawing.Plotting
 
                 return base.ConvertTo(context, culture, value, destType);
             }
-        }
-
-        #endregion
-
-        #region Overrides of ILWrapperBase
-
-        internal override bool TraverseChildren
-        {
-            get { return false; }
         }
 
         #endregion

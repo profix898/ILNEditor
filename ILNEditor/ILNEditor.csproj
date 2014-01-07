@@ -58,11 +58,13 @@
     <Compile Include="Drawing\Plotting\ILAxisCollectionWrapper.cs" />
     <Compile Include="Drawing\ILLabelWrapper.cs" />
     <Compile Include="Drawing\ILLimitsWrapper.cs" />
+    <Compile Include="Drawing\Plotting\ILLegendItemWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILLegendWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILLinePlotWrapper.cs" />
     <Compile Include="Drawing\ILLinesWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILSurfaceWrapper.cs" />
     <Compile Include="IILPanelEditor.cs" />
+    <Compile Include="ILNEditorConfig.cs" />
     <Compile Include="Serialization\DictionaryDeserializer.cs" />
     <Compile Include="Serialization\DictionarySerializer.cs" />
     <Compile Include="Serialization\SerializableColor.cs" />
@@ -73,7 +75,8 @@
     <Compile Include="Serialization\SerializerExtensions.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\SerializerIgnoreAttribute.cs" />
-    <Compile Include="TypeExpander\RectangleFExpander.cs" />
+    <Compile Include="TypeExpanders\Matrix4Expander.cs" />
+    <Compile Include="TypeExpanders\RectangleFExpander.cs" />
     <Compile Include="WrapperMap.cs" />
     <Compile Include="Drawing\Plotting\ILAxisWrapper.cs" />
     <Compile Include="Drawing\ILDrawableWrapper.cs" />
