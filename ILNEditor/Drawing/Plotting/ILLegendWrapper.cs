@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -11,16 +11,13 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(ILLegendConverter))]
     internal class ILLegendWrapper : ILScreenObjectWrapper
     {
-        private readonly ReadOnlyCollection<ILLegendItemWrapper> legendItems;
         private readonly ILLegend source;
 
-        public ILLegendWrapper(ILLegend source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? ILLegend.LegendTag : name)
+        public ILLegendWrapper(ILLegend source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, ILLegend.LegendTag),
+                   String.IsNullOrEmpty(label) ? GetLegendLabel(source, editor.Panel) : label)
         {
             this.source = source;
-
-            legendItems =
-                new ReadOnlyCollection<ILLegendItemWrapper>(source.Items.Find<ILLegendItem>().Select(legendItem => new ILLegendItemWrapper(legendItem, editor, FullName)).ToList());
         }
 
         #region ILLegend
@@ -32,39 +29,40 @@ namespace ILNEditor.Drawing.Plotting
             set { source.LegendItemSize = value; }
         }
 
-        [Category("Legend")]
-        public ReadOnlyCollection<ILLegendItemWrapper> LegendItems
-        {
-            get { return legendItems; }
-        }
-
         #endregion
 
         #region Overrides of ILGroupWrapper
 
-        internal override void Traverse()
+        internal override void Traverse(IEnumerable<ILNode> nodes = null)
         {
-            // Background
-            ILTrianglesFan backgroundTriangles = source.Find<ILTrianglesFan>(ILScreenObject.BackgroundTag).FirstOrDefault();
-            if (backgroundTriangles != null)
-                new ILTrianglesWrapper(backgroundTriangles, Editor, FullName, "Background");
+            base.Traverse(null);
 
             // Add a copy of the legend item to the associated plot item
             if (ILNEditorConfig.LegendItemsLinkToOrigin)
             {
-                foreach (ILLegendItemWrapper legendItemWrapper in legendItems)
+                foreach (ILLegendItemWrapper legendItemWrapper in Editor.Wrappers.Where(node => node is ILLegendItemWrapper).ToList())
                 {
                     IILLegendItemDataProvider provider = ((ILLegendItem) legendItemWrapper.Source).GetProvider();
                     if (provider != null)
                     {
                         ILWrapperBase providerWrapper = Editor.FindWrapperById(provider.GetID());
                         if (providerWrapper != null)
-                            new ILLegendItemWrapper((ILLegendItem) legendItemWrapper.Source, Editor, providerWrapper.FullName, legendItemWrapper.Name);
+                            new ILLegendItemWrapper((ILLegendItem) legendItemWrapper.Source, Editor, providerWrapper.Path, legendItemWrapper.Name);
                     }
                 }
             }
+        }
 
-            // Do not traverse children
+        #endregion
+
+        #region Helper
+
+        private static string GetLegendLabel(ILLegend source, ILPanel panel)
+        {
+            if (panel.Scene.Find<ILLegend>().Count() == 1)
+                return ILLegend.LegendTag;
+
+            return BuildDefaultName(panel, source, ILLegend.LegendTag);
         }
 
         #endregion
@@ -76,7 +74,7 @@ namespace ILNEditor.Drawing.Plotting
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
                 if (destType == typeof(string) && value is ILLegendWrapper)
-                    return ((ILLegendWrapper) value).Name;
+                    return ((ILLegendWrapper) value).Label;
 
                 return base.ConvertTo(context, culture, value, destType);
             }

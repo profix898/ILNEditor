@@ -18,6 +18,8 @@ namespace ILNEditor.TypeExpanders
             this.member = member;
         }
 
+        #region Matrix4
+
         [Category("Matrix4")]
         public string M1x
         {
@@ -114,6 +116,29 @@ namespace ILNEditor.TypeExpanders
             }
         }
 
+        [Category("Matrix4")]
+        public Matrix4ExpanderOperations Operations
+        {
+            get { return new Matrix4ExpanderOperations(GetMatrix4, SetMatrix4); }
+        }
+
+        #endregion
+
+        #region Nested type: Matrix4ExpanderConverter
+
+        private class Matrix4ExpanderConverter : ExpandableObjectConverter
+        {
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+            {
+                if (destType == typeof(string) && value is Matrix4Expander)
+                    return "Matrix4";
+
+                return base.ConvertTo(context, culture, value, destType);
+            }
+        }
+
+        #endregion
+
         #region Private
 
         private Matrix4 GetMatrix4()
@@ -136,21 +161,6 @@ namespace ILNEditor.TypeExpanders
             c4 = match.Success ? Single.Parse(match.Groups[4].Value) : 0f;
 
             return match.Success;
-        }
-
-        #endregion
-
-        #region Nested type: Matrix4ExpanderConverter
-
-        private class Matrix4ExpanderConverter : ExpandableObjectConverter
-        {
-            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
-            {
-                if (destType == typeof(string) && value is Matrix4Expander)
-                    return "Matrix4";
-
-                return base.ConvertTo(context, culture, value, destType);
-            }
         }
 
         #endregion

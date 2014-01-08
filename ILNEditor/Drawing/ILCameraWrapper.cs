@@ -14,8 +14,8 @@ namespace ILNEditor.Drawing
 
         private bool disposed;
 
-        public ILCameraWrapper(ILCamera source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Camera" : name)
+        public ILCameraWrapper(ILCamera source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, "Camera"), label)
         {
             // ILCamera needs to be accessed from SceneSyncRoot (instead of Scene)
             this.source = editor.Panel.SceneSyncRoot.FindById<ILCamera>(source.ID);
@@ -131,7 +131,7 @@ namespace ILNEditor.Drawing
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
                 if (destType == typeof(string) && value is ILCameraWrapper)
-                    return ((ILCameraWrapper) value).Name;
+                    return ((ILCameraWrapper) value).Label;
 
                 return base.ConvertTo(context, culture, value, destType);
             }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
@@ -10,24 +12,16 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(ILPlotCubeConverter))]
     internal class ILPlotCubeWrapper : ILCameraWrapper
     {
-        private readonly ILAxisCollectionWrapper axes;
-        private readonly ILLimitsWrapper limits;
-        private readonly ILLinesWrapper lines;
-        private readonly ILScaleModesWrapper scaleModes;
         private readonly ILPlotCube source;
 
         private bool disposed;
 
-        public ILPlotCubeWrapper(ILPlotCube source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? ILPlotCube.DefaultTag : name)
+        public ILPlotCubeWrapper(ILPlotCube source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, ILPlotCube.DefaultTag),
+                   String.IsNullOrEmpty(label) ? GetPlotCubeLabel(source, editor.Panel) : label)
         {
             // ILCamera needs to be accessed from SceneSyncRoot (instead of Scene)
             this.source = editor.Panel.SceneSyncRoot.FindById<ILPlotCube>(source.ID);
-
-            axes = new ILAxisCollectionWrapper(source.Axes, Editor, FullName);
-            scaleModes = new ILScaleModesWrapper(source.ScaleModes, Editor, FullName);
-            limits = new ILLimitsWrapper(source.Limits, Editor, FullName);
-            lines = new ILLinesWrapper(source.Lines, Editor, FullName, "CubeLines");
 
             this.source.MouseClick += OnMouseClick;
         }
@@ -69,29 +63,29 @@ namespace ILNEditor.Drawing.Plotting
             set { source.AutoScaleOnAdd = value; }
         }
 
-        [Category("Format")]
-        public ILAxisCollectionWrapper Axes
-        {
-            get { return axes; }
-        }
+        //[Category("Format")]
+        //public ILAxisCollectionWrapper Axes
+        //{
+        //    get { return axes; }
+        //}
 
-        [Category("Format")]
-        public ILScaleModesWrapper ScaleModes
-        {
-            get { return scaleModes; }
-        }
+        //[Category("Format")]
+        //public ILScaleModesWrapper ScaleModes
+        //{
+        //    get { return scaleModes; }
+        //}
 
-        [Category("Format")]
-        public ILLimitsWrapper Limits
-        {
-            get { return limits; }
-        }
+        //[Category("Format")]
+        //public ILLimitsWrapper Limits
+        //{
+        //    get { return limits; }
+        //}
 
-        [Category("Appearance")]
-        public ILLinesWrapper Lines
-        {
-            get { return lines; }
-        }
+        //[Category("Appearance")]
+        //public ILLinesWrapper Lines
+        //{
+        //    get { return lines; }
+        //}
 
         #endregion
 
@@ -130,6 +124,12 @@ namespace ILNEditor.Drawing.Plotting
 
         #region Overrides of ILWrapperBase
 
+        internal override void Traverse(IEnumerable<ILNode> nodes = null)
+        {
+            base.Traverse((nodes ?? source).Where(node => node is ILPlotCubeScaleGroup)); // ILPlotCubeScaleGroups
+            base.Traverse((nodes ?? source.Children).Except(source.Plots));
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (!disposed)
@@ -145,6 +145,18 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
+        #region Helper
+
+        private static string GetPlotCubeLabel(ILPlotCube source, ILPanel panel)
+        {
+            if (panel.Scene.Find<ILPlotCube>().Count() == 1)
+                return ILPlotCube.DefaultTag;
+
+            return BuildDefaultName(panel, source, ILPlotCube.DefaultTag);
+        }
+
+        #endregion
+
         #region Nested type: ILPlotCubeConverter
 
         private class ILPlotCubeConverter : ExpandableObjectConverter
@@ -152,7 +164,7 @@ namespace ILNEditor.Drawing.Plotting
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
                 if (destType == typeof(string) && value is ILPlotCubeWrapper)
-                    return ((ILPlotCubeWrapper) value).Name;
+                    return ((ILPlotCubeWrapper) value).Label;
 
                 return base.ConvertTo(context, culture, value, destType);
             }

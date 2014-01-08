@@ -10,11 +10,33 @@ namespace ILNEditor.Drawing
     {
         private readonly ILTriangles source;
 
-        public ILTrianglesWrapper(ILTriangles source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Triangles" : name)
+        private bool disposed;
+
+        public ILTrianglesWrapper(ILTriangles source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, "Triangles"), label)
         {
-            this.source = source;
+            // Shape needs to be accessed from SceneSyncRoot (instead of Scene)
+            this.source = editor.Panel.SceneSyncRoot.FindById<ILTriangles>(source.ID);
+
+            this.source.MouseDoubleClick += OnMouseDoubleClick;
         }
+
+        #region Overrides of ILWrapperBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                    source.MouseDoubleClick -= OnMouseDoubleClick;
+
+                disposed = true;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
 
         #region Nested type: ILTrianglesConverter
 
@@ -28,7 +50,7 @@ namespace ILNEditor.Drawing
                     string specularColor = triangles.SpecularColor.IsKnownColor ? triangles.SpecularColor.ToKnownColor().ToString() : triangles.SpecularColor.ToString();
                     string emissionColor = triangles.SpecularColor.IsKnownColor ? triangles.SpecularColor.ToKnownColor().ToString() : triangles.SpecularColor.ToString();
 
-                    return String.Format("{0} ({1}, {2})", triangles.Name, specularColor, emissionColor);
+                    return String.Format("{0} ({1}, {2})", triangles.Label, specularColor, emissionColor);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

@@ -10,8 +10,8 @@ namespace ILNEditor.Drawing
     {
         private readonly ILLimits source;
 
-        public ILLimitsWrapper(ILLimits source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Limits" : name)
+        public ILLimitsWrapper(ILLimits source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Limits" : name, label)
         {
             this.source = source;
         }
@@ -79,8 +79,8 @@ namespace ILNEditor.Drawing
                 {
                     var limits = (ILLimitsWrapper) value;
 
-                    return String.Format("{0} (X:{1:F}/{2:F}, Y:{3:F}/{4:F}, Z:{5:F}/{6:F})", limits.Name, limits.XMin, limits.XMax, limits.YMin, limits.YMax, limits.ZMin,
-                                         limits.ZMax);
+                    return String.Format("{0} (X:{1:F}/{2:F}, Y:{3:F}/{4:F}, Z:{5:F}/{6:F})",
+                                         limits.Label, limits.XMin, limits.XMax, limits.YMin, limits.YMax, limits.ZMin, limits.ZMax);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

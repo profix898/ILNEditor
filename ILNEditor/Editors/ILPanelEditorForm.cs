@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,6 +8,9 @@ namespace ILNEditor.Editors
 {
     public sealed partial class ILPanelEditorForm : Form, IILPanelEditor
     {
+        private const string PathSeparator = @":";
+        private const char PathSeparatorChar = ':';
+
         private readonly ILPanelEditor editor;
 
         public ILPanelEditorForm(ILPanelEditor editor)
@@ -32,25 +34,29 @@ namespace ILNEditor.Editors
 
         public void UpdateNodes()
         {
+            string selectedNode = (treeView.SelectedNode != null) ? GetNodePath(treeView.SelectedNode) : null;
+
             treeView.Nodes.Clear();
-            treeView.PathSeparator = @":";
-            foreach (ILWrapperBase wrapper in editor.Wrappers)
+            treeView.PathSeparator = PathSeparator;
+            foreach (ILWrapperBase wrapper in editor.Wrappers.OrderBy(wrapper => wrapper.Path))
             {
                 TreeNode node = null;
-                foreach (string part in wrapper.FullName.Split(':'))
+                foreach (string part in wrapper.Path.Split(PathSeparatorChar))
                 {
-                    string key = part.Replace(" ", String.Empty); // Remove whitespaces from identifier
                     if (node == null)
-                        node = treeView.Nodes.ContainsKey(key) ? treeView.Nodes[key] : treeView.Nodes.Add(key, part);
+                        node = treeView.Nodes.ContainsKey(part) ? treeView.Nodes[part] : treeView.Nodes.Add(part, wrapper.Label);
                     else
-                        node = node.Nodes.ContainsKey(key) ? node.Nodes[key] : node.Nodes.Add(key, part);
+                        node = node.Nodes.ContainsKey(part) ? node.Nodes[part] : node.Nodes.Add(part, wrapper.Label);
                 }
             }
+
+            if (!String.IsNullOrEmpty(selectedNode))
+                SelectNode(selectedNode);
         }
 
         public void SelectNode(string node)
         {
-            treeView.SelectedNode = FindNodeByFullPath(treeView.Nodes.Cast<TreeNode>(), node);
+            treeView.SelectedNode = FindNodeByPath(node);
             if (treeView.SelectedNode != null)
             {
                 treeView.SelectedNode.Expand();
@@ -60,17 +66,40 @@ namespace ILNEditor.Editors
 
         #endregion
 
-        private TreeNode FindNodeByFullPath(IEnumerable<TreeNode> nodes, string path)
-        {
-            if (nodes == null)
-                return null;
+        #region Helpers
 
-            TreeNode node = nodes.FirstOrDefault(treeNode => path.StartsWith(treeNode.FullPath));
-            if (node != null && node.FullPath != path)
-                node = FindNodeByFullPath(node.Nodes.Cast<TreeNode>(), path);
+        private string GetNodePath(TreeNode node)
+        {
+            var pathParts = new string[node.Level + 1];
+            for (int level = node.Level; level >= 0; level--)
+            {
+                pathParts[level] = node.Name;
+                node = node.Parent;
+            }
+
+            return String.Join(PathSeparator, pathParts);
+        }
+
+        private TreeNode FindNodeByPath(string path)
+        {
+            TreeNode node = null;
+            foreach (string part in path.Split(PathSeparatorChar))
+            {
+                if (node == null)
+                    node = treeView.Nodes.ContainsKey(part) ? treeView.Nodes[part] : null;
+                else
+                    node = node.Nodes.ContainsKey(part) ? node.Nodes[part] : null;
+
+                if (node == null) // Node not found
+                    break;
+            }
 
             return node;
         }
+
+        #endregion
+
+        #region FormInternals
 
         private void EditorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -83,7 +112,8 @@ namespace ILNEditor.Editors
             if (treeView.SelectedNode == null)
                 return;
 
-            propertyGrid.SelectedObject = editor.Wrappers.FirstOrDefault(wrapper => wrapper.FullName == treeView.SelectedNode.FullPath);
+            string selectedPath = GetNodePath(treeView.SelectedNode);
+            propertyGrid.SelectedObject = editor.Wrappers.FirstOrDefault(wrapper => wrapper.Path == selectedPath);
         }
 
         private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
@@ -122,7 +152,7 @@ namespace ILNEditor.Editors
             //        foreach (Type type in editor.WrapperMap.Keys.Where(type => type.GetConstructor(Type.EmptyTypes) != null))
             //        {
             //            Type typeClosure = type;
-            //            ToolStripItem item = miAdd.DropDownItems.Add(type.Name);
+            //            ToolStripItem item = miAdd.DropDownItems.Add(type.WrapperName);
             //            item.Click += (o, args) => AddNode(group, typeClosure);
             //        }
             //    }
@@ -145,5 +175,7 @@ namespace ILNEditor.Editors
         //{
         //    parent.Children.Add((ILNode) Activator.CreateInstance(type));
         //}
+
+        #endregion
     }
 }

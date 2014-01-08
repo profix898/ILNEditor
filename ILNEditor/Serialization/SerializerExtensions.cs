@@ -13,7 +13,7 @@ namespace ILNEditor.Serialization
         public static void Serialize(this ILPanelEditor editor, ISerializer serializer)
         {
             foreach (ILWrapperBase wrapper in editor.Wrappers)
-                SerializeInternal(editor, serializer, wrapper, GetProperties(wrapper), wrapper.FullName);
+                SerializeInternal(editor, serializer, wrapper, GetProperties(wrapper), wrapper.Path);
         }
 
         private static void SerializeInternal(ILPanelEditor editor, ISerializer serializer, object instance, IEnumerable<PropertyInfo> properties, string path)
@@ -43,7 +43,7 @@ namespace ILNEditor.Serialization
         public static void Deserialize(this ILPanelEditor editor, IDeserializer deserializer)
         {
             foreach (ILWrapperBase wrapper in editor.Wrappers)
-                DeserializeInternal(editor, deserializer, wrapper, GetProperties(wrapper), wrapper.FullName);
+                DeserializeInternal(editor, deserializer, wrapper, GetProperties(wrapper), wrapper.Path);
         }
 
         private static void DeserializeInternal(ILPanelEditor editor, IDeserializer deserializer, object instance, IEnumerable<PropertyInfo> properties, string path)

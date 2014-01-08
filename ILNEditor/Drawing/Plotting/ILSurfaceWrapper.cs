@@ -17,13 +17,14 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILSurface source;
         private readonly ILLinesWrapper wireframe;
 
-        public ILSurfaceWrapper(ILSurface source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? GetSurfaceLabelFromLegend(source, editor.Panel) : name)
+        public ILSurfaceWrapper(ILSurface source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, ILLinePlot.LinePlotTag),
+                   String.IsNullOrEmpty(label) ? GetSurfaceLabelFromLegend(source, editor.Panel) : label)
         {
             this.source = editor.Panel.SceneSyncRoot.FindById<ILSurface>(source.ID);
 
-            fill = new ILTrianglesWrapper(source.Fill, editor, FullName, ILSurface.FillTag);
-            wireframe = new ILLinesWrapper(source.Wireframe, editor, FullName, ILSurface.WireframeTag);
+            fill = new ILTrianglesWrapper(source.Fill, editor, Path, ILSurface.FillTag, "Fill");
+            wireframe = new ILLinesWrapper(source.Wireframe, editor, Path, ILSurface.WireframeTag, "Wireframe");
             positions = new ReadOnlyCollection<float>(source.Positions.ToList());
         }
 
@@ -76,29 +77,25 @@ namespace ILNEditor.Drawing.Plotting
 
         private static string GetSurfaceLabelFromLegend(ILSurface source, ILPanel panel)
         {
-            // Find index of ILLinePlot
-            var plotCube = panel.Scene.First<ILPlotCube>();
-            IEnumerable<ILSurface> surfaces = plotCube.Find<ILSurface>();
-            int index = surfaces.TakeWhile(surface => surface != source).Count();
-
+            int index = GetNodeIndex(panel, source);
             var legend = panel.Scene.First<ILLegend>();
             if (legend != null)
             {
                 // Get text from ILLegendItem at the index
                 if (legend.Items.Children.Count() > index)
-                    return String.Format("{0}(\"{1}\")", ILSurface.SurfaceDefaultTag, legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
+                    return String.Format("{0} (\"{1}\")", ILSurface.SurfaceDefaultTag, legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
             }
 
-            return String.Format("{0}#{1}", ILSurface.SurfaceDefaultTag, index + 1);
+            return null;
         }
 
         #endregion
 
         #region Overrides of ILGroupWrapper
 
-        internal override void Traverse()
+        internal override void Traverse(IEnumerable<ILNode> nodes = null)
         {
-            // Do not traverse children
+            base.Traverse((nodes ?? source.Children).Except(new ILNode[] { source.Fill, source.Wireframe }));
         }
 
         #endregion
@@ -110,7 +107,7 @@ namespace ILNEditor.Drawing.Plotting
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
                 if (destType == typeof(string) && value is ILSurfaceWrapper)
-                    return ((ILSurfaceWrapper) value).Name;
+                    return ((ILSurfaceWrapper) value).Label;
 
                 return base.ConvertTo(context, culture, value, destType);
             }

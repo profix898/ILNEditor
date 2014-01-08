@@ -10,8 +10,8 @@ namespace ILNEditor.Drawing
     {
         private readonly ILDrawable source;
 
-        protected ILDrawableWrapper(ILDrawable source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Drawable" : name)
+        protected ILDrawableWrapper(ILDrawable source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Drawable" : name, label)
         {
             this.source = source;
         }

@@ -17,13 +17,14 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ReadOnlyCollection<float> positions;
         private readonly ILLinePlot source;
 
-        public ILLinePlotWrapper(ILLinePlot source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? GetLinePlotLabelFromLegend(source, editor.Panel) : name)
+        public ILLinePlotWrapper(ILLinePlot source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, ILLinePlot.LinePlotTag),
+                   String.IsNullOrEmpty(label) ? GetLinePlotLabelFromLegend(source, editor.Panel) : label)
         {
             this.source = source;
 
-            line = new ILLinesWrapper(source.Line, editor, FullName, ILLinePlot.LineTag);
-            marker = new ILMarkerWrapper(source.Marker, editor, FullName, ILLinePlot.MarkerTag);
+            line = new ILLinesWrapper(source.Line, editor, Path, ILLinePlot.LineTag, "Line");
+            marker = new ILMarkerWrapper(source.Marker, editor, Path, ILLinePlot.MarkerTag, "Marker");
             positions = new ReadOnlyCollection<float>(source.Positions.ToList());
         }
 
@@ -51,24 +52,29 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
+        #region Overrides of ILGroupWrapper
+
+        internal override void Traverse(IEnumerable<ILNode> nodes = null)
+        {
+            base.Traverse((nodes ?? source.Children).Except(new ILNode[] { source.Line, source.Marker }));
+        }
+
+        #endregion
+
         #region Helper
 
         private static string GetLinePlotLabelFromLegend(ILLinePlot source, ILPanel panel)
         {
-            // Find index of ILLinePlot
-            var plotCube = panel.Scene.First<ILPlotCube>();
-            IEnumerable<ILLinePlot> linePlots = plotCube.Find<ILLinePlot>();
-            int index = linePlots.TakeWhile(linePlot => linePlot != source).Count();
-
+            int index = GetNodeIndex(panel, source);
             var legend = panel.Scene.First<ILLegend>();
             if (legend != null)
             {
                 // Get text from ILLegendItem at the index
                 if (legend.Items.Children.Count() > index)
-                    return String.Format("{0}(\"{1}\")", ILLinePlot.LinePlotTag, legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
+                    return String.Format("{0} ('{1}')", ILLinePlot.LinePlotTag, legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
             }
 
-            return String.Format("{0}#{1}", ILLinePlot.LinePlotTag, index + 1);
+            return null;
         }
 
         #endregion
@@ -80,7 +86,7 @@ namespace ILNEditor.Drawing.Plotting
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
                 if (destType == typeof(string) && value is ILLinePlotWrapper)
-                    return ((ILLinePlotWrapper) value).Name;
+                    return ((ILLinePlotWrapper) value).Label;
 
                 return base.ConvertTo(context, culture, value, destType);
             }
