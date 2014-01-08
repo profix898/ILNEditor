@@ -17,7 +17,8 @@ namespace Demo
         {
             RandomLinePlot,
             SincSurface,
-            GreenSphere
+            Points,
+            Gear
         }
 
         #endregion
@@ -32,7 +33,7 @@ namespace Demo
         private void ILPanelForm_Load(object sender, EventArgs e)
         {
             comboBoxDemo.Items.AddRange(Enum.GetNames(typeof(DemoEnum)));
-            comboBoxDemo.SelectedIndex = 1; // Select first demo by default
+            comboBoxDemo.SelectedIndex = (int) DemoEnum.SincSurface;
         }
 
         private void comboBoxDemo_SelectedIndexChanged(object sender, EventArgs e)
@@ -40,9 +41,7 @@ namespace Demo
             if (comboBoxDemo.SelectedIndex == -1)
                 return;
 
-            // Dispose editor and reset scene
-            if (editor != null)
-                editor.Dispose();
+            // Reset scene
             ilPanel.Scene = new ILScene();
 
             // Add and render demo content
@@ -67,9 +66,19 @@ namespace Demo
                     ilPanel.Scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(1f, 0.23f, 1), 0.7f);
                 }
                     break;
-                case DemoEnum.GreenSphere:
+                case DemoEnum.Points:
+                    ilPanel.Scene.Add(new ILPoints
+                    {
+                        Positions = ILMath.tosingle(ILMath.randn(3, 100)),
+                        Color = Color.Green,
+                        Size = 10
+                    });
+                    break;
+                case DemoEnum.Gear:
                 {
-                    ilPanel.Scene.Add(new ILSphere());
+                    ILGear gear = ilPanel.Scene.Add(new ILGear());
+                    gear.Rotate(Vector3.UnitY, -0.2);
+                    gear.Transform = gear.Transform.Scale(0.7, 0.7, 0.7);
                 }
                     break;
                 default:

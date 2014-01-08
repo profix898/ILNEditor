@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using ILNEditor.TypeConverters;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
@@ -18,16 +20,17 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILAxis source;
         private readonly ILTickCollectionWrapper ticks;
 
-        public ILAxisWrapper(ILAxis source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? source.AxisName.ToString() : name)
+        public ILAxisWrapper(ILAxis source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? source.AxisName.ToString().Replace(" ", String.Empty) : name,
+                   String.IsNullOrEmpty(label) ? source.AxisName.ToString() : label)
         {
             this.source = source;
 
-            label = new ILLabelWrapper(source.Label, editor, FullName, ILAxis.LabelTag);
-            scaleLabel = new ILLabelWrapper(source.ScaleLabel, editor, FullName, ILAxis.ScaleLabelTag);
-            ticks = new ILTickCollectionWrapper(source.Ticks, editor, FullName, "TicksCollection");
-            gridMajor = new ILLinesWrapper(source.GridMajor, editor, FullName, ILAxis.GridMajorLinesTag);
-            gridMinor = new ILLinesWrapper(source.GridMinor, editor, FullName, ILAxis.GridMinorLinesTag);
+            this.label = new ILLabelWrapper(source.Label, editor, Path, ILAxis.LabelTag, "AxisLabel");
+            scaleLabel = new ILLabelWrapper(source.ScaleLabel, editor, Path, ILAxis.ScaleLabelTag, "ScaleLabel");
+            ticks = new ILTickCollectionWrapper(source.Ticks, editor, Path, "TicksCollection");
+            gridMajor = new ILLinesWrapper(source.GridMajor, editor, Path, ILAxis.GridMajorLinesTag, "GridMajor");
+            gridMinor = new ILLinesWrapper(source.GridMinor, editor, Path, ILAxis.GridMinorLinesTag, "GridMinor");
         }
 
         #region ILAxis
@@ -129,6 +132,15 @@ namespace ILNEditor.Drawing.Plotting
         public ILLinesWrapper GridMinor
         {
             get { return gridMinor; }
+        }
+
+        #endregion
+
+        #region Overrides of ILGroupWrapper
+
+        internal override void Traverse(IEnumerable<ILNode> nodes = null)
+        {
+            base.Traverse((nodes ?? source.Children).Except(new ILNode[] { source.Label, source.ScaleLabel, source.Ticks, source.GridMajor, source.GridMinor }));
         }
 
         #endregion

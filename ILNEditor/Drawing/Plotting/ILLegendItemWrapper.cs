@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
@@ -11,12 +13,13 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILLabelWrapper label;
         private readonly ILLegendItem source;
 
-        public ILLegendItemWrapper(ILLegendItem source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? GetLegendItemName(source) : name)
+        public ILLegendItemWrapper(ILLegendItem source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, ILLegendItem.LegendItemTag),
+                   String.IsNullOrEmpty(label) ? GetLegendItemLabel(source) : label)
         {
             this.source = source;
 
-            label = new ILLabelWrapper(source.Label, editor, FullName, ILLegendItem.LabelTag);
+            this.label = new ILLabelWrapper(source.Label, editor, Path, ILLegendItem.LabelTag);
         }
 
         #region ILLegendItem
@@ -36,11 +39,20 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
+        #region Overrides of ILGroupWrapper
+
+        internal override void Traverse(IEnumerable<ILNode> nodes = null)
+        {
+            // Do not traverse children
+        }
+
+        #endregion
+
         #region Helper
 
-        private static string GetLegendItemName(ILLegendItem source)
+        private static string GetLegendItemLabel(ILLegendItem source)
         {
-            return String.Format("{0}(\"{1}\")", ILLegendItem.LegendItemTag, source.Text);
+            return String.Format("{0} ('{1}')", ILLegendItem.LegendItemTag, source.Label.Text);
         }
 
         #endregion
@@ -55,7 +67,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var label = (ILLegendItemWrapper) value;
 
-                    return String.Format("{0} ('{1}')", label.Name, label.Text);
+                    return String.Format("{0} ('{1}')", label.Name, label.Label);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

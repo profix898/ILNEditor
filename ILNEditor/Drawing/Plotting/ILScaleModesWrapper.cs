@@ -11,8 +11,8 @@ namespace ILNEditor.Drawing.Plotting
     {
         private readonly ILScaleModes source;
 
-        public ILScaleModesWrapper(ILScaleModes source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "ScaleModes" : name)
+        public ILScaleModesWrapper(ILScaleModes source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "ScaleModes" : name, label)
         {
             this.source = source;
         }
@@ -52,7 +52,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var scaleModes = (ILScaleModesWrapper) value;
 
-                    return String.Format("{0} (X:{1}, Y:{2}, Z:{3})", scaleModes.Name, scaleModes.XAxisScale, scaleModes.YAxisScale, scaleModes.ZAxisScale);
+                    return String.Format("{0} (X:{1}, Y:{2}, Z:{3})", scaleModes.Label, scaleModes.XAxisScale, scaleModes.YAxisScale, scaleModes.ZAxisScale);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

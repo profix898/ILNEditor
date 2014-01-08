@@ -49,8 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawing\ILCameraWrapper.cs" />
+    <Compile Include="Drawing\ILCircleWrapper.cs" />
+    <Compile Include="Drawing\ILConeWrapper.cs" />
+    <Compile Include="Drawing\ILCylinderWrapper.cs" />
+    <Compile Include="Drawing\ILGearWrapper.cs" />
     <Compile Include="Drawing\ILGroupWrapper.cs" />
+    <Compile Include="Drawing\ILPointLightWrapper.cs" />
+    <Compile Include="Drawing\ILPointsWrapper.cs" />
     <Compile Include="Drawing\ILScreenObjectWrapper.cs" />
+    <Compile Include="Drawing\ILSelectionRectangleWrapper.cs" />
     <Compile Include="Drawing\ILShapeWrapper.cs" />
     <Compile Include="Drawing\ILSphereWrapper.cs" />
     <Compile Include="Drawing\ILTrianglesWrapper.cs" />
@@ -62,6 +69,8 @@
     <Compile Include="Drawing\Plotting\ILLegendWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILLinePlotWrapper.cs" />
     <Compile Include="Drawing\ILLinesWrapper.cs" />
+    <Compile Include="Drawing\Plotting\ILPlotCubeDataGroupWrapper.cs" />
+    <Compile Include="Drawing\Plotting\ILPlotCubeScaleGroupWrapper.cs" />
     <Compile Include="Drawing\Plotting\ILSurfaceWrapper.cs" />
     <Compile Include="IILPanelEditor.cs" />
     <Compile Include="ILNEditorConfig.cs" />
@@ -76,6 +85,7 @@
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\SerializerIgnoreAttribute.cs" />
     <Compile Include="TypeExpanders\Matrix4Expander.cs" />
+    <Compile Include="TypeExpanders\Matrix4Operations.cs" />
     <Compile Include="TypeExpanders\RectangleFExpander.cs" />
     <Compile Include="WrapperMap.cs" />
     <Compile Include="Drawing\Plotting\ILAxisWrapper.cs" />

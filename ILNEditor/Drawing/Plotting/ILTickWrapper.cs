@@ -10,12 +10,12 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILLabelWrapper label;
         private readonly ILTick source;
 
-        public ILTickWrapper(ILTick source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Tick" : name)
+        public ILTickWrapper(ILTick source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Tick" : name, label)
         {
             this.source = source;
 
-            label = new ILLabelWrapper(source.Label, editor, path, ILTickCollection.TickLabelTag);
+            this.label = new ILLabelWrapper(source.Label, editor, path, ILTickCollection.TickLabelTag);
         }
 
         #region ILTick
@@ -28,7 +28,7 @@ namespace ILNEditor.Drawing.Plotting
         }
 
         [Category("Format")]
-        public ILLabelWrapper Label
+        public ILLabelWrapper TickLabel
         {
             get { return label; }
         }

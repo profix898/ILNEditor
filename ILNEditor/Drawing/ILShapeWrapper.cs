@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using ILNumerics.Drawing;
@@ -10,8 +9,8 @@ namespace ILNEditor.Drawing
     {
         private readonly ILShape source;
 
-        protected ILShapeWrapper(ILShape source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Shape" : name)
+        protected ILShapeWrapper(ILShape source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, "Shape"), label)
         {
             this.source = source;
         }
@@ -56,5 +55,13 @@ namespace ILNEditor.Drawing
         }
 
         #endregion
+
+        protected void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
+        {
+            if (!args.DirectionUp)
+                return;
+
+            Editor.MouseDoubleClickShowEditor(this, args);
+        }
     }
 }

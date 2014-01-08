@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
@@ -8,8 +7,8 @@ namespace ILNEditor.Drawing
     {
         private readonly ILNode source;
 
-        protected ILNodeWrapper(ILNode source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Node" : name)
+        protected ILNodeWrapper(ILNode source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, "Node"), label)
         {
             this.source = source;
         }

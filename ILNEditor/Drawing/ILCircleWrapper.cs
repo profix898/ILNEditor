@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -7,27 +7,27 @@ using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
-    [TypeConverter(typeof(ILSphereConverter))]
-    internal class ILSphereWrapper : ILGroupWrapper
+    [TypeConverter(typeof(ILCircleConverter))]
+    internal class ILCircleWrapper : ILGroupWrapper
     {
+        private readonly ILLinesWrapper border;
         private readonly ILTrianglesWrapper fill;
-        private readonly ILSphere source;
-        private readonly ILLinesWrapper wireframe;
+        private readonly ILCircle source;
 
         private bool disposed;
 
-        public ILSphereWrapper(ILSphere source, ILPanelEditor editor, string path, string name = null, string label = null)
-            : base(source, editor, path, BuildName(name, editor.Panel, source, ILSphere.DefaultSphereTag), label)
+        public ILCircleWrapper(ILCircle source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, ILCircle.CircleGroupTag), label)
         {
             this.source = source;
 
-            fill = new ILTrianglesWrapper(source.Fill, editor, Path, ILSphere.DefaultFillTag);
-            wireframe = new ILLinesWrapper(source.Wireframe, editor, Path, ILSphere.DefaultWireframeTag);
+            fill = new ILTrianglesWrapper(source.Fill, editor, Path, ILCircle.FillTagDefault);
+            border = new ILLinesWrapper(source.Border, editor, Path, ILCircle.BorderTagDefault);
 
             this.source.MouseDoubleClick += OnMouseDoubleClick;
         }
 
-        #region ILSphere
+        #region ILCircle
 
         [Category("Format")]
         public ILTrianglesWrapper Fill
@@ -36,9 +36,9 @@ namespace ILNEditor.Drawing
         }
 
         [Category("Format")]
-        public ILLinesWrapper Wireframe
+        public ILLinesWrapper Border
         {
-            get { return wireframe; }
+            get { return border; }
         }
 
         #endregion
@@ -52,7 +52,7 @@ namespace ILNEditor.Drawing
 
         internal override void Traverse(IEnumerable<ILNode> nodes = null)
         {
-            base.Traverse((nodes ?? source.Children).Except(new ILNode[] { source.Fill, source.Wireframe }));
+            base.Traverse((nodes ?? source.Children).Except(new ILNode[] { source.Fill, source.Border }));
         }
 
         protected override void Dispose(bool disposing)
@@ -70,14 +70,14 @@ namespace ILNEditor.Drawing
 
         #endregion
 
-        #region Nested type: ILSphereConverter
+        #region Nested type: ILCircleConverter
 
-        private class ILSphereConverter : ExpandableObjectConverter
+        private class ILCircleConverter : ExpandableObjectConverter
         {
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
-                if (destType == typeof(string) && value is ILSphereWrapper)
-                    return ((ILSphereWrapper) value).Label;
+                if (destType == typeof(string) && value is ILCircleWrapper)
+                    return ((ILCircleWrapper) value).Label;
 
                 return base.ConvertTo(context, culture, value, destType);
             }

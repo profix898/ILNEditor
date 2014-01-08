@@ -16,14 +16,14 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILTickCollection source;
         private readonly ReadOnlyCollection<ILTickWrapper> ticks;
 
-        public ILTickCollectionWrapper(ILTickCollection source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Ticks" : name)
+        public ILTickCollectionWrapper(ILTickCollection source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, ILPlotCube.DefaultTag), label)
         {
             // ILTickCollection needs to be accessed from SceneSyncRoot (instead of Scene)
             this.source = editor.Panel.SceneSyncRoot.FindById<ILTickCollection>(source.ID);
 
-            lines = new ILLinesWrapper(this.source.Lines, editor, FullName, ILTickCollection.TickLinesTag);
-            ticks = new ReadOnlyCollection<ILTickWrapper>(((IEnumerable<ILTick>) source).Select(tick => new ILTickWrapper(tick, editor, path)).ToList());
+            lines = new ILLinesWrapper(this.source.Lines, editor, Path, ILTickCollection.TickLinesTag, "TickLines");
+            ticks = new ReadOnlyCollection<ILTickWrapper>(((IEnumerable<ILTick>) source).Select(tick => new ILTickWrapper(tick, editor, Path)).ToList());
         }
 
         #region ILTickCollection
@@ -85,7 +85,7 @@ namespace ILNEditor.Drawing.Plotting
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
             {
                 if (destType == typeof(string) && value is ILTickCollectionWrapper)
-                    return ((ILTickCollectionWrapper) value).Name;
+                    return ((ILTickCollectionWrapper) value).Label;
 
                 return base.ConvertTo(context, culture, value, destType);
             }

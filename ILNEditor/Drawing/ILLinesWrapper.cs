@@ -7,16 +7,17 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILLinesConverter))]
-    internal class ILLinesWrapper : ILDrawableWrapper
+    internal class ILLinesWrapper : ILShapeWrapper
     {
         private readonly ILLines source;
 
         private bool disposed;
 
-        public ILLinesWrapper(ILLines source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Lines" : name)
+        public ILLinesWrapper(ILLines source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Lines" : name, label)
         {
-            this.source = source;
+            // Shape needs to be accessed from SceneSyncRoot (instead of Scene)
+            this.source = editor.Panel.SceneSyncRoot.FindById<ILLines>(source.ID);
 
             this.source.MouseDoubleClick += OnMouseDoubleClick;
         }
@@ -61,14 +62,6 @@ namespace ILNEditor.Drawing
 
         #endregion
 
-        private void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
-        {
-            if (!args.DirectionUp)
-                return;
-
-            Editor.MouseDoubleClickShowEditor(this, args);
-        }
-
         #region Overrides of ILWrapperBase
 
         protected override void Dispose(bool disposing)
@@ -97,7 +90,7 @@ namespace ILNEditor.Drawing
                     var lines = (ILLinesWrapper) value;
                     string color = lines.Color.HasValue ? (lines.Color.Value.IsKnownColor ? lines.Color.Value.ToKnownColor().ToString() : lines.Color.Value.ToString()) : "";
 
-                    return String.Format("{0} ({1}, {2}, {3})", lines.Name, color, lines.DashStyle, lines.Width);
+                    return String.Format("{0} ({1}, {2}, {3})", lines.Label, color, lines.DashStyle, lines.Width);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

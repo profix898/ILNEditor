@@ -8,20 +8,21 @@ using ILNumerics.Drawing;
 
 namespace ILNEditor
 {
-    public sealed class ILPanelEditor : IDisposable
+    public class ILPanelEditor : ILGroup
     {
+        private readonly IILPanelEditor editor;
         private readonly ILPanel ilPanel;
-        private bool disposed;
-        private IILPanelEditor editor;
 
-        private WrapperMap wrapperMap = new WrapperMap();
-        private List<ILWrapperBase> wrappers = new List<ILWrapperBase>();
+        private readonly WrapperMap wrapperMap = new WrapperMap();
+        private readonly List<ILWrapperBase> wrappers = new List<ILWrapperBase>();
 
-        public ILPanelEditor(ILPanel ilPanel, IILPanelEditor editor = null)
+        private ILPanelEditor(ILPanel ilPanel, IILPanelEditor editor = null)
         {
             this.ilPanel = ilPanel;
             this.editor = editor ?? new ILPanelEditorForm(this);
             this.editor.PropertyChanged += (o, args) => ilPanel.Refresh();
+
+            ilPanel.Scene.Add(this);
         }
 
         public WrapperMap WrapperMap
@@ -30,7 +31,7 @@ namespace ILNEditor
             get { return wrapperMap; }
         }
 
-        public void Update()
+        public void Refresh()
         {
             DisposeWrappers();
 
@@ -39,6 +40,27 @@ namespace ILNEditor
 
             editor.UpdateNodes();
         }
+
+        public override void Dispose()
+        {
+            editor.Hide();
+            editor.Dispose();
+
+            DisposeWrappers();
+
+            base.Dispose();
+        }
+
+        #region Private
+
+        private void DisposeWrappers()
+        {
+            // Dispose wrappers (unsubscribing events)
+            foreach (ILWrapperBase wrapper in wrappers.ToList())
+                wrapper.Dispose();
+        }
+
+        #endregion
 
         #region Internals
 
@@ -83,7 +105,7 @@ namespace ILNEditor
             if (item == null)
                 return;
 
-            ShowEditor(((ILWrapperBase) item).FullName);
+            ShowEditor(((ILWrapperBase)item).Path);
             args.Cancel = true;
         }
 
@@ -100,60 +122,14 @@ namespace ILNEditor
 
         #endregion
 
-        #region Private
-
-        private void DisposeWrappers()
-        {
-            // Dispose wrappers (unsubscribing events)
-            foreach (ILWrapperBase wrapper in wrappers.ToList())
-                wrapper.Dispose();
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    editor.Hide();
-                    editor.Dispose();
-
-                    DisposeWrappers();
-                }
-
-                editor = null;
-                wrapperMap = null;
-                wrappers = null;
-            }
-
-            disposed = true;
-        }
-
-        ~ILPanelEditor()
-        {
-            Dispose(false);
-        }
-
-        #endregion
-
         #region Static
 
-        public static ILPanelEditor AttachTo(ILPanel ilPanel)
+        public static ILPanelEditor AttachTo(ILPanel ilPanel, IILPanelEditor editor = null)
         {
-            var editor = new ILPanelEditor(ilPanel);
-            editor.Update();
+            var editorInstance = new ILPanelEditor(ilPanel, editor);
+            editorInstance.Refresh();
 
-            return editor;
-        }
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return editorInstance;
         }
 
         #endregion

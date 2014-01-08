@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
 
@@ -13,13 +15,13 @@ namespace ILNEditor.Drawing.Plotting
         private readonly ILTrianglesWrapper fill;
         private readonly ILMarker source;
 
-        public ILMarkerWrapper(ILMarker source, ILPanelEditor editor, string path, string name = null)
-            : base(source, editor, path, String.IsNullOrEmpty(name) ? "Marker" : name)
+        public ILMarkerWrapper(ILMarker source, ILPanelEditor editor, string path, string name = null, string label = null)
+            : base(source, editor, path, BuildName(name, editor.Panel, source, "Marker"), label)
         {
             this.source = source;
 
-            fill = new ILTrianglesWrapper(source.Fill, editor, FullName, ILMarker.DefaultFillTag);
-            border = new ILLinesWrapper(source.Border, editor, path, ILMarker.DefaultBorderTag);
+            fill = new ILTrianglesWrapper(source.Fill, editor, Path, ILMarker.DefaultFillTag, "Fill");
+            border = new ILLinesWrapper(source.Border, editor, Path, ILMarker.DefaultBorderTag, "Border");
         }
 
         #region ILMarker
@@ -59,6 +61,15 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
+        #region Overrides of ILGroupWrapper
+
+        internal override void Traverse(IEnumerable<ILNode> nodes = null)
+        {
+            base.Traverse((nodes ?? source.Children).Except(new ILNode[] { source.Fill, source.Border }));
+        }
+
+        #endregion
+
         #region Nested type: ILMarkerConverter
 
         private class ILMarkerConverter : ExpandableObjectConverter
@@ -69,7 +80,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var marker = (ILMarkerWrapper) value;
 
-                    return String.Format("{0} ({1}, {2})", marker.Name, marker.Style, marker.Size);
+                    return String.Format("{0} ({1}, {2})", marker.Label, marker.Style, marker.Size);
                 }
 
                 return base.ConvertTo(context, culture, value, destType);
