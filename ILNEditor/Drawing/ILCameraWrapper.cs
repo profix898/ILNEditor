@@ -8,7 +8,7 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILCameraConverter))]
-    internal class ILCameraWrapper : ILGroupWrapper
+    public class ILCameraWrapper : ILGroupWrapper
     {
         private readonly ILCamera source;
 
@@ -104,7 +104,7 @@ namespace ILNEditor.Drawing
             if (!args.DirectionUp || args.ShiftPressed)
                 return;
 
-            Editor.MouseDoubleClickShowEditor(this, args);
+            MouseDoubleClickShowEditor(this, args);
         }
 
         #region Overrides of ILWrapperBase

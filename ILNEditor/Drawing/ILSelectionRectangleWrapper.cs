@@ -7,7 +7,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    internal class ILSelectionRectangleWrapper : ILGroupWrapper
+    public class ILSelectionRectangleWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper lines;
         private readonly ILSelectionRectangle source;

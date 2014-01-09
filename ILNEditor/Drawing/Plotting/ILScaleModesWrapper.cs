@@ -7,7 +7,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILScaleModesConverter))]
-    internal class ILScaleModesWrapper : ILWrapperBase
+    public class ILScaleModesWrapper : ILWrapperBase
     {
         private readonly ILScaleModes source;
 

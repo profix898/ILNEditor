@@ -6,7 +6,7 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILLimitsConverter))]
-    internal class ILLimitsWrapper : ILWrapperBase
+    public class ILLimitsWrapper : ILWrapperBase
     {
         private readonly ILLimits source;
 

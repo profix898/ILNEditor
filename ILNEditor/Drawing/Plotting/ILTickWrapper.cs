@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    internal class ILTickWrapper : ILWrapperBase
+    public class ILTickWrapper : ILWrapperBase
     {
         private readonly ILLabelWrapper label;
         private readonly ILTick source;

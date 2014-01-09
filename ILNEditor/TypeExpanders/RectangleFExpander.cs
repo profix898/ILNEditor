@@ -6,7 +6,7 @@ using System.Globalization;
 namespace ILNEditor.TypeExpanders
 {
     [TypeConverter(typeof(RectangleFExpanderConverter))]
-    internal class RectangleFExpander
+    public class RectangleFExpander
     {
         private readonly string member;
         private readonly object parent;

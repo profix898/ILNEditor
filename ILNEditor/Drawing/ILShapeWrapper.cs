@@ -5,14 +5,21 @@ using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
-    internal abstract class ILShapeWrapper : ILDrawableWrapper
+    public abstract class ILShapeWrapper : ILDrawableWrapper
     {
         private readonly ILShape source;
+        private readonly ILShape sourceSync;
+
+        private bool disposed;
 
         protected ILShapeWrapper(ILShape source, ILPanelEditor editor, string path, string name = null, string label = null)
             : base(source, editor, path, BuildName(name, editor.Panel, source, "Shape"), label)
         {
             this.source = source;
+
+            // Subscribe mouse events on SceneSyncRoot (instead of Scene)
+            sourceSync = editor.Panel.SceneSyncRoot.FindById<ILShape>(source.ID);
+            sourceSync.MouseDoubleClick += OnMouseDoubleClick;
         }
 
         #region ILShape
@@ -56,12 +63,29 @@ namespace ILNEditor.Drawing
 
         #endregion
 
-        protected void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
+        private void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
         {
             if (!args.DirectionUp)
                 return;
 
-            Editor.MouseDoubleClickShowEditor(this, args);
+            MouseDoubleClickShowEditor(this, args);
         }
+
+        #region Overrides of ILWrapperBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                    sourceSync.MouseDoubleClick -= OnMouseDoubleClick;
+
+                disposed = true;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
     }
 }

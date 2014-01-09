@@ -7,7 +7,7 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    internal class ILPointLightWrapper : ILNodeWrapper
+    public class ILPointLightWrapper : ILNodeWrapper
     {
         private readonly ILPointLight source;
 

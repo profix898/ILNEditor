@@ -6,7 +6,7 @@ using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
-    internal abstract class ILDrawableWrapper : ILNodeWrapper
+    public abstract class ILDrawableWrapper : ILNodeWrapper
     {
         private readonly ILDrawable source;
 

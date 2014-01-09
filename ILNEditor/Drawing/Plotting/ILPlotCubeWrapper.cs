@@ -10,7 +10,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILPlotCubeConverter))]
-    internal class ILPlotCubeWrapper : ILCameraWrapper
+    public class ILPlotCubeWrapper : ILCameraWrapper
     {
         private readonly ILPlotCube source;
 
@@ -97,27 +97,27 @@ namespace ILNEditor.Drawing.Plotting
             var contextMenu = new ContextMenu();
             contextMenu.MenuItems.Add("Reset View", (o, args) =>
             {
-                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
-                Editor.Panel.Refresh();
+                Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
+                Panel.Refresh();
             });
             contextMenu.MenuItems.Add("-");
             contextMenu.MenuItems.Add("X-Y Plane", (o, args) =>
             {
-                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Identity;
-                Editor.Panel.Refresh();
+                Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Identity;
+                Panel.Refresh();
             });
             contextMenu.MenuItems.Add("X-Z Plane", (o, args) =>
             {
-                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
-                Editor.Panel.Refresh();
+                Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
+                Panel.Refresh();
             });
             contextMenu.MenuItems.Add("Y-Z Plane", (o, args) =>
             {
-                Editor.Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
-                Editor.Panel.Refresh();
+                Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
+                Panel.Refresh();
             });
 
-            contextMenu.Show(Editor.Panel, e.Location);
+            contextMenu.Show(Panel, e.Location);
 
             e.Cancel = true;
         }

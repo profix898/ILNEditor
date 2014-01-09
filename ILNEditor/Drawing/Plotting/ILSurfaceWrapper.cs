@@ -10,7 +10,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILSurfaceConverter))]
-    internal class ILSurfaceWrapper : ILGroupWrapper
+    public class ILSurfaceWrapper : ILGroupWrapper
     {
         private readonly ILTrianglesWrapper fill;
         private readonly ReadOnlyCollection<float> positions;

@@ -6,19 +6,14 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILPointsConverter))]
-    internal class ILPointsWrapper : ILShapeWrapper
+    public class ILPointsWrapper : ILShapeWrapper
     {
         private readonly ILPoints source;
-
-        private bool disposed;
 
         public ILPointsWrapper(ILPoints source, ILPanelEditor editor, string path, string name = null, string label = null)
             : base(source, editor, path, BuildName(name, editor.Panel, source, "Points"), label)
         {
-            // Shape needs to be accessed from SceneSyncRoot (instead of Scene)
-            this.source = editor.Panel.SceneSyncRoot.FindById<ILPoints>(source.ID);
-
-            this.source.MouseDoubleClick += OnMouseDoubleClick;
+            this.source = source;
         }
 
         #region ILPoints
@@ -28,23 +23,6 @@ namespace ILNEditor.Drawing
         {
             get { return source.Size; }
             set { source.Size = value; }
-        }
-
-        #endregion
-
-        #region Overrides of ILWrapperBase
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                    source.MouseDoubleClick -= OnMouseDoubleClick;
-
-                disposed = true;
-            }
-
-            base.Dispose(disposing);
         }
 
         #endregion

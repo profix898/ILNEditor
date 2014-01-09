@@ -8,7 +8,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILPlotCubeDataGroupConverter))]
-    internal class ILPlotCubeDataGroupWrapper : ILGroupWrapper
+    public class ILPlotCubeDataGroupWrapper : ILGroupWrapper
     {
         private readonly ILLimitsWrapper limits;
         private readonly ILScaleModesWrapper scaleModes;
@@ -20,8 +20,8 @@ namespace ILNEditor.Drawing.Plotting
         {
             this.source = source;
 
-            scaleModes = new ILScaleModesWrapper(source.ScaleModes, Editor, Path);
-            limits = new ILLimitsWrapper(source.Limits, Editor, Path);
+            scaleModes = new ILScaleModesWrapper(source.ScaleModes, editor, Path);
+            limits = new ILLimitsWrapper(source.Limits, editor, Path);
         }
 
         #region ILPlotCubeDataGroup

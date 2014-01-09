@@ -3,7 +3,7 @@ using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
 {
-    internal abstract class ILNodeWrapper : ILWrapperBase
+    public abstract class ILNodeWrapper : ILWrapperBase
     {
         private readonly ILNode source;
 

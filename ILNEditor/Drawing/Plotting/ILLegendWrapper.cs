@@ -9,7 +9,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILLegendConverter))]
-    internal class ILLegendWrapper : ILScreenObjectWrapper
+    public class ILLegendWrapper : ILScreenObjectWrapper
     {
         private readonly ILLegend source;
 
@@ -40,12 +40,13 @@ namespace ILNEditor.Drawing.Plotting
             // Add a copy of the legend item to the associated plot item
             if (ILNEditorConfig.LegendItemsLinkToOrigin)
             {
-                foreach (ILLegendItemWrapper legendItemWrapper in Editor.Wrappers.Where(node => node is ILLegendItemWrapper).ToList())
+                // ReSharper disable once PossibleInvalidCastExceptionInForeachLoop
+                foreach (ILLegendItemWrapper legendItemWrapper in Wrappers.Where(node => node is ILLegendItemWrapper).ToList())
                 {
                     IILLegendItemDataProvider provider = ((ILLegendItem) legendItemWrapper.Source).GetProvider();
                     if (provider != null)
                     {
-                        ILWrapperBase providerWrapper = Editor.FindWrapperById(provider.GetID());
+                        ILWrapperBase providerWrapper = FindWrapperById(provider.GetID());
                         if (providerWrapper != null)
                             new ILLegendItemWrapper((ILLegendItem) legendItemWrapper.Source, Editor, providerWrapper.Path, legendItemWrapper.Name);
                     }

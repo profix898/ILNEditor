@@ -8,7 +8,7 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILGroupConverter))]
-    internal class ILGroupWrapper : ILNodeWrapper
+    public class ILGroupWrapper : ILNodeWrapper
     {
         private readonly ILGroup source;
 
@@ -48,15 +48,15 @@ namespace ILNEditor.Drawing
                 if (childGroup != null && node is ILPanelEditor)
                     return;
 
-                if (Editor.WrapperMap.ContainsKey(nodeType)) // NodeType is mapped
+                if (WrapperMap.ContainsKey(nodeType)) // NodeType is mapped
                 {
-                    var wrapper = (ILWrapperBase) Activator.CreateInstance(Editor.WrapperMap[nodeType], node, Editor, Path, null, null);
+                    var wrapper = (ILWrapperBase) Activator.CreateInstance(WrapperMap[nodeType], node, Editor, Path, null, null);
                     if (childGroup != null && childGroup.Children.Count > 0)
                         wrapper.Traverse();
                 }
-                else if (nodeType.BaseType != null && nodeType.BaseType != typeof(object) && Editor.WrapperMap.ContainsKey(nodeType.BaseType)) // Only BaseType is mapped
+                else if (nodeType.BaseType != null && nodeType.BaseType != typeof(object) && WrapperMap.ContainsKey(nodeType.BaseType)) // Only BaseType is mapped
                 {
-                    var wrapper = (ILWrapperBase) Activator.CreateInstance(Editor.WrapperMap[nodeType.BaseType], node, Editor, Path, nodeType.Name, null);
+                    var wrapper = (ILWrapperBase) Activator.CreateInstance(WrapperMap[nodeType.BaseType], node, Editor, Path, nodeType.Name, null);
                     if (childGroup != null && childGroup.Children.Count > 0)
                         wrapper.Traverse();
                 }

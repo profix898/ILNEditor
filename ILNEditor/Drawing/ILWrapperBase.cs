@@ -29,17 +29,61 @@ namespace ILNEditor.Drawing
             editor.Wrappers.Add(this);
         }
 
-        [Browsable(false)]
-        public object Source
-        {
-            [DebuggerStepThrough]
-            get { return source; }
-        }
+        #region Editor
 
         protected ILPanelEditor Editor
         {
             [DebuggerStepThrough]
             get { return editor; }
+        }
+
+        protected ILPanel Panel
+        {
+            [DebuggerStepThrough]
+            get { return editor.Panel; }
+        }
+
+        protected List<ILWrapperBase> Wrappers
+        {
+            [DebuggerStepThrough]
+            get { return editor.Wrappers; }
+        }
+
+        protected WrapperMap WrapperMap
+        {
+            [DebuggerStepThrough]
+            get { return editor.WrapperMap; }
+        }
+
+        protected ILWrapperBase FindWrapper(object item)
+        {
+            return editor.FindWrapper(item);
+        }
+
+        protected ILWrapperBase FindWrapperById(int id)
+        {
+            return editor.FindWrapperById(id);
+        }
+
+        protected void MouseDoubleClickShowEditor(object sender, ILMouseEventArgs args)
+        {
+            editor.MouseDoubleClickShowEditor(sender, args);
+        }
+
+        protected void ShowEditor(string node = null)
+        {
+            editor.ShowEditor(node);
+        }
+
+        #endregion
+
+        #region Wrapper
+
+        [Browsable(false)]
+        public object Source
+        {
+            [DebuggerStepThrough]
+            get { return source; }
         }
 
         [Browsable(false)]
@@ -67,7 +111,9 @@ namespace ILNEditor.Drawing
         {
         }
 
-        #region Helper
+        #endregion
+
+        #region Helpers
 
         protected static string BuildName<T>(string name, ILPanel panel, T node, string defaultName) where T : ILNode
         {

@@ -10,7 +10,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILTickCollectionConverter))]
-    internal class ILTickCollectionWrapper : ILGroupWrapper
+    public class ILTickCollectionWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper lines;
         private readonly ILTickCollection source;

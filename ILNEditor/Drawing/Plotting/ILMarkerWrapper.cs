@@ -9,7 +9,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILMarkerConverter))]
-    internal class ILMarkerWrapper : ILGroupWrapper
+    public class ILMarkerWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper border;
         private readonly ILTrianglesWrapper fill;

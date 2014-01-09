@@ -8,7 +8,7 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    internal class ILScreenObjectWrapper : ILGroupWrapper
+    public class ILScreenObjectWrapper : ILGroupWrapper
     {
         private readonly ILTrianglesWrapper background;
         private readonly ILLinesWrapper border;
