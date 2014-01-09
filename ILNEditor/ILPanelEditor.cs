@@ -35,7 +35,7 @@ namespace ILNEditor
             get { return wrapperMap; }
         }
 
-        public void Refresh()
+        public void Update()
         {
             DisposeWrappers();
 
@@ -131,7 +131,7 @@ namespace ILNEditor
         public static ILPanelEditor AttachTo(ILPanel ilPanel, IILPanelEditor editor = null)
         {
             var editorInstance = new ILPanelEditor(ilPanel, editor);
-            editorInstance.Refresh();
+            editorInstance.Update();
 
             return editorInstance;
         }
