@@ -26,6 +26,13 @@ namespace ILNEditor.Drawing
             get { return new Matrix4Expander(source, "Transform"); }
         }
 
+        [Browsable(false)]
+        public Matrix4 TransformMatrix
+        {
+            get { return source.Transform; }
+            set { source.Transform = value; }
+        }
+
         [Category("Format")]
         public float? Alpha
         {

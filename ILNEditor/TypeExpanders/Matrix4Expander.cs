@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using ILNEditor.Serialization;
 using ILNumerics.Drawing;
 
 namespace ILNEditor.TypeExpanders
@@ -116,6 +117,7 @@ namespace ILNEditor.TypeExpanders
             }
         }
 
+        [SerializerIgnore]
         [Category("Matrix4")]
         public Matrix4ExpanderOperations Operations
         {

@@ -44,6 +44,11 @@ namespace ILNEditor.Serialization
         {
             foreach (ILWrapperBase wrapper in editor.Wrappers)
                 DeserializeInternal(editor, deserializer, wrapper, GetProperties(wrapper), wrapper.Path);
+
+            editor.Panel.Configure();
+            editor.Update();
+
+            editor.Panel.Refresh();
         }
 
         private static void DeserializeInternal(ILPanelEditor editor, IDeserializer deserializer, object instance, IEnumerable<PropertyInfo> properties, string path)
