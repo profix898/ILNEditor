@@ -6,37 +6,15 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILTrianglesConverter))]
-    internal class ILTrianglesWrapper : ILShapeWrapper
+    public class ILTrianglesWrapper : ILShapeWrapper
     {
         private readonly ILTriangles source;
-
-        private bool disposed;
 
         public ILTrianglesWrapper(ILTriangles source, ILPanelEditor editor, string path, string name = null, string label = null)
             : base(source, editor, path, BuildName(name, editor.Panel, source, "Triangles"), label)
         {
-            // Shape needs to be accessed from SceneSyncRoot (instead of Scene)
-            this.source = editor.Panel.SceneSyncRoot.FindById<ILTriangles>(source.ID);
-
-            this.source.MouseDoubleClick += OnMouseDoubleClick;
+            this.source = source;
         }
-
-        #region Overrides of ILWrapperBase
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                    source.MouseDoubleClick -= OnMouseDoubleClick;
-
-                disposed = true;
-            }
-
-            base.Dispose(disposing);
-        }
-
-        #endregion
 
         #region Nested type: ILTrianglesConverter
 

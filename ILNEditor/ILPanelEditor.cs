@@ -20,7 +20,11 @@ namespace ILNEditor
         {
             this.ilPanel = ilPanel;
             this.editor = editor ?? new ILPanelEditorForm(this);
-            this.editor.PropertyChanged += (o, args) => ilPanel.Refresh();
+            this.editor.PropertyChanged += (o, args) =>
+            {
+                ilPanel.Configure();
+                ilPanel.Refresh();
+            };
 
             ilPanel.Scene.Add(this);
         }
@@ -105,7 +109,7 @@ namespace ILNEditor
             if (item == null)
                 return;
 
-            ShowEditor(((ILWrapperBase)item).Path);
+            ShowEditor(((ILWrapperBase) item).Path);
             args.Cancel = true;
         }
 

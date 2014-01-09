@@ -7,19 +7,14 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILLinesConverter))]
-    internal class ILLinesWrapper : ILShapeWrapper
+    public class ILLinesWrapper : ILShapeWrapper
     {
         private readonly ILLines source;
-
-        private bool disposed;
 
         public ILLinesWrapper(ILLines source, ILPanelEditor editor, string path, string name = null, string label = null)
             : base(source, editor, path, String.IsNullOrEmpty(name) ? "Lines" : name, label)
         {
-            // Shape needs to be accessed from SceneSyncRoot (instead of Scene)
-            this.source = editor.Panel.SceneSyncRoot.FindById<ILLines>(source.ID);
-
-            this.source.MouseDoubleClick += OnMouseDoubleClick;
+            this.source = source;
         }
 
         #region ILLines
@@ -58,23 +53,6 @@ namespace ILNEditor.Drawing
         {
             get { return source.Antialiasing; }
             set { source.Antialiasing = value; }
-        }
-
-        #endregion
-
-        #region Overrides of ILWrapperBase
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                    source.MouseDoubleClick -= OnMouseDoubleClick;
-
-                disposed = true;
-            }
-
-            base.Dispose(disposing);
         }
 
         #endregion

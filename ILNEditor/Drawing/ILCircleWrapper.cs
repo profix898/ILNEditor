@@ -8,7 +8,7 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILCircleConverter))]
-    internal class ILCircleWrapper : ILGroupWrapper
+    public class ILCircleWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper border;
         private readonly ILTrianglesWrapper fill;
@@ -45,7 +45,7 @@ namespace ILNEditor.Drawing
 
         private void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
         {
-            Editor.MouseDoubleClickShowEditor(this, args);
+            MouseDoubleClickShowEditor(this, args);
         }
 
         #region Overrides of ILWrapperBase

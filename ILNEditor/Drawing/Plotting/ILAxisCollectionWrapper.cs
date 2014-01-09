@@ -6,7 +6,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILAxisCollectionConverter))]
-    internal class ILAxisCollectionWrapper : ILGroupWrapper
+    public class ILAxisCollectionWrapper : ILGroupWrapper
     {
         private readonly ILAxisCollection source;
         private readonly ILAxisWrapper xAxis;

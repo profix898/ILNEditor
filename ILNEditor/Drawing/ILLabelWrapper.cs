@@ -7,7 +7,7 @@ using ILNumerics.Drawing;
 namespace ILNEditor.Drawing
 {
     [TypeConverter(typeof(ILLabelConverter))]
-    internal class ILLabelWrapper : ILDrawableWrapper
+    public class ILLabelWrapper : ILDrawableWrapper
     {
         private readonly ILLabel source;
 
@@ -42,7 +42,7 @@ namespace ILNEditor.Drawing
 
         private void OnMouseDoubleClick(object sender, ILMouseEventArgs args)
         {
-            Editor.MouseDoubleClickShowEditor(this, args);
+            MouseDoubleClickShowEditor(this, args);
         }
 
         #region Helper

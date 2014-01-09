@@ -11,7 +11,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILAxisConverter))]
-    internal class ILAxisWrapper : ILGroupWrapper
+    public class ILAxisWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper gridMajor;
         private readonly ILLinesWrapper gridMinor;

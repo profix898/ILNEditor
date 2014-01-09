@@ -9,7 +9,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILPlotCubeScaleGroupConverter))]
-    internal class ILPlotCubeScaleGroupWrapper : ILGroupWrapper
+    public class ILPlotCubeScaleGroupWrapper : ILGroupWrapper
     {
         private readonly ILAxisCollectionWrapper axes;
         private readonly ILLinesWrapper lines;
@@ -21,8 +21,8 @@ namespace ILNEditor.Drawing.Plotting
         {
             this.source = source;
 
-            axes = new ILAxisCollectionWrapper(source.First<ILAxisCollection>(ILPlotCubeScaleGroup.AxesTag), Editor, Path, ILPlotCubeScaleGroup.AxesTag);
-            lines = new ILLinesWrapper(source.First<ILLines>(ILPlotCubeScaleGroup.LinesTag), Editor, Path, ILPlotCubeScaleGroup.LinesTag);
+            axes = new ILAxisCollectionWrapper(source.First<ILAxisCollection>(ILPlotCubeScaleGroup.AxesTag), editor, Path, ILPlotCubeScaleGroup.AxesTag);
+            lines = new ILLinesWrapper(source.First<ILLines>(ILPlotCubeScaleGroup.LinesTag), editor, Path, ILPlotCubeScaleGroup.LinesTag);
         }
 
         #region ILPlotCubeScaleGroup

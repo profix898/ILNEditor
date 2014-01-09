@@ -7,7 +7,7 @@ using ILNumerics.Drawing;
 namespace ILNEditor.TypeExpanders
 {
     [TypeConverter(typeof(Matrix4ExpanderConverter))]
-    internal class Matrix4Expander
+    public class Matrix4Expander
     {
         private readonly string member;
         private readonly object parent;

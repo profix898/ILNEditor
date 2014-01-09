@@ -8,7 +8,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILLegendItemConverter))]
-    internal class ILLegendItemWrapper : ILGroupWrapper
+    public class ILLegendItemWrapper : ILGroupWrapper
     {
         private readonly ILLabelWrapper label;
         private readonly ILLegendItem source;

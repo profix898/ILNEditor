@@ -10,7 +10,7 @@ using ILNumerics.Drawing.Plotting;
 namespace ILNEditor.Drawing.Plotting
 {
     [TypeConverter(typeof(ILLinePlotConverter))]
-    internal class ILLinePlotWrapper : ILGroupWrapper
+    public class ILLinePlotWrapper : ILGroupWrapper
     {
         private readonly ILLinesWrapper line;
         private readonly ILMarkerWrapper marker;
