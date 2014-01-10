@@ -18,7 +18,7 @@ namespace ILNEditor.Drawing
             this.source = source;
 
             // Subscribe mouse events on SceneSyncRoot (instead of Scene)
-            sourceSync = editor.Panel.SceneSyncRoot.FindById<ILShape>(source.ID);
+            sourceSync = GetSyncNode(source);
             sourceSync.MouseDoubleClick += OnMouseDoubleClick;
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
@@ -109,39 +108,6 @@ namespace ILNEditor.Drawing
 
         internal virtual void Traverse(IEnumerable<ILNode> nodes = null)
         {
-        }
-
-        #endregion
-
-        #region Helpers
-
-        protected static string BuildName<T>(string name, ILPanel panel, T node, string defaultName) where T : ILNode
-        {
-            if (!String.IsNullOrEmpty(name))
-                return name;
-
-            if (node != null)
-            {
-                var nodeTag = node.Tag as String;
-                if (!String.IsNullOrEmpty(nodeTag) && !Equals(node.Tag, defaultName))
-                    return (string) node.Tag;
-            }
-
-            return BuildDefaultName(panel, node, defaultName);
-        }
-
-        protected static string BuildDefaultName<T>(ILPanel panel, T node, string defaultName) where T : ILNode
-        {
-            return String.Format("{0}#{1}", defaultName, GetNodeIndex(panel, node));
-        }
-
-        protected static int GetNodeIndex<T>(ILPanel panel, T node) where T : ILNode
-        {
-            int index = panel.Scene.Find<T>().ToList().IndexOf(node);
-            if (index == -1) // Try SceneSyncRoot next
-                index = panel.SceneSyncRoot.Find<T>().ToList().IndexOf(node);
-
-            return index;
         }
 
         #endregion

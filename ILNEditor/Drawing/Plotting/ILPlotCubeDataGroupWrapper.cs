@@ -21,7 +21,7 @@ namespace ILNEditor.Drawing.Plotting
             this.source = source;
 
             scaleModes = new ILScaleModesWrapper(source.ScaleModes, editor, Path);
-            limits = new ILLimitsWrapper(source.Limits, editor, Path);
+            limits = new ILLimitsWrapper(source.Limits, GetSyncNode(source).Limits, editor, Path);
         }
 
         #region ILPlotCubeDataGroup
@@ -40,7 +40,7 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
-        #region Helper
+        #region Helpers
 
         private static string GetPlotCubeDataGroupLabel(ILPlotCubeDataGroup source, ILPanel panel)
         {

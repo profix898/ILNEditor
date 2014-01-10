@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using ILNumerics.Drawing;
 
 namespace ILNEditor.Drawing
@@ -31,9 +33,42 @@ namespace ILNEditor.Drawing
 
         #endregion
 
-        internal ILGroup Parent
+        #region ILNodeHelpers
+
+        protected static string BuildName<T>(string name, ILPanel panel, T node, string defaultName) where T : ILNode
         {
-            get { return source.Parent; }
+            if (!String.IsNullOrEmpty(name))
+                return name;
+
+            if (node != null)
+            {
+                var nodeTag = node.Tag as String;
+                if (!String.IsNullOrEmpty(nodeTag) && !Equals(node.Tag, defaultName))
+                    return (string) node.Tag;
+            }
+
+            return BuildDefaultName(panel, node, defaultName);
         }
+
+        protected static string BuildDefaultName<T>(ILPanel panel, T node, string defaultName) where T : ILNode
+        {
+            return String.Format("{0}#{1}", defaultName, GetNodeIndex(panel, node));
+        }
+
+        protected static int GetNodeIndex<T>(ILPanel panel, T node) where T : ILNode
+        {
+            int index = panel.Scene.Find<T>().ToList().IndexOf(node);
+            if (index == -1) // Try SceneSyncRoot next
+                index = panel.SceneSyncRoot.Find<T>().ToList().IndexOf(node);
+
+            return index;
+        }
+
+        protected T GetSyncNode<T>(T node) where T : ILNode
+        {
+            return Editor.Panel.SceneSyncRoot.FindById<T>(node.ID) ?? node;
+        }
+
+        #endregion
     }
 }

@@ -21,7 +21,7 @@ namespace ILNEditor.Drawing.Plotting
             : base(source, editor, path, BuildName(name, editor.Panel, source, ILLinePlot.LinePlotTag),
                    String.IsNullOrEmpty(label) ? GetSurfaceLabelFromLegend(source, editor.Panel) : label)
         {
-            this.source = editor.Panel.SceneSyncRoot.FindById<ILSurface>(source.ID);
+            this.source = source;
 
             fill = new ILTrianglesWrapper(source.Fill, editor, Path, ILSurface.FillTag, "Fill");
             wireframe = new ILLinesWrapper(source.Wireframe, editor, Path, ILSurface.WireframeTag, "Wireframe");
@@ -73,7 +73,7 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
-        #region Helper
+        #region Helpers
 
         private static string GetSurfaceLabelFromLegend(ILSurface source, ILPanel panel)
         {

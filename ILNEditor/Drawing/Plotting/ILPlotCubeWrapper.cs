@@ -13,6 +13,7 @@ namespace ILNEditor.Drawing.Plotting
     public class ILPlotCubeWrapper : ILCameraWrapper
     {
         private readonly ILPlotCube source;
+        private readonly ILPlotCube sourceSync;
 
         private bool disposed;
 
@@ -20,10 +21,11 @@ namespace ILNEditor.Drawing.Plotting
             : base(source, editor, path, BuildName(name, editor.Panel, source, ILPlotCube.DefaultTag),
                    String.IsNullOrEmpty(label) ? GetPlotCubeLabel(source, editor.Panel) : label)
         {
-            // ILCamera needs to be accessed from SceneSyncRoot (instead of Scene)
-            this.source = editor.Panel.SceneSyncRoot.FindById<ILPlotCube>(source.ID);
+            this.source = source;
 
-            this.source.MouseClick += OnMouseClick;
+            // Subscribe mouse events on SceneSyncRoot (instead of Scene)
+            sourceSync = GetSyncNode(source);
+            sourceSync.MouseClick += OnMouseClick;
         }
 
         #region ILPlotCube
@@ -91,7 +93,7 @@ namespace ILNEditor.Drawing.Plotting
 
         private void OnMouseClick(object sender, ILMouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Right)
+            if (e.Button != MouseButtons.Right || e.Cancel)
                 return;
 
             var contextMenu = new ContextMenu();
@@ -135,7 +137,7 @@ namespace ILNEditor.Drawing.Plotting
             if (!disposed)
             {
                 if (disposing)
-                    source.MouseClick -= OnMouseClick;
+                    sourceSync.MouseClick -= OnMouseClick;
 
                 disposed = true;
             }
@@ -145,7 +147,7 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
-        #region Helper
+        #region Helpers
 
         private static string GetPlotCubeLabel(ILPlotCube source, ILPanel panel)
         {

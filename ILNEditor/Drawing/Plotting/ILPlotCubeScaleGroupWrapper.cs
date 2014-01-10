@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using ILNEditor.TypeExpanders;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
 
@@ -39,6 +40,19 @@ namespace ILNEditor.Drawing.Plotting
             get { return lines; }
         }
 
+        [Category("Format")]
+        public Matrix4Expander Rotation
+        {
+            get { return new Matrix4Expander(source, "Rotation"); }
+        }
+
+        [Browsable(false)]
+        public Matrix4 RotationMatrix
+        {
+            get { return GetSyncNode(source).Rotation; }
+            set { source.Rotation = value; }
+        }
+
         #endregion
 
         #region Overrides of ILGroupWrapper
@@ -50,7 +64,7 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
-        #region Helper
+        #region Helpers
 
         private static string GetPlotCubeScaleGroupLabel(ILPlotCubeScaleGroup source, ILPanel panel)
         {

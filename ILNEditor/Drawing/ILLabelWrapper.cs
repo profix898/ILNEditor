@@ -45,7 +45,7 @@ namespace ILNEditor.Drawing
             MouseDoubleClickShowEditor(this, args);
         }
 
-        #region Helper
+        #region Helpers
 
         private static string GetLabel(ILLabel source)
         {

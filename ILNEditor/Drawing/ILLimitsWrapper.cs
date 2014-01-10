@@ -9,11 +9,13 @@ namespace ILNEditor.Drawing
     public class ILLimitsWrapper : ILWrapperBase
     {
         private readonly ILLimits source;
+        private readonly ILLimits sourceSync;
 
-        public ILLimitsWrapper(ILLimits source, ILPanelEditor editor, string path, string name = null, string label = null)
+        public ILLimitsWrapper(ILLimits source, ILLimits sourceSync, ILPanelEditor editor, string path, string name = null, string label = null)
             : base(source, editor, path, String.IsNullOrEmpty(name) ? "Limits" : name, label)
         {
             this.source = source;
+            this.sourceSync = sourceSync;
         }
 
         #region ILLimits
@@ -21,42 +23,42 @@ namespace ILNEditor.Drawing
         [Category("Limits")]
         public float XMin
         {
-            get { return source.XMin; }
+            get { return sourceSync.XMin; }
             set { source.XMin = value; }
         }
 
         [Category("Limits")]
         public float YMin
         {
-            get { return source.YMin; }
+            get { return sourceSync.YMin; }
             set { source.YMin = value; }
         }
 
         [Category("Limits")]
         public float ZMin
         {
-            get { return source.ZMin; }
+            get { return sourceSync.ZMin; }
             set { source.ZMin = value; }
         }
 
         [Category("Limits")]
         public float XMax
         {
-            get { return source.XMax; }
+            get { return sourceSync.XMax; }
             set { source.XMax = value; }
         }
 
         [Category("Limits")]
         public float YMax
         {
-            get { return source.YMax; }
+            get { return sourceSync.YMax; }
             set { source.YMax = value; }
         }
 
         [Category("Limits")]
         public float ZMax
         {
-            get { return source.ZMax; }
+            get { return sourceSync.ZMax; }
             set { source.ZMax = value; }
         }
 

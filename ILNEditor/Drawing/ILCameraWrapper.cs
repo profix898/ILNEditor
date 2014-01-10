@@ -18,7 +18,7 @@ namespace ILNEditor.Drawing
             : base(source, editor, path, BuildName(name, editor.Panel, source, "Camera"), label)
         {
             // ILCamera needs to be accessed from SceneSyncRoot (instead of Scene)
-            this.source = editor.Panel.SceneSyncRoot.FindById<ILCamera>(source.ID);
+            this.source = GetSyncNode(source);
 
             this.source.MouseDoubleClick += OnMouseDoubleClick;
         }

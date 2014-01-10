@@ -61,7 +61,7 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
-        #region Helper
+        #region Helpers
 
         private static string GetLinePlotLabelFromLegend(ILLinePlot source, ILPanel panel)
         {

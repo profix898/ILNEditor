@@ -29,7 +29,7 @@ namespace ILNEditor.Drawing
         [Browsable(false)]
         public Matrix4 TransformMatrix
         {
-            get { return source.Transform; }
+            get { return GetSyncNode(source).Transform; }
             set { source.Transform = value; }
         }
 
