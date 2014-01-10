@@ -101,6 +101,15 @@ namespace ILNEditor.Serialization
             return (GetNodeByPath(path) != null);
         }
 
+        public bool Contains(string[] path, string name)
+        {
+            XmlNode node = GetNodeByPath(path);
+            if (node == null)
+                return false;
+
+            return (node.SelectSingleNode(name) != null);
+        }
+
         public object Get(string[] path, string name, Type type)
         {
             XmlNode node = GetNodeByPath(path);

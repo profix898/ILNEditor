@@ -56,7 +56,7 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
-        #region Helper
+        #region Helpers
 
         private static string GetLegendLabel(ILLegend source, ILPanel panel)
         {

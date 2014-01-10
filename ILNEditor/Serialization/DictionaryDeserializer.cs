@@ -34,6 +34,11 @@ namespace ILNEditor.Serialization
             return dictionary.Any(item => item.Key.StartsWith(key));
         }
 
+        public bool Contains(string[] path, string name)
+        {
+            return dictionary.ContainsKey(DictionarySerializer.PathToKeyString(path, name, pathSeparator, keySeparator));
+        }
+
         public object Get(string[] path, string name, Type type)
         {
             return dictionary[DictionarySerializer.PathToKeyString(path, name, pathSeparator, keySeparator)];

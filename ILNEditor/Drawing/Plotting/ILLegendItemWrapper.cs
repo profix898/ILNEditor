@@ -48,11 +48,15 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
-        #region Helper
+        #region Helpers
 
         private static string GetLegendItemLabel(ILLegendItem source)
         {
-            return String.Format("{0} ('{1}')", ILLegendItem.LegendItemTag, source.Label.Text);
+            string text = String.IsNullOrEmpty(source.Text)
+                              ? (String.IsNullOrEmpty(source.Label.Text) ? "<empty>" : source.Label.Text)
+                              : source.Text;
+
+            return String.Format("{0} ('{1}')", ILLegendItem.LegendItemTag, text);
         }
 
         #endregion

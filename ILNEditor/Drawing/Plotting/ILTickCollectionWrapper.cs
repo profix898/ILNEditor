@@ -20,7 +20,7 @@ namespace ILNEditor.Drawing.Plotting
             : base(source, editor, path, BuildName(name, editor.Panel, source, ILPlotCube.DefaultTag), label)
         {
             // ILTickCollection needs to be accessed from SceneSyncRoot (instead of Scene)
-            this.source = editor.Panel.SceneSyncRoot.FindById<ILTickCollection>(source.ID);
+            this.source = GetSyncNode(source);
 
             lines = new ILLinesWrapper(this.source.Lines, editor, Path, ILTickCollection.TickLinesTag, "TickLines");
             ticks = new ReadOnlyCollection<ILTickWrapper>(((IEnumerable<ILTick>) source).Select(tick => new ILTickWrapper(tick, editor, Path)).ToList());

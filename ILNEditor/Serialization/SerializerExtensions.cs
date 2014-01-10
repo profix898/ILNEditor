@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Xml;
 using ILNEditor.Drawing;
 
 namespace ILNEditor.Serialization
@@ -47,8 +46,6 @@ namespace ILNEditor.Serialization
 
             editor.Panel.Configure();
             editor.Update();
-
-            editor.Panel.Refresh();
         }
 
         private static void DeserializeInternal(ILPanelEditor editor, IDeserializer deserializer, object instance, IEnumerable<PropertyInfo> properties, string path)
@@ -72,11 +69,13 @@ namespace ILNEditor.Serialization
 
                     try
                     {
-                        property.SetValue(instance, deserializer.Get(SplitPath(path), property.Name, property.PropertyType), null);
+                        string[] pathParts = SplitPath(path);
+                        if (deserializer.Contains(pathParts, property.Name))
+                            property.SetValue(instance, deserializer.Get(pathParts, property.Name, property.PropertyType), null);
                     }
-                    catch (XmlException)
+                    catch
                     {
-                        // Exception in xml deserialization (e.g. element not found or not deserializable)
+                        // Exception in deserialization (e.g. ElementNotFound or not deserializable)
                     }
                 }
             }
@@ -84,9 +83,16 @@ namespace ILNEditor.Serialization
 
         private static PropertyInfo[] GetProperties(object instance)
         {
+            Type type = instance.GetType();
+
+            // Skip types decorated with SerializerIgnore attribute
+            if (type.GetCustomAttributes(typeof(SerializerIgnoreAttribute), false).Any())
+                return new PropertyInfo[] { };
+
             // Get properties (skip those with SerializerIgnore attribute)
-            PropertyInfo[] instanceProperties = instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo[] instanceProperties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             IEnumerable<PropertyInfo> properties = instanceProperties.Where(property => !property.GetCustomAttributes(typeof(SerializerIgnoreAttribute), false).Any()
+                                                                                        && !property.PropertyType.GetCustomAttributes(typeof(SerializerIgnoreAttribute), false).Any()
                                                                                         && property.CanRead && property.CanWrite
                                                                                         && property.GetAccessors().Any(accessor => accessor.GetParameters().Length == 0));
 

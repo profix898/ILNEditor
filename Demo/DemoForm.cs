@@ -15,7 +15,7 @@ namespace Demo
 
         public enum DemoEnum
         {
-            RandomLinePlot,
+            LinePlot,
             SincSurface,
             Points,
             Gear
@@ -47,11 +47,11 @@ namespace Demo
             // Add and render demo content
             switch ((DemoEnum) comboBoxDemo.SelectedIndex)
             {
-                case DemoEnum.RandomLinePlot:
+                case DemoEnum.LinePlot:
                 {
                     ILPlotCube plotCube = ilPanel.Scene.Add(new ILPlotCube());
-                    plotCube.Add(new ILLinePlot(ILMath.tosingle(ILMath.randn(2, 200))));
-                    plotCube.Add(new ILLinePlot(ILMath.tosingle(ILMath.randn(2, 200) + 5.0)));
+                    plotCube.Add(new ILLinePlot(ILMath.tosingle(ILMath.randn(1, 20))));
+                    plotCube.Add(new ILLinePlot(ILMath.tosingle(ILMath.randn(1, 20) + 2.0), lineStyle: DashStyle.Dashed, markerStyle: MarkerStyle.Square));
                     plotCube.Add(new ILLegend("Line 1", "Line 2"));
                 }
                     break;

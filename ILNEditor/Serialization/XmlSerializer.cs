@@ -60,7 +60,7 @@ namespace ILNEditor.Serialization
             XPathNavigator navigator = parent.AppendChild(document.CreateElement(name)).CreateNavigator();
             using (XmlWriter writer = navigator.AppendChild())
             {
-                // Handle not-serializable types
+                // Handle non-serializable types
                 if (value is Font)
                     value = new SerializableFont((Font) value);
                 else if (value is Color)

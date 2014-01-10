@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Xml.Serialization;
 
 namespace ILNEditor.Serialization
@@ -19,14 +20,7 @@ namespace ILNEditor.Serialization
         [XmlIgnore]
         public Color Color { get; private set; }
 
-        [XmlElement("Alpha")]
-        public byte SerializeAlpha
-        {
-            get { return Color.A; }
-            set { Color = Color.FromArgb(value, Color); }
-        }
-
-        [XmlElement("Color")]
+        [XmlText]
         public string SerializeColor
         {
             get
@@ -36,7 +30,7 @@ namespace ILNEditor.Serialization
                     if (Color.IsEmpty)
                         return null;
 
-                    return ColorTranslator.ToHtml(Color);
+                    return String.Format("{0:X2}{1}", Color.A, ColorTranslator.ToHtml(Color));
                 }
                 catch
                 {
@@ -47,7 +41,7 @@ namespace ILNEditor.Serialization
             {
                 try
                 {
-                    Color = Color.FromArgb(Color.A, ColorTranslator.FromHtml(value));
+                    Color = Color.FromArgb(Convert.ToByte(value.Substring(0, 2), 16), ColorTranslator.FromHtml(value.Substring(2)));
                 }
                 catch
                 {

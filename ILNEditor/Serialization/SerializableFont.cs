@@ -30,8 +30,7 @@ namespace ILNEditor.Serialization
                     if (Font == null)
                         return null;
 
-                    TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                    return converter.ConvertToString(Font);
+                    return TypeDescriptor.GetConverter(typeof(Font)).ConvertToString(Font);
                 }
                 catch
                 {
@@ -42,8 +41,7 @@ namespace ILNEditor.Serialization
             {
                 try
                 {
-                    TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                    Font = (Font) converter.ConvertFromString(value);
+                    Font = (Font) TypeDescriptor.GetConverter(typeof(Font)).ConvertFromString(value);
                 }
                 catch
                 {
