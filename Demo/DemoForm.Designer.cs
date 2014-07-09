@@ -30,11 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DemoForm));
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.btnToXml = new System.Windows.Forms.Button();
+            this.btnFromXml = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxDemo = new System.Windows.Forms.ComboBox();
             this.ilPanel = new ILNumerics.Drawing.ILPanel();
-            this.btnFromXml = new System.Windows.Forms.Button();
-            this.btnToXml = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -63,6 +63,26 @@
             this.splitContainer.SplitterDistance = 30;
             this.splitContainer.TabIndex = 0;
             // 
+            // btnToXml
+            // 
+            this.btnToXml.Location = new System.Drawing.Point(516, 4);
+            this.btnToXml.Name = "btnToXml";
+            this.btnToXml.Size = new System.Drawing.Size(75, 23);
+            this.btnToXml.TabIndex = 2;
+            this.btnToXml.Text = "ToXml";
+            this.btnToXml.UseVisualStyleBackColor = true;
+            this.btnToXml.Click += new System.EventHandler(this.btnToXml_Click);
+            // 
+            // btnFromXml
+            // 
+            this.btnFromXml.Location = new System.Drawing.Point(597, 4);
+            this.btnFromXml.Name = "btnFromXml";
+            this.btnFromXml.Size = new System.Drawing.Size(75, 23);
+            this.btnFromXml.TabIndex = 2;
+            this.btnFromXml.Text = "FromXml";
+            this.btnFromXml.UseVisualStyleBackColor = true;
+            this.btnFromXml.Click += new System.EventHandler(this.btnFromXml_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -84,7 +104,7 @@
             // ilPanel
             // 
             this.ilPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ilPanel.Driver = ILNumerics.Drawing.RendererTypes.GDI;
+            this.ilPanel.Driver = ILNumerics.Drawing.RendererTypes.OpenGL;
             this.ilPanel.Editor = null;
             this.ilPanel.Location = new System.Drawing.Point(0, 0);
             this.ilPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
@@ -93,26 +113,6 @@
             this.ilPanel.ShowUIControls = false;
             this.ilPanel.Size = new System.Drawing.Size(684, 427);
             this.ilPanel.TabIndex = 0;
-            // 
-            // btnFromXml
-            // 
-            this.btnFromXml.Location = new System.Drawing.Point(597, 4);
-            this.btnFromXml.Name = "btnFromXml";
-            this.btnFromXml.Size = new System.Drawing.Size(75, 23);
-            this.btnFromXml.TabIndex = 2;
-            this.btnFromXml.Text = "FromXml";
-            this.btnFromXml.UseVisualStyleBackColor = true;
-            this.btnFromXml.Click += new System.EventHandler(this.btnFromXml_Click);
-            // 
-            // btnToXml
-            // 
-            this.btnToXml.Location = new System.Drawing.Point(516, 4);
-            this.btnToXml.Name = "btnToXml";
-            this.btnToXml.Size = new System.Drawing.Size(75, 23);
-            this.btnToXml.TabIndex = 2;
-            this.btnToXml.Text = "ToXml";
-            this.btnToXml.UseVisualStyleBackColor = true;
-            this.btnToXml.Click += new System.EventHandler(this.btnToXml_Click);
             // 
             // DemoForm
             // 
