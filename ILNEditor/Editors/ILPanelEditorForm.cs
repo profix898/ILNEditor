@@ -103,6 +103,8 @@ namespace ILNEditor.Editors
 
         private void EditorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            PropertyChanged(this, new PropertyChangedEventArgs(String.Empty));
+
             Hide();
             e.Cancel = true;
         }

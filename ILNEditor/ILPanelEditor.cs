@@ -22,6 +22,8 @@ namespace ILNEditor
             this.editor = editor ?? new ILPanelEditorForm(this);
             this.editor.PropertyChanged += (o, args) =>
             {
+                OnPropertyChanged(args.PropertyName);
+
                 ilPanel.Configure();
                 ilPanel.Refresh();
             };
