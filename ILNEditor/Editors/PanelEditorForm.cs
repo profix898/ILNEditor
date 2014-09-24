@@ -6,23 +6,28 @@ using ILNEditor.Drawing;
 
 namespace ILNEditor.Editors
 {
-    public sealed partial class ILPanelEditorForm : Form, IILPanelEditor
+    public sealed partial class PanelEditorForm : Form, IPanelEditor
     {
         private const string PathSeparator = @":";
         private const char PathSeparatorChar = ':';
 
         private readonly ILPanelEditor editor;
+        private readonly PlotBrowserForm plotBrowser;
 
-        public ILPanelEditorForm(ILPanelEditor editor)
+        public PanelEditorForm(ILPanelEditor editor)
         {
             this.editor = editor;
+            plotBrowser = new PlotBrowserForm(editor);
 
             InitializeComponent();
         }
 
-        #region IILPanelEditor Members
+        #region IPanelEditor Members
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public IPlotBrowser PlotBrowser
+        {
+            get { return plotBrowser; }
+        }
 
         public new void Show()
         {
@@ -30,6 +35,15 @@ namespace ILNEditor.Editors
                 base.Show();
 
             BringToFront();
+        }
+
+        public new void Hide()
+        {
+            if (Visible)
+                base.Hide();
+
+            if (plotBrowser.Visible)
+                plotBrowser.Hide();
         }
 
         public void UpdateNodes()
@@ -52,6 +66,8 @@ namespace ILNEditor.Editors
 
             if (!String.IsNullOrEmpty(selectedNode))
                 SelectNode(selectedNode);
+
+            plotBrowser.UpdateList();
         }
 
         public void SelectNode(string node)
@@ -63,6 +79,8 @@ namespace ILNEditor.Editors
                 treeView.SelectedNode.EnsureVisible();
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
@@ -124,60 +142,16 @@ namespace ILNEditor.Editors
                 PropertyChanged(this, new PropertyChangedEventArgs(e.ChangedItem.Label));
         }
 
-        private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
+        #endregion
+
+        private void btnPlotBrowser_Click(object sender, EventArgs e)
         {
-            e.Cancel = true;
-
-            //    // Hide context menu if no item is selected
-            //    if (propertyGrid.SelectedObject == null)
-            //    {
-            //        e.Cancel = true;
-            //        return;
-            //    }
-
-            //    // Get selected ILNode (equivalent to SelectedObject on propertyGrid, see treeView_AfterSelect)
-            //    var node = ((ILWrapperBase) propertyGrid.SelectedObject).Source as ILNode;
-
-            //    // Add/Remove is valid on ILNode objects only
-            //    if (node == null)
-            //    {
-            //        e.Cancel = true;
-            //        MessageBox.Show("Only ILNode objects can be added/removed.");
-            //        return;
-            //    }
-
-            //    // Add
-            //    var group = node as ILGroup;
-            //    if (group != null) // Can only add items to ILGroup nodes
-            //    {
-            //        miAdd.DropDownItems.Clear();
-            //        foreach (Type type in editor.WrapperMap.Keys.Where(type => type.GetConstructor(Type.EmptyTypes) != null))
-            //        {
-            //            Type typeClosure = type;
-            //            ToolStripItem item = miAdd.DropDownItems.Add(type.WrapperName);
-            //            item.Click += (o, args) => AddNode(group, typeClosure);
-            //        }
-            //    }
-            //    else
-            //        miAdd.Enabled = false;
-
-            //    // Remove
-            //    miRemove.Click += (o, args) => RemoveNode(node);
+            plotBrowser.Show();
         }
 
-        //private void RemoveNode(ILNode node)
-        //{
-        //    propertyGrid.SelectedObject = null;
-        //    editor.Panel.Scene.Remove(node);
-        //    editor.Panel.Refresh();
-        //    editor.Update();
-        //}
-
-        //private void AddNode(ILGroup parent, Type type)
-        //{
-        //    parent.Children.Add((ILNode) Activator.CreateInstance(type));
-        //}
-
-        #endregion
+        private void btnCollapseAll_Click(object sender, EventArgs e)
+        {
+            treeView.CollapseAll();
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace Demo
         private void ILPanelForm_Load(object sender, EventArgs e)
         {
             comboBoxDemo.Items.AddRange(Enum.GetNames(typeof(DemoEnum)));
-            comboBoxDemo.SelectedIndex = (int) DemoEnum.SincSurface;
+            comboBoxDemo.SelectedIndex = (int) DemoEnum.LinePlot;
         }
 
         private void comboBoxDemo_SelectedIndexChanged(object sender, EventArgs e)
