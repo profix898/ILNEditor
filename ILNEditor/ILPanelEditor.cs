@@ -10,16 +10,16 @@ namespace ILNEditor
 {
     public class ILPanelEditor : ILGroup
     {
-        private readonly IILPanelEditor editor;
+        private readonly IPanelEditor editor;
         private readonly ILPanel ilPanel;
 
         private readonly WrapperMap wrapperMap = new WrapperMap();
         private readonly List<ILWrapperBase> wrappers = new List<ILWrapperBase>();
 
-        private ILPanelEditor(ILPanel ilPanel, IILPanelEditor editor = null)
+        private ILPanelEditor(ILPanel ilPanel, IPanelEditor editor = null)
         {
             this.ilPanel = ilPanel;
-            this.editor = editor ?? new ILPanelEditorForm(this);
+            this.editor = editor ?? new PanelEditorForm(this);
             this.editor.PropertyChanged += (o, args) =>
             {
                 OnPropertyChanged(args.PropertyName);
@@ -76,6 +76,12 @@ namespace ILNEditor
             get { return ilPanel; }
         }
 
+        internal IPanelEditor PanelEditor
+        {
+            [DebuggerStepThrough]
+            get { return editor; }
+        }
+
         internal List<ILWrapperBase> Wrappers
         {
             [DebuggerStepThrough]
@@ -130,7 +136,7 @@ namespace ILNEditor
 
         #region Static
 
-        public static ILPanelEditor AttachTo(ILPanel ilPanel, IILPanelEditor editor = null)
+        public static ILPanelEditor AttachTo(ILPanel ilPanel, IPanelEditor editor = null)
         {
             var editorInstance = new ILPanelEditor(ilPanel, editor);
             editorInstance.Update();
