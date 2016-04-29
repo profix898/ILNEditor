@@ -36,9 +36,17 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ILNumerics, Version=3.3.3.0, Culture=neutral, PublicKeyToken=e00823afcff9a03a, processorArchitecture=MSIL">
+    <Reference Include="ILNumerics.Computing, Version=4.8.0.0, Culture=neutral, PublicKeyToken=8d9bf50ef854734d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ILNumerics.dll</HintPath>
+      <HintPath>..\ILNumerics\ILNumerics.Computing.dll</HintPath>
+    </Reference>
+    <Reference Include="ILNumerics.Core, Version=4.8.0.0, Culture=neutral, PublicKeyToken=9651adc37f12bb00, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ILNumerics\ILNumerics.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ILNumerics.Drawing, Version=4.8.0.0, Culture=neutral, PublicKeyToken=e22c8a010c3b081a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ILNumerics\ILNumerics.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +89,7 @@
     </Compile>
     <Compile Include="IEditorInterfaces.cs" />
     <Compile Include="ILNEditorConfig.cs" />
+    <Compile Include="ILNumerics_deploy\ILNHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -127,18 +136,23 @@
     <EmbeddedResource Include="Editors\PlotBrowserForm.resx">
       <DependentUpon>PlotBrowserForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ILNumerics_deploy\ilnumerics.lic" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ILNumerics_deploy\ILNImports1.targets" />
+    <None Include="ILNumerics_deploy\ILNImports2.targets" />
     <None Include="Resources\collapse-all.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\items.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="ILNumerics_deploy\ILNImports1.targets" Condition="$(ILNLicCompile) != 'true'" />
+  <Import Project="ILNumerics_deploy\ILNImports2.targets" Condition="$(ILNLicCompile) == 'true'" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

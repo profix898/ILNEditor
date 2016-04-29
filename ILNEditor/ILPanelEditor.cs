@@ -5,6 +5,7 @@ using System.Linq;
 using ILNEditor.Drawing;
 using ILNEditor.Editors;
 using ILNumerics.Drawing;
+using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor
 {
@@ -45,6 +46,22 @@ namespace ILNEditor
             new ILGroupWrapper(ilPanel.Scene.First<ILGroup>(), this, String.Empty, "ROOT").Traverse();
 
             editor.UpdateNodes();
+        }
+
+        public void ShowEditor()
+        {
+            ShowEditor(null);
+        }
+
+        public void ShowPlotBrowser()
+        {
+            if (editor == null)
+                return;
+
+            if (!wrapperMap.ContainsKey(typeof(ILPlotCube)))
+                return;
+
+            PanelEditor.PlotBrowser.Show();
         }
 
         public override void Dispose()
@@ -121,7 +138,7 @@ namespace ILNEditor
             args.Cancel = true;
         }
 
-        internal void ShowEditor(string node = null)
+        internal void ShowEditor(string node)
         {
             if (editor == null)
                 return;
