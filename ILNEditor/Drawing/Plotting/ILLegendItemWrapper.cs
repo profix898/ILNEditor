@@ -56,7 +56,7 @@ namespace ILNEditor.Drawing.Plotting
                               ? (String.IsNullOrEmpty(source.Label.Text) ? "<empty>" : source.Label.Text)
                               : source.Text;
 
-            return String.Format("{0} ('{1}')", ILLegendItem.LegendItemTag, text);
+            return $"{ILLegendItem.LegendItemTag} ('{text}')";
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var label = (ILLegendItemWrapper) value;
 
-                    return String.Format("{0} ('{1}')", label.Name, label.Label);
+                    return $"{label.Name} ('{label.Label}')";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

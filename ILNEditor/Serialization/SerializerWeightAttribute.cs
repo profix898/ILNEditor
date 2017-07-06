@@ -10,6 +10,6 @@ namespace ILNEditor.Serialization
             Weight = weight;
         }
 
-        public int Weight { get; private set; }
+        public int Weight { get; }
     }
 }

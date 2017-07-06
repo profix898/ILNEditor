@@ -39,7 +39,7 @@ namespace ILNEditor.TypeConverters
                 }
                 catch
                 {
-                    throw new ArgumentException(String.Format("Can not convert '{0}' to type PointF.", value));
+                    throw new ArgumentException($"Can not convert '{value}' to type PointF.");
                 }
             }
 
@@ -52,7 +52,7 @@ namespace ILNEditor.TypeConverters
             {
                 var point = (PointF) value;
 
-                return String.Format("X={0:F}; Y={1:F}", point.X, point.Y);
+                return $"X={point.X:F}; Y={point.Y:F}";
             }
 
             return base.ConvertTo(context, culture, value, destinationType);
@@ -61,7 +61,7 @@ namespace ILNEditor.TypeConverters
         public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
         {
             if (propertyValues == null)
-                throw new ArgumentNullException("propertyValues");
+                throw new ArgumentNullException(nameof(propertyValues));
 
             object x = propertyValues["X"];
             object y = propertyValues["Y"];

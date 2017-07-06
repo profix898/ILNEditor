@@ -80,7 +80,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var marker = (ILMarkerWrapper) value;
 
-                    return String.Format("{0} ({1}, {2})", marker.Label, marker.Style, marker.Size);
+                    return $"{marker.Label} ({marker.Style}, {marker.Size})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

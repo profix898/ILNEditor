@@ -41,17 +41,17 @@ namespace ILNEditor.Editors
             int plotCubeIdx = 0;
             foreach (ILPlotCube plotCube in editor.Panel.Scene.Find<ILPlotCube>())
             {
-                TreeNode node = treeView.Nodes.Add(String.Format("PlotCube#{0}", plotCubeIdx));
+                TreeNode node = treeView.Nodes.Add($"PlotCube#{plotCubeIdx}");
 
                 int scaleGroupIdx = 0;
                 foreach (ILPlotCubeScaleGroup scaleGroup in plotCube.Find<ILPlotCubeScaleGroup>())
                 {
-                    node = node.Nodes.Add(String.Format("ScaleGroup#{0}", scaleGroupIdx));
+                    node = node.Nodes.Add($"ScaleGroup#{scaleGroupIdx}");
 
                     int dataGroupIdx = 0;
                     foreach (ILPlotCubeDataGroup dataGroup in scaleGroup.Find<ILPlotCubeDataGroup>())
                     {
-                        node = node.Nodes.Add(String.Format("DataGroup#{0}", dataGroupIdx));
+                        node = node.Nodes.Add($"DataGroup#{dataGroupIdx}");
 
                         // Capture plots (add plots and attach callbacks)
                         CapturePlot<ILLinePlot>(dataGroup, node, ILLinePlot.LinePlotTag);
@@ -145,7 +145,7 @@ namespace ILNEditor.Editors
                 T plotClosure = plot;
 
                 // Find (or build) label
-                string label = String.Format("{0}#{1}", defaultTag, itemIdx++);
+                string label = $"{defaultTag}#{itemIdx++}";
                 var legend = dataGroup.First<ILLegend>();
                 if (legend != null)
                 {

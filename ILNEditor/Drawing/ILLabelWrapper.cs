@@ -49,7 +49,7 @@ namespace ILNEditor.Drawing
 
         private static string GetLabel(ILLabel source)
         {
-            return String.Format("Label ('{0}')", source.Text);
+            return $"Label ('{source.Text}')";
         }
 
         #endregion
@@ -82,7 +82,7 @@ namespace ILNEditor.Drawing
                     var label = (ILLabelWrapper) value;
                     string color = label.Color.HasValue ? (label.Color.Value.IsKnownColor ? label.Color.Value.ToKnownColor().ToString() : label.Color.Value.ToString()) : "";
 
-                    return String.Format("{0} ({1} {2}pt, {3})", label.Name, label.Font.Name, (int) label.Font.SizeInPoints, color);
+                    return $"{label.Name} ({label.Font.Name} {(int) label.Font.SizeInPoints}pt, {color})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

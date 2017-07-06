@@ -49,7 +49,7 @@ namespace ILNEditor.Serialization
             if (String.IsNullOrEmpty(name))
                 return String.Join(pathSeparator, path);
 
-            return String.Format("{0}{1}{2}", String.Join(pathSeparator, path), keySeparator, name);
+            return $"{String.Join(pathSeparator, path)}{keySeparator}{name}";
         }
     }
 }

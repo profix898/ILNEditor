@@ -81,8 +81,7 @@ namespace ILNEditor.Drawing
                 {
                     var limits = (ILLimitsWrapper) value;
 
-                    return String.Format("{0} (X:{1:F}/{2:F}, Y:{3:F}/{4:F}, Z:{5:F}/{6:F})",
-                                         limits.Label, limits.XMin, limits.XMax, limits.YMin, limits.YMax, limits.ZMin, limits.ZMax);
+                    return $"{limits.Label} (X:{limits.XMin:F}/{limits.XMax:F}, Y:{limits.YMin:F}/{limits.YMax:F}, Z:{limits.ZMin:F}/{limits.ZMax:F})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

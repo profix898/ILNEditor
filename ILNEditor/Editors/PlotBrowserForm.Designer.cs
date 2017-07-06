@@ -38,7 +38,7 @@
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
             this.treeView.PathSeparator = ":";
-            this.treeView.Size = new System.Drawing.Size(264, 261);
+            this.treeView.Size = new System.Drawing.Size(304, 311);
             this.treeView.TabIndex = 1;
             this.treeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterCheck);
             // 
@@ -46,7 +46,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(264, 261);
+            this.ClientSize = new System.Drawing.Size(304, 311);
             this.Controls.Add(this.treeView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MinimumSize = new System.Drawing.Size(150, 150);

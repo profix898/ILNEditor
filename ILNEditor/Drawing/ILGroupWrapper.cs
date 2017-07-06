@@ -53,7 +53,7 @@ namespace ILNEditor.Drawing
 
                 // Hide the editor itself
                 if (childGroup != null && node is ILPanelEditor)
-                    return;
+                    continue;
 
                 if (WrapperMap.ContainsKey(nodeType)) // NodeType is mapped
                 {

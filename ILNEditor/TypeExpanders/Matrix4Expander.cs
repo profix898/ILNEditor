@@ -28,7 +28,7 @@ namespace ILNEditor.TypeExpanders
             {
                 Matrix4 matrix = GetMatrix4();
 
-                return String.Format("{0:F1}; {1:F1}; {2:F1}; {3:F1}", matrix.M11, matrix.M12, matrix.M13, matrix.M14);
+                return $"{matrix.M11:F1}; {matrix.M12:F1}; {matrix.M13:F1}; {matrix.M14:F1}";
             }
             set
             {
@@ -52,7 +52,7 @@ namespace ILNEditor.TypeExpanders
             {
                 Matrix4 matrix = GetMatrix4();
 
-                return String.Format("{0:F1}; {1:F1}; {2:F1}; {3:F1}", matrix.M21, matrix.M22, matrix.M23, matrix.M24);
+                return $"{matrix.M21:F1}; {matrix.M22:F1}; {matrix.M23:F1}; {matrix.M24:F1}";
             }
             set
             {
@@ -76,7 +76,7 @@ namespace ILNEditor.TypeExpanders
             {
                 Matrix4 matrix = GetMatrix4();
 
-                return String.Format("{0:F1}; {1:F1}; {2:F1}; {3:F1}", matrix.M31, matrix.M32, matrix.M33, matrix.M34);
+                return $"{matrix.M31:F1}; {matrix.M32:F1}; {matrix.M33:F1}; {matrix.M34:F1}";
             }
             set
             {
@@ -100,7 +100,7 @@ namespace ILNEditor.TypeExpanders
             {
                 Matrix4 matrix = GetMatrix4();
 
-                return String.Format("{0:F1}; {1:F1}; {2:F1}; {3:F1}", matrix.M41, matrix.M42, matrix.M43, matrix.M44);
+                return $"{matrix.M41:F1}; {matrix.M42:F1}; {matrix.M43:F1}; {matrix.M44:F1}";
             }
             set
             {

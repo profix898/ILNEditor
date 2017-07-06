@@ -30,7 +30,7 @@ namespace ILNEditor.Serialization
                     if (Color.IsEmpty)
                         return null;
 
-                    return String.Format("{0:X2}{1}", Color.A, ColorTranslator.ToHtml(Color));
+                    return $"{Color.A:X2}{ColorTranslator.ToHtml(Color)}";
                 }
                 catch
                 {
@@ -60,7 +60,7 @@ namespace ILNEditor.Serialization
 
         public static implicit operator SerializableColor(Color? color)
         {
-            return new SerializableColor(color.HasValue ? color.Value : Color.Empty);
+            return new SerializableColor(color ?? Color.Empty);
         }
     }
 }

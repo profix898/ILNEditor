@@ -62,7 +62,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var dataGroup = (ILPlotCubeDataGroupWrapper) value;
 
-                    return String.Format("{0} (N = {1})", dataGroup.Label, dataGroup.source.Children.Count);
+                    return $"{dataGroup.Label} (N = {dataGroup.source.Children.Count})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

@@ -68,7 +68,7 @@ namespace ILNEditor.Drawing
                     var lines = (ILLinesWrapper) value;
                     string color = lines.Color.HasValue ? (lines.Color.Value.IsKnownColor ? lines.Color.Value.ToKnownColor().ToString() : lines.Color.Value.ToString()) : "";
 
-                    return String.Format("{0} ({1}, {2}, {3})", lines.Label, color, lines.DashStyle, lines.Width);
+                    return $"{lines.Label} ({color}, {lines.DashStyle}, {lines.Width})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);
