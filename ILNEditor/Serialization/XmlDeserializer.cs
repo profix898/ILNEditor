@@ -68,7 +68,7 @@ namespace ILNEditor.Serialization
             XmlNode parent = document.DocumentElement;
             foreach (string part in path)
             {
-                parent = parent.SelectSingleNode(part);
+                parent = parent?.SelectSingleNode(part);
                 if (parent == null)
                     return null;
             }

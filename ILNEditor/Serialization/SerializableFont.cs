@@ -52,10 +52,7 @@ namespace ILNEditor.Serialization
 
         public static implicit operator Font(SerializableFont serializeableFont)
         {
-            if (serializeableFont == null)
-                return null;
-
-            return serializeableFont.Font;
+            return serializeableFont?.Font;
         }
 
         public static implicit operator SerializableFont(Font font)

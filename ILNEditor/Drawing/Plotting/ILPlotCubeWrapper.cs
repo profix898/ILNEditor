@@ -101,6 +101,7 @@ namespace ILNEditor.Drawing.Plotting
             contextMenu.MenuItems.Add("Reset View", (o, args) =>
             {
                 Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
+                Panel.SceneSyncRoot.First<ILPlotCubeDataGroup>().Reset();
                 Panel.Refresh();
             });
             // Switch planes

@@ -58,8 +58,8 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.splitContainer.Size = new System.Drawing.Size(684, 511);
-            this.splitContainer.SplitterDistance = 200;
+            this.splitContainer.Size = new System.Drawing.Size(734, 511);
+            this.splitContainer.SplitterDistance = 214;
             this.splitContainer.TabIndex = 0;
             // 
             // toolStrip1
@@ -72,7 +72,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 486);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(200, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(214, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -103,16 +103,17 @@
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
             this.treeView.PathSeparator = ":";
-            this.treeView.Size = new System.Drawing.Size(200, 511);
+            this.treeView.Size = new System.Drawing.Size(214, 511);
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             // 
             // propertyGrid
             // 
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(480, 511);
+            this.propertyGrid.Size = new System.Drawing.Size(516, 511);
             this.propertyGrid.TabIndex = 0;
             this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
@@ -132,7 +133,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 511);
+            this.ClientSize = new System.Drawing.Size(734, 511);
             this.Controls.Add(this.splitContainer);
             this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "PanelEditorForm";

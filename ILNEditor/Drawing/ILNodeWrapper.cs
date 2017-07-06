@@ -52,7 +52,7 @@ namespace ILNEditor.Drawing
 
         protected static string BuildDefaultName<T>(ILPanel panel, T node, string defaultName) where T : ILNode
         {
-            return String.Format("{0}#{1}", defaultName, GetNodeIndex(panel, node));
+            return $"{defaultName}#{GetNodeIndex(panel, node)}";
         }
 
         protected static int GetNodeIndex<T>(ILPanel panel, T node) where T : ILNode

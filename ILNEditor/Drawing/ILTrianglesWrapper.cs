@@ -28,7 +28,7 @@ namespace ILNEditor.Drawing
                     string specularColor = triangles.SpecularColor.IsKnownColor ? triangles.SpecularColor.ToKnownColor().ToString() : triangles.SpecularColor.ToString();
                     string emissionColor = triangles.SpecularColor.IsKnownColor ? triangles.SpecularColor.ToKnownColor().ToString() : triangles.SpecularColor.ToString();
 
-                    return String.Format("{0} ({1}, {2})", triangles.Label, specularColor, emissionColor);
+                    return $"{triangles.Label} ({specularColor}, {emissionColor})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

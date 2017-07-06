@@ -155,7 +155,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var axis = (ILAxisWrapper) value;
 
-                    return String.Format("Axis ({0})", axis.AxisName);
+                    return $"Axis ({axis.AxisName})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

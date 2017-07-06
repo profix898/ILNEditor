@@ -83,7 +83,7 @@ namespace ILNEditor.Drawing.Plotting
             {
                 // Get text from ILLegendItem at the index
                 if (legend.Items.Children.Count() > index)
-                    return String.Format("{0} (\"{1}\")", ILSurface.SurfaceDefaultTag, legend.Items.Find<ILLegendItem>().ElementAt(index).Text);
+                    return $"{ILSurface.SurfaceDefaultTag} (\"{legend.Items.Find<ILLegendItem>().ElementAt(index).Text}\")";
             }
 
             return null;
@@ -125,7 +125,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var positions = (ReadOnlyCollection<float>) value;
 
-                    return String.Format("Positions (N = {0})", positions.Count);
+                    return $"Positions (N = {positions.Count})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

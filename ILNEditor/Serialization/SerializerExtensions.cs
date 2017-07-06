@@ -28,7 +28,7 @@ namespace ILNEditor.Serialization
                         PropertyInfo[] childProperties = GetProperties(value);
                         if (childProperties.Length > 0)
                         {
-                            SerializeInternal(editor, serializer, value, childProperties, String.Format("{0}:{1}", path, ToIdentifier(property.Name)));
+                            SerializeInternal(editor, serializer, value, childProperties, $"{path}:{ToIdentifier(property.Name)}");
                             continue;
                         }
                     }
@@ -56,13 +56,13 @@ namespace ILNEditor.Serialization
                 {
                     object value = property.GetValue(instance, null);
 
-                    string configPrefixChild = String.Format("{0}:{1}", path, ToIdentifier(property.Name));
+                    string configPrefixChild = $"{path}:{ToIdentifier(property.Name)}";
                     if (deserializer.Contains(SplitPath(configPrefixChild)))
                     {
                         PropertyInfo[] childProperties = GetProperties(value);
                         if (childProperties.Length > 0 && editor.WrapperMap.Values.Contains(value.GetType()))
                         {
-                            DeserializeInternal(editor, deserializer, value, childProperties, String.Format("{0}:{1}", path, ToIdentifier(property.Name)));
+                            DeserializeInternal(editor, deserializer, value, childProperties, $"{path}:{ToIdentifier(property.Name)}");
                             continue;
                         }
                     }

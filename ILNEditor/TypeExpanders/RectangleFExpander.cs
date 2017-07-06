@@ -115,7 +115,7 @@ namespace ILNEditor.TypeExpanders
                 {
                     var expander = (RectangleFExpander) value;
 
-                    return String.Format("Rectangle ({0:F} x {1:F} @ X={2:F}; Y={3:F})", expander.Width, expander.Height, expander.X, expander.Y);
+                    return $"Rectangle ({expander.Width:F} x {expander.Height:F} @ X={expander.X:F}; Y={expander.Y:F})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

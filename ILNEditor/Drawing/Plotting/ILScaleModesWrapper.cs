@@ -52,7 +52,7 @@ namespace ILNEditor.Drawing.Plotting
                 {
                     var scaleModes = (ILScaleModesWrapper) value;
 
-                    return String.Format("{0} (X:{1}, Y:{2}, Z:{3})", scaleModes.Label, scaleModes.XAxisScale, scaleModes.YAxisScale, scaleModes.ZAxisScale);
+                    return $"{scaleModes.Label} (X:{scaleModes.XAxisScale}, Y:{scaleModes.YAxisScale}, Z:{scaleModes.ZAxisScale})";
                 }
 
                 return base.ConvertTo(context, culture, value, destType);

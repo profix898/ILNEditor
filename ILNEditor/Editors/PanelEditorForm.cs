@@ -24,10 +24,7 @@ namespace ILNEditor.Editors
 
         #region IPanelEditor Members
 
-        public IPlotBrowser PlotBrowser
-        {
-            get { return plotBrowser; }
-        }
+        public IPlotBrowser PlotBrowser => plotBrowser;
 
         public new void Show()
         {
