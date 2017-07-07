@@ -12,6 +12,8 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(ILPlotCubeConverter))]
     public class ILPlotCubeWrapper : ILCameraWrapper
     {
+        private readonly ContextMenu contextMenu = new ContextMenu();
+
         private readonly ILPlotCube source;
         private readonly ILPlotCube sourceSync;
 
@@ -22,6 +24,39 @@ namespace ILNEditor.Drawing.Plotting
                    String.IsNullOrEmpty(label) ? GetPlotCubeLabel(source, editor.Panel) : label)
         {
             this.source = source;
+
+            // Reset view
+            contextMenu.MenuItems.Add("Reset View", (o, args) =>
+            {
+                Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
+                Panel.SceneSyncRoot.First<ILPlotCubeDataGroup>().Reset();
+                Panel.Refresh();
+            });
+
+            // Switch planes
+            if (!TwoDMode)
+            {
+                contextMenu.MenuItems.Add("-");
+                contextMenu.MenuItems.Add("X-Y Plane", (o, args) =>
+                {
+                    Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Identity;
+                    Panel.Refresh();
+                });
+                contextMenu.MenuItems.Add("X-Z Plane", (o, args) =>
+                {
+                    Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
+                    Panel.Refresh();
+                });
+                contextMenu.MenuItems.Add("Y-Z Plane", (o, args) =>
+                {
+                    Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
+                    Panel.Refresh();
+                });
+            }
+
+            // Plot browser
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("Plot Browser", (o, args) => Editor.PanelEditor.PlotBrowser.Show());
 
             // Subscribe mouse events on SceneSyncRoot (instead of Scene)
             sourceSync = GetSyncNode(source);
@@ -91,47 +126,22 @@ namespace ILNEditor.Drawing.Plotting
 
         #endregion
 
+        #region ContextMenu
+
+        [Browsable(false)]
+        public Menu.MenuItemCollection MenuItems => contextMenu.MenuItems;
+
         private void OnMouseClick(object sender, ILMouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right || e.Cancel)
                 return;
 
-            var contextMenu = new ContextMenu();
-            // Reset view
-            contextMenu.MenuItems.Add("Reset View", (o, args) =>
-            {
-                Panel.SceneSyncRoot.First<ILPlotCube>().Reset();
-                Panel.SceneSyncRoot.First<ILPlotCubeDataGroup>().Reset();
-                Panel.Refresh();
-            });
-            // Switch planes
-            if (!TwoDMode)
-            {
-                contextMenu.MenuItems.Add("-");
-                contextMenu.MenuItems.Add("X-Y Plane", (o, args) =>
-                {
-                    Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Identity;
-                    Panel.Refresh();
-                });
-                contextMenu.MenuItems.Add("X-Z Plane", (o, args) =>
-                {
-                    Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
-                    Panel.Refresh();
-                });
-                contextMenu.MenuItems.Add("Y-Z Plane", (o, args) =>
-                {
-                    Panel.SceneSyncRoot.First<ILPlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
-                    Panel.Refresh();
-                });
-            }
-            // Plot browser
-            contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add("Plot Browser", (o, args) => Editor.PanelEditor.PlotBrowser.Show());
-
             contextMenu.Show(Panel, e.Location);
 
             e.Cancel = true;
         }
+
+        #endregion
 
         #region Overrides of ILWrapperBase
 
