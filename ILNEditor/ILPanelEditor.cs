@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using ILNEditor.Drawing;
+using ILNEditor.Drawing.Plotting;
 using ILNEditor.Editors;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
@@ -50,8 +52,13 @@ namespace ILNEditor
 
         public void ShowEditor()
         {
+            if (editor == null)
+                return;
+
             ShowEditor(null);
         }
+
+        #region PlotCube
 
         public void ShowPlotBrowser()
         {
@@ -63,6 +70,21 @@ namespace ILNEditor
 
             PanelEditor.PlotBrowser.Show();
         }
+
+        public Menu.MenuItemCollection GetPlotCubeMenu(ILPlotCube plotCube = null)
+        {
+            if (editor == null)
+                return null;
+
+            if (!wrapperMap.ContainsKey(typeof(ILPlotCube)))
+                return null;
+
+            plotCube = plotCube ?? ilPanel.Scene.First<ILPlotCube>();
+
+            return (FindWrapper(plotCube) as ILPlotCubeWrapper)?.MenuItems;
+        }
+
+        #endregion
 
         public override void Dispose()
         {
@@ -116,20 +138,13 @@ namespace ILNEditor
 
         internal ILWrapperBase FindWrapperById(int id)
         {
-            return wrappers.FirstOrDefault(wrapper =>
-            {
-                var wrappedNode = wrapper.Source as ILNode;
-                if (wrappedNode != null)
-                    return (wrappedNode.ID == id);
-
-                return false;
-            });
+            return wrappers.FirstOrDefault(wrapper => (wrapper.Source as ILNode)?.ID == id);
         }
 
         internal void MouseDoubleClickShowEditor(object sender, ILMouseEventArgs args)
         {
             // 1) In a 'standard' scene, the MouseDoubleClick handler of the original item is invoked -> use sender
-            // 2) In a ILPlotCube scene, the MouseDoubleClick handler of ILPlotCube is invoke (with original item in the ILMouseEventArgs.Target) -> lookup args.Target
+            // 2) In a ILPlotCube scene, the MouseDoubleClick handler of ILPlotCube is invoked (with original item in the ILMouseEventArgs.Target) -> lookup args.Target
             object item = (FindWrapperById(args.Target.ID) ?? sender) as ILWrapperBase;
             if (item == null)
                 return;
@@ -151,7 +166,7 @@ namespace ILNEditor
 
         #endregion
 
-        #region Static
+        #region Factory
 
         public static ILPanelEditor AttachTo(ILPanel ilPanel, IPanelEditor editor = null)
         {
