@@ -78,14 +78,14 @@ namespace ILNEditor.Serialization
 
         #region StaticUtility
 
-        public static void DeserializeFromString(ILPanelEditor editor, string xmlString)
+        public static void DeserializeFromString(PanelEditor editor, string xmlString)
         {
             var deserializer = new XmlDeserializer();
             deserializer.LoadFromString(xmlString);
             editor.Deserialize(deserializer);
         }
 
-        public static void DeserializeFromFile(ILPanelEditor editor, string filename)
+        public static void DeserializeFromFile(PanelEditor editor, string filename)
         {
             var deserializer = new XmlDeserializer();
             deserializer.LoadFromFile(filename);

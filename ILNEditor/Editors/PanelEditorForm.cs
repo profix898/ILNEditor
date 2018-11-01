@@ -11,10 +11,10 @@ namespace ILNEditor.Editors
         private const string PathSeparator = @":";
         private const char PathSeparatorChar = ':';
 
-        private readonly ILPanelEditor editor;
+        private readonly PanelEditor editor;
         private readonly PlotBrowserForm plotBrowser;
 
-        public PanelEditorForm(ILPanelEditor editor)
+        public PanelEditorForm(PanelEditor editor)
         {
             this.editor = editor;
             plotBrowser = new PlotBrowserForm(editor);
@@ -49,7 +49,7 @@ namespace ILNEditor.Editors
 
             treeView.Nodes.Clear();
             treeView.PathSeparator = PathSeparator;
-            foreach (ILWrapperBase wrapper in editor.Wrappers.OrderBy(wrapper => wrapper.Path))
+            foreach (WrapperBase wrapper in editor.Wrappers.OrderBy(wrapper => wrapper.Path))
             {
                 TreeNode node = null;
                 foreach (string part in wrapper.Path.Split(PathSeparatorChar))

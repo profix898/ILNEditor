@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ILNEditor</RootNamespace>
     <AssemblyName>ILNEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -36,22 +36,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ILNumerics.Computing, Version=4.14.0.0, Culture=neutral, PublicKeyToken=8d9bf50ef854734d, processorArchitecture=MSIL">
-      <HintPath>..\ILNumerics\ILNumerics.Computing.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="ILNumerics.Core, Version=4.14.0.0, Culture=neutral, PublicKeyToken=9651adc37f12bb00, processorArchitecture=MSIL">
-      <HintPath>..\ILNumerics\ILNumerics.Core.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="ILNumerics.Drawing, Version=4.14.0.0, Culture=neutral, PublicKeyToken=e22c8a010c3b081a, processorArchitecture=MSIL">
-      <HintPath>..\ILNumerics\ILNumerics.Drawing.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="ILNumerics.Toolboxes.Drawing2, Version=4.14.0.0, Culture=neutral, PublicKeyToken=97141307a4f391e9, processorArchitecture=MSIL">
-      <HintPath>..\ILNumerics\ILNumerics.Toolboxes.Drawing2.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
+    <Reference Include="ILNumerics.Core, Version=5.1.0.0, Culture=neutral, PublicKeyToken=9651adc37f12bb00, processorArchitecture=MSIL" />
+    <Reference Include="ILNumerics.Drawing, Version=5.1.0.0, Culture=neutral, PublicKeyToken=e22c8a010c3b081a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -61,39 +47,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Drawing\ILCameraWrapper.cs" />
-    <Compile Include="Drawing\ILCircleWrapper.cs" />
-    <Compile Include="Drawing\ILConeWrapper.cs" />
-    <Compile Include="Drawing\ILCylinderWrapper.cs" />
-    <Compile Include="Drawing\ILGearWrapper.cs" />
-    <Compile Include="Drawing\ILGroupWrapper.cs" />
-    <Compile Include="Drawing\ILPointLightWrapper.cs" />
-    <Compile Include="Drawing\ILPointsWrapper.cs" />
-    <Compile Include="Drawing\ILScreenObjectWrapper.cs" />
-    <Compile Include="Drawing\ILSelectionRectangleWrapper.cs" />
-    <Compile Include="Drawing\ILShapeWrapper.cs" />
-    <Compile Include="Drawing\ILSphereWrapper.cs" />
-    <Compile Include="Drawing\ILTrianglesWrapper.cs" />
-    <Compile Include="Drawing\ILWrapperBase.cs" />
-    <Compile Include="Drawing\Plotting\ILAxisCollectionWrapper.cs" />
-    <Compile Include="Drawing\ILLabelWrapper.cs" />
-    <Compile Include="Drawing\ILLimitsWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILLegendItemWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILLegendWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILLinePlotWrapper.cs" />
-    <Compile Include="Drawing\ILLinesWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILPlotCubeDataGroupWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILPlotCubeScaleGroupWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILSurfaceWrapper.cs" />
+    <Compile Include="Drawing\CameraWrapper.cs" />
+    <Compile Include="Drawing\CircleWrapper.cs" />
+    <Compile Include="Drawing\ConeWrapper.cs" />
+    <Compile Include="Drawing\CylinderWrapper.cs" />
+    <Compile Include="Drawing\GearWrapper.cs" />
+    <Compile Include="Drawing\GroupWrapper.cs" />
+    <Compile Include="Drawing\PointLightWrapper.cs" />
+    <Compile Include="Drawing\PointsWrapper.cs" />
+    <Compile Include="Drawing\ScreenObjectWrapper.cs" />
+    <Compile Include="Drawing\SelectionRectangleWrapper.cs" />
+    <Compile Include="Drawing\ShapeWrapper.cs" />
+    <Compile Include="Drawing\SphereWrapper.cs" />
+    <Compile Include="Drawing\TrianglesWrapper.cs" />
+    <Compile Include="Drawing\WrapperBase.cs" />
+    <Compile Include="Drawing\Plotting\AxisCollectionWrapper.cs" />
+    <Compile Include="Drawing\LabelWrapper.cs" />
+    <Compile Include="Drawing\LimitsWrapper.cs" />
+    <Compile Include="Drawing\Plotting\LegendItemWrapper.cs" />
+    <Compile Include="Drawing\Plotting\LegendWrapper.cs" />
+    <Compile Include="Drawing\Plotting\LinePlotWrapper.cs" />
+    <Compile Include="Drawing\LinesWrapper.cs" />
+    <Compile Include="Drawing\Plotting\PlotCubeDataGroupWrapper.cs" />
+    <Compile Include="Drawing\Plotting\PlotCubeScaleGroupWrapper.cs" />
+    <Compile Include="Drawing\Plotting\SurfaceWrapper.cs" />
     <Compile Include="Editors\PlotBrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editors\PlotBrowserForm.Designer.cs">
       <DependentUpon>PlotBrowserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="IEditorInterfaces.cs" />
+    <Compile Include="IDialog.cs" />
     <Compile Include="ILNEditorConfig.cs" />
     <Compile Include="ILNumerics_deploy\ILNHelper.cs" />
+    <Compile Include="IPanelEditor.cs" />
+    <Compile Include="IPlotBrowser.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -101,6 +89,7 @@
     </Compile>
     <Compile Include="Serialization\DictionaryDeserializer.cs" />
     <Compile Include="Serialization\DictionarySerializer.cs" />
+    <Compile Include="Serialization\IDeserializer.cs" />
     <Compile Include="Serialization\SerializableColor.cs" />
     <Compile Include="Serialization\SerializableFont.cs" />
     <Compile Include="Serialization\SerializerWeightAttribute.cs" />
@@ -110,24 +99,24 @@
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\SerializerIgnoreAttribute.cs" />
     <Compile Include="TypeExpanders\Matrix4Expander.cs" />
-    <Compile Include="TypeExpanders\Matrix4Operations.cs" />
+    <Compile Include="TypeExpanders\Matrix4ExpanderOperations.cs" />
     <Compile Include="TypeExpanders\RectangleFExpander.cs" />
     <Compile Include="WrapperMap.cs" />
-    <Compile Include="Drawing\Plotting\ILAxisWrapper.cs" />
-    <Compile Include="Drawing\ILDrawableWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILMarkerWrapper.cs" />
-    <Compile Include="Drawing\ILNodeWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILPlotCubeWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILScaleModesWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILTickWrapper.cs" />
-    <Compile Include="Drawing\Plotting\ILTickCollectionWrapper.cs" />
+    <Compile Include="Drawing\Plotting\AxisWrapper.cs" />
+    <Compile Include="Drawing\DrawableWrapper.cs" />
+    <Compile Include="Drawing\Plotting\MarkerWrapper.cs" />
+    <Compile Include="Drawing\NodeWrapper.cs" />
+    <Compile Include="Drawing\Plotting\PlotCubeWrapper.cs" />
+    <Compile Include="Drawing\Plotting\ScaleModesWrapper.cs" />
+    <Compile Include="Drawing\Plotting\TickWrapper.cs" />
+    <Compile Include="Drawing\Plotting\TickCollectionWrapper.cs" />
     <Compile Include="Editors\PanelEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editors\PanelEditorForm.Designer.cs">
       <DependentUpon>PanelEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ILPanelEditor.cs" />
+    <Compile Include="PanelEditor.cs" />
     <Compile Include="TypeConverters\PointFConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeConverters\Vector3Converter.cs" />
