@@ -75,7 +75,7 @@ namespace ILNEditor.Serialization
 
         #region StaticUtility
 
-        public static string SerializeToString(ILPanelEditor editor)
+        public static string SerializeToString(PanelEditor editor)
         {
             var serializer = new XmlSerializer();
             editor.Serialize(serializer);
@@ -83,7 +83,7 @@ namespace ILNEditor.Serialization
             return serializer.SaveToString();
         }
 
-        public static void SerializeToFile(ILPanelEditor editor, string filename)
+        public static void SerializeToFile(PanelEditor editor, string filename)
         {
             var serializer = new XmlSerializer();
             editor.Serialize(serializer);

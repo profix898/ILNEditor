@@ -10,12 +10,12 @@ namespace ILNEditor.Editors
 {
     public partial class PlotBrowserForm : Form, IPlotBrowser
     {
-        private readonly ILPanelEditor editor;
+        private readonly PanelEditor editor;
         private readonly Dictionary<TreeNode, Action<bool>> nodeCallbacks = new Dictionary<TreeNode, Action<bool>>();
 
         private bool isSuspended;
 
-        public PlotBrowserForm(ILPanelEditor editor)
+        public PlotBrowserForm(PanelEditor editor)
         {
             this.editor = editor;
 
@@ -39,25 +39,25 @@ namespace ILNEditor.Editors
             isSuspended = true;
 
             int plotCubeIdx = 0;
-            foreach (ILPlotCube plotCube in editor.Panel.Scene.Find<ILPlotCube>())
+            foreach (PlotCube plotCube in editor.Panel.Scene.Find<PlotCube>())
             {
                 TreeNode node = treeView.Nodes.Add($"PlotCube#{plotCubeIdx}");
 
                 int scaleGroupIdx = 0;
-                foreach (ILPlotCubeScaleGroup scaleGroup in plotCube.Find<ILPlotCubeScaleGroup>())
+                foreach (PlotCubeScaleGroup scaleGroup in plotCube.Find<PlotCubeScaleGroup>())
                 {
                     node = node.Nodes.Add($"ScaleGroup#{scaleGroupIdx}");
 
                     int dataGroupIdx = 0;
-                    foreach (ILPlotCubeDataGroup dataGroup in scaleGroup.Find<ILPlotCubeDataGroup>())
+                    foreach (PlotCubeDataGroup dataGroup in scaleGroup.Find<PlotCubeDataGroup>())
                     {
                         node = node.Nodes.Add($"DataGroup#{dataGroupIdx}");
 
                         // Capture plots (add plots and attach callbacks)
-                        CapturePlot<ILLinePlot>(dataGroup, node, ILLinePlot.LinePlotTag);
-                        CapturePlot<ILImageSCPlot>(dataGroup, node, ILImageSCPlot.ImageSCTag);
-                        CapturePlot<ILSurface>(dataGroup, node, ILSurface.SurfaceDefaultTag);
-                        CapturePlot<ILContourPlot>(dataGroup, node, ILContourPlot.DefaultContourTag);
+                        CapturePlot<LinePlot>(dataGroup, node, LinePlot.LinePlotTag);
+                        CapturePlot<ImageSCPlot>(dataGroup, node, ImageSCPlot.ImageSCTag);
+                        CapturePlot<Surface>(dataGroup, node, Surface.SurfaceDefaultTag);
+                        CapturePlot<ContourPlot>(dataGroup, node, ContourPlot.DefaultContourTag);
 
                         node = node.Parent;
                         dataGroupIdx++;
@@ -137,7 +137,7 @@ namespace ILNEditor.Editors
             }
         }
 
-        private void CapturePlot<T>(ILPlotCubeDataGroup dataGroup, TreeNode parentNode, string defaultTag) where T : ILNode
+        private void CapturePlot<T>(PlotCubeDataGroup dataGroup, TreeNode parentNode, string defaultTag) where T : Node
         {
             int itemIdx = 0;
             foreach (T plot in dataGroup.Find<T>())
@@ -146,10 +146,10 @@ namespace ILNEditor.Editors
 
                 // Find (or build) label
                 string label = $"{defaultTag}#{itemIdx++}";
-                var legend = dataGroup.First<ILLegend>();
+                var legend = dataGroup.First<Legend>();
                 if (legend != null)
                 {
-                    ILLegendItem legendItem = legend.Items.Find<ILLegendItem>().FirstOrDefault(item => item.GetProvider().GetID() == plotClosure.ID);
+                    LegendItem legendItem = legend.Items.Find<LegendItem>().FirstOrDefault(item => item.GetProvider().GetID() == plotClosure.ID);
                     if (legendItem != null)
                         label = legendItem.Text;
                 }

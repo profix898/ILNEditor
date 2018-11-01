@@ -6,6 +6,7 @@ using ILNEditor.Serialization;
 using ILNumerics;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
+using XmlSerializer = ILNEditor.Serialization.XmlSerializer;
 
 namespace Demo
 {
@@ -23,14 +24,14 @@ namespace Demo
 
         #endregion
 
-        private ILPanelEditor editor;
+        private PanelEditor editor;
 
         public DemoForm()
         {
             InitializeComponent();
         }
 
-        private void ILPanelForm_Load(object sender, EventArgs e)
+        private void PanelForm_Load(object sender, EventArgs e)
         {
             comboBoxDemo.Items.AddRange(Enum.GetNames(typeof(DemoEnum)));
             comboBoxDemo.SelectedIndex = (int) DemoEnum.LinePlot;
@@ -42,32 +43,32 @@ namespace Demo
                 return;
 
             // Reset scene
-            ilPanel.Scene = new ILScene();
+            ilPanel.Scene = new Scene();
 
             // Add and render demo content
             switch ((DemoEnum) comboBoxDemo.SelectedIndex)
             {
                 case DemoEnum.LinePlot:
                 {
-                    ILPlotCube plotCube = ilPanel.Scene.Add(new ILPlotCube());
-                    plotCube.Add(new ILLinePlot(ILMath.tosingle(ILMath.randn(1, 20))));
-                    plotCube.Add(new ILLinePlot(ILMath.tosingle(ILMath.randn(1, 20) + 2.0), lineStyle: DashStyle.Dashed, markerStyle: MarkerStyle.Square));
-                    plotCube.Add(new ILLegend("Line 1", "Line 2"));
+                    PlotCube plotCube = ilPanel.Scene.Add(new PlotCube());
+                    plotCube.Add(new LinePlot(ILMath.tosingle(ILMath.randn(1, 20))));
+                    plotCube.Add(new LinePlot(ILMath.tosingle(ILMath.randn(1, 20) + 2.0), lineStyle: DashStyle.Dashed, markerStyle: MarkerStyle.Square));
+                    plotCube.Add(new Legend("Line 1", "Line 2"));
                 }
                     break;
                 case DemoEnum.SincSurface:
                 {
-                    ILPlotCube plotCube = ilPanel.Scene.Add(new ILPlotCube(null, false));
-                    plotCube.Add(new ILSurface(ILSpecialData.sincf(40, 60, 2.5f))
+                    PlotCube plotCube = ilPanel.Scene.Add(new PlotCube(null, false));
+                    plotCube.Add(new Surface(SpecialData.sincf(40, 60, 2.5f))
                     {
                         Wireframe = { Color = Color.FromArgb(50, Color.LightGray) },
                         Colormap = Colormaps.Jet
                     });
-                    ilPanel.Scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(1f, 0.23f, 1), 0.7f);
+                    ilPanel.Scene.First<PlotCube>().Rotation = Matrix4.Rotation(new Vector3(1f, 0.23f, 1), 0.7f);
                 }
                     break;
                 case DemoEnum.Points:
-                    ilPanel.Scene.Add(new ILPoints
+                    ilPanel.Scene.Add(new Points
                     {
                         Positions = ILMath.tosingle(ILMath.randn(3, 100)),
                         Color = Color.Green,
@@ -76,7 +77,7 @@ namespace Demo
                     break;
                 case DemoEnum.Gear:
                 {
-                    ILGear gear = ilPanel.Scene.Add(new ILGear());
+                    Gear gear = ilPanel.Scene.Add(new Gear());
                     gear.Rotate(Vector3.UnitY, -0.2);
                     gear.Transform = gear.Transform.Scale(0.7, 0.7, 0.7);
                 }
@@ -89,7 +90,7 @@ namespace Demo
             ilPanel.Refresh();
 
             // Attach ILNEditor
-            editor = ILPanelEditor.AttachTo(ilPanel);
+            editor = PanelEditor.AttachTo(ilPanel);
         }
 
         private void btnToXml_Click(object sender, EventArgs e)

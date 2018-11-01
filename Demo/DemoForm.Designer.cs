@@ -34,7 +34,7 @@
             this.btnFromXml = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxDemo = new System.Windows.Forms.ComboBox();
-            this.ilPanel = new ILNumerics.Drawing.ILPanel();
+            this.ilPanel = new ILNumerics.Drawing.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -104,7 +104,7 @@
             // ilPanel
             // 
             this.ilPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ilPanel.Driver = ILNumerics.Drawing.RendererTypes.OpenGL;
+            this.ilPanel.RendererType = ILNumerics.Drawing.RendererTypes.OpenGL;
             this.ilPanel.Editor = null;
             this.ilPanel.Location = new System.Drawing.Point(0, 0);
             this.ilPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
@@ -121,8 +121,8 @@
             this.ClientSize = new System.Drawing.Size(684, 461);
             this.Controls.Add(this.splitContainer);
             this.Name = "DemoForm";
-            this.Text = "ILN Editor Demo";
-            this.Load += new System.EventHandler(this.ILPanelForm_Load);
+            this.Text = "N Editor Demo";
+            this.Load += new System.EventHandler(this.PanelForm_Load);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel1.PerformLayout();
             this.splitContainer.Panel2.ResumeLayout(false);
@@ -137,7 +137,7 @@
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxDemo;
-        private ILNumerics.Drawing.ILPanel ilPanel;
+        private ILNumerics.Drawing.Panel ilPanel;
         private System.Windows.Forms.Button btnToXml;
         private System.Windows.Forms.Button btnFromXml;
 
