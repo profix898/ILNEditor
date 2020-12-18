@@ -73,7 +73,7 @@ namespace ILNEditor
             Editor.PlotBrowser.Show();
         }
 
-        public Menu.MenuItemCollection GetPlotCubeMenu(PlotCube plotCube = null)
+        public ToolStripItemCollection GetPlotCubeMenu(PlotCube plotCube = null)
         {
             if (editor == null)
                 return null;
@@ -81,7 +81,7 @@ namespace ILNEditor
             if (!wrapperMap.ContainsKey(typeof(PlotCube)))
                 return null;
 
-            plotCube = plotCube ?? ilPanel.Scene.First<PlotCube>();
+            plotCube ??= ilPanel.Scene.First<PlotCube>();
 
             return (FindWrapper(plotCube) as PlotCubeWrapper)?.MenuItems;
         }

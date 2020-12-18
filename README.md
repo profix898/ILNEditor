@@ -2,7 +2,7 @@ ILNEditor
 ==========
 
 Editor for ILNumerics (http://ilnumerics.net/) scene graphs
-and plotcubes
+and plot cubes.
 
 ## How to use
 

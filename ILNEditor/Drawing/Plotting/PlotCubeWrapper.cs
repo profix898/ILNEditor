@@ -14,7 +14,7 @@ namespace ILNEditor.Drawing.Plotting
     [TypeConverter(typeof(PlotCubeConverter))]
     public class PlotCubeWrapper : CameraWrapper
     {
-        private readonly ContextMenu contextMenu = new ContextMenu();
+        private readonly ContextMenuStrip contextMenu = new ContextMenuStrip();
 
         private readonly PlotCube source;
         private readonly PlotCube sourceSync;
@@ -28,7 +28,7 @@ namespace ILNEditor.Drawing.Plotting
             this.source = source;
 
             // Reset view
-            contextMenu.MenuItems.Add("Reset View", (o, args) =>
+            contextMenu.Items.Add("Reset View", null, (o, args) =>
             {
                 Panel.SceneSyncRoot.First<PlotCube>().Reset();
                 Panel.SceneSyncRoot.First<PlotCubeDataGroup>().Reset();
@@ -38,18 +38,18 @@ namespace ILNEditor.Drawing.Plotting
             // Switch planes
             if (!TwoDMode)
             {
-                contextMenu.MenuItems.Add("-");
-                contextMenu.MenuItems.Add("X-Y Plane", (o, args) =>
+                contextMenu.Items.Add("-");
+                contextMenu.Items.Add("X-Y Plane", null, (o, args) =>
                 {
                     Panel.SceneSyncRoot.First<PlotCube>().Rotation = Matrix4.Identity;
                     Panel.Refresh();
                 });
-                contextMenu.MenuItems.Add("X-Z Plane", (o, args) =>
+                contextMenu.Items.Add("X-Z Plane", null, (o, args) =>
                 {
                     Panel.SceneSyncRoot.First<PlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitX, Math.PI / 2.0);
                     Panel.Refresh();
                 });
-                contextMenu.MenuItems.Add("Y-Z Plane", (o, args) =>
+                contextMenu.Items.Add("Y-Z Plane", null, (o, args) =>
                 {
                     Panel.SceneSyncRoot.First<PlotCube>().Rotation = Matrix4.Rotation(Vector3.UnitY, Math.PI / 2.0);
                     Panel.Refresh();
@@ -57,8 +57,8 @@ namespace ILNEditor.Drawing.Plotting
             }
 
             // Plot browser
-            contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add("Plot Browser", (o, args) => Editor.Editor.PlotBrowser.Show());
+            contextMenu.Items.Add("-");
+            contextMenu.Items.Add("Plot Browser", null, (o, args) => Editor.Editor.PlotBrowser.Show());
 
             // Subscribe mouse events on SceneSyncRoot (instead of Scene)
             sourceSync = GetSyncNode(source);
@@ -131,7 +131,7 @@ namespace ILNEditor.Drawing.Plotting
         #region ContextMenu
 
         [Browsable(false)]
-        public Menu.MenuItemCollection MenuItems => contextMenu.MenuItems;
+        public ToolStripItemCollection MenuItems => contextMenu.Items;
 
         private void OnMouseClick(object sender, MouseEventArgs e)
         {
