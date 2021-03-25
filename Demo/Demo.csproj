@@ -7,21 +7,12 @@
     <StartupObject>Demo.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ILNumerics_deploy\ILNHelper.cs" Condition="$(EnableDefaultCompileItems) != 'true'" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="EMG.External.ILNumerics" Version="5.5.7504" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ILNumerics_deploy\ILNImports1.targets" />
-    <None Include="ILNumerics_deploy\ILNImports2.targets" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ILNumerics_deploy\ilnumerics.lic" />
+    <PackageReference Include="ILNumerics.Computing" Version="6.0.23-alpha23" />
+    <PackageReference Include="ILNumerics.Core" Version="6.0.23-alpha23" />
+    <PackageReference Include="ILNumerics.Drawing" Version="6.0.23-alpha23" />
+    <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="6.0.23-alpha23" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ILNEditor\ILNEditor.csproj" />
   </ItemGroup>
-  <Import Project="ILNumerics_deploy\ILNImports1.targets" Condition="$(ILNLicCompile) != 'true'" />
-  <Import Project="ILNumerics_deploy\ILNImports2.targets" Condition="$(ILNLicCompile) == 'true'" />
 </Project>
