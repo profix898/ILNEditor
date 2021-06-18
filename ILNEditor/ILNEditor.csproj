@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Copyright>Copyright © 2017-2021 Thilo Viereck</Copyright>
     <RepositoryUrl>https://github.com/profix898/ILNEditor</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -14,9 +14,9 @@
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 	<ItemGroup>
-    <PackageReference Include="ILNumerics.Computing" Version="6.0.23-alpha23" />
-    <PackageReference Include="ILNumerics.Core" Version="6.0.23-alpha23" />
-    <PackageReference Include="ILNumerics.Drawing" Version="6.0.23-alpha23" />
-    <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="6.0.23-alpha23" />
-  </ItemGroup>
+	  <PackageReference Include="ILNumerics.Computing" Version="6.0.34-alpha72" />
+	  <PackageReference Include="ILNumerics.Core" Version="6.0.34-alpha72" />
+	  <PackageReference Include="ILNumerics.Drawing" Version="6.0.34-alpha72" />
+	  <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.34-alpha72" />
+	</ItemGroup>
 </Project>
