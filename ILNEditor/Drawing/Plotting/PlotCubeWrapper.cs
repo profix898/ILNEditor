@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
+using MouseButtons = ILNumerics.Drawing.MouseButtons;
 using MouseEventArgs = ILNumerics.Drawing.MouseEventArgs;
 using Panel = ILNumerics.Drawing.Panel;
 

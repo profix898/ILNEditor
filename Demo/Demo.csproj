@@ -6,12 +6,12 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>Demo.Program</StartupObject>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="ILNumerics.Computing" Version="6.0.23-alpha23" />
-    <PackageReference Include="ILNumerics.Core" Version="6.0.23-alpha23" />
-    <PackageReference Include="ILNumerics.Drawing" Version="6.0.23-alpha23" />
-    <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="6.0.23-alpha23" />
-  </ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="ILNumerics.Computing" Version="6.0.34-alpha72" />
+	  <PackageReference Include="ILNumerics.Core" Version="6.0.34-alpha72" />
+	  <PackageReference Include="ILNumerics.Drawing" Version="6.0.34-alpha72" />
+	  <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.34-alpha72" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ILNEditor\ILNEditor.csproj" />
   </ItemGroup>
