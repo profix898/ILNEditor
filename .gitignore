@@ -1,8 +1,5 @@
 # Explicit folders (ILN-Editor Project)
-
-# ILNumerics distributables
-ILNumerics.*
-OpenTK.*
+ILNumerics_deploy
 
 # User-specific files
 *.user

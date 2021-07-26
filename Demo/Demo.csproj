@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
@@ -7,10 +7,10 @@
     <StartupObject>Demo.Program</StartupObject>
   </PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="ILNumerics.Computing" Version="6.0.34-alpha72" />
-	  <PackageReference Include="ILNumerics.Core" Version="6.0.34-alpha72" />
-	  <PackageReference Include="ILNumerics.Drawing" Version="6.0.34-alpha72" />
-	  <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.34-alpha72" />
+	  <PackageReference Include="ILNumerics.Computing" Version="6.0.68-beta04" />
+	  <PackageReference Include="ILNumerics.Core" Version="6.0.68-beta04" />
+	  <PackageReference Include="ILNumerics.Drawing" Version="6.0.68-beta04" />
+	  <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.68-beta04" />
 	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ILNEditor\ILNEditor.csproj" />
