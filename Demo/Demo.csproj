@@ -2,8 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <OutputType>WinExe</OutputType>
+	<OutputType>WinExe</OutputType>
     <StartupObject>Demo.Program</StartupObject>
   </PropertyGroup>
 	<ItemGroup>
