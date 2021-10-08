@@ -1,4 +1,6 @@
-﻿namespace Demo
+﻿using System.Windows.Forms;
+
+namespace Demo
 {
     partial class DemoForm
     {
@@ -95,6 +97,7 @@
             // comboBoxDemo
             // 
             this.comboBoxDemo.FormattingEnabled = true;
+            this.comboBoxDemo.DropDownStyle = ComboBoxStyle.DropDownList;
             this.comboBoxDemo.Location = new System.Drawing.Point(53, 6);
             this.comboBoxDemo.Name = "comboBoxDemo";
             this.comboBoxDemo.Size = new System.Drawing.Size(186, 21);

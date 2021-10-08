@@ -59,7 +59,7 @@ namespace ILNEditor.Drawing.Plotting
 
         internal override void Traverse(IEnumerable<Node> nodes = null)
         {
-            base.Traverse((nodes ?? source.Children).Except(new[] { (Node) axes.Source, (Node) lines.Source }));
+            base.Traverse((nodes ?? source.Children).Except(new[] { (Node) axes.Source, (Node) lines.Source, source.First<Group>(PlotCubeScaleGroup.LinesScaleGroupTag) }));
         }
 
         #endregion

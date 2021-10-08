@@ -68,6 +68,20 @@ namespace ILNEditor.Drawing.Plotting
 
         #region PlotCube
 
+        [Category("Mouse")]
+        public RotationMethods RotationMethod
+        {
+            get { return source.RotationMethod; }
+            set { source.RotationMethod = value; }
+        }
+
+        [Category("Appearance")]
+        public ContentFitModes ContentFitMode
+        {
+            get { return source.ContentFitMode; }
+            set { source.ContentFitMode = value; }
+        }
+
         [Category("Appearance")]
         public bool TwoDMode
         {
