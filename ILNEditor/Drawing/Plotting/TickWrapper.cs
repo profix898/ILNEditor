@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
 
 namespace ILNEditor.Drawing.Plotting
@@ -22,16 +21,30 @@ namespace ILNEditor.Drawing.Plotting
         #region Tick
 
         [Category("Format")]
-        public float Position
+        public bool AutoLabel
         {
-            get { return source.Position; }
-            set { source.Position = value; }
+            get { return source.AutoLabel; }
+            set { source.AutoLabel = value; }
+        }
+
+        [Category("Format")]
+        public int Level
+        {
+            get { return source.Level; }
+            set { source.Level = value; }
         }
 
         [Category("Format")]
         public LabelWrapper TickLabel
         {
             get { return label; }
+        }
+
+        [Category("Format")]
+        public float Position
+        {
+            get { return source.Position; }
+            set { source.Position = value; }
         }
 
         #endregion

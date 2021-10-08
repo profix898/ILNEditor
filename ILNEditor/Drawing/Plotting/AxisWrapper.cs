@@ -15,7 +15,7 @@ namespace ILNEditor.Drawing.Plotting
     {
         private readonly LinesWrapper gridMajor;
         private readonly LinesWrapper gridMinor;
-        private readonly LabelWrapper label;
+        private readonly LabelWrapper axisLabel;
         private readonly LabelWrapper scaleLabel;
         private readonly Axis source;
         private readonly TickCollectionWrapper ticks;
@@ -26,7 +26,7 @@ namespace ILNEditor.Drawing.Plotting
         {
             this.source = source;
 
-            this.label = new LabelWrapper(source.Label, editor, Path, Axis.LabelTag, "AxisLabel");
+            axisLabel = new LabelWrapper(source.Label, editor, Path, Axis.LabelTag, "AxisLabel");
             scaleLabel = new LabelWrapper(source.ScaleLabel, editor, Path, Axis.ScaleLabelTag, "ScaleLabel");
             ticks = new TickCollectionWrapper(source.Ticks, editor, Path, "TicksCollection");
             gridMajor = new LinesWrapper(source.GridMajor, editor, Path, Axis.GridMajorLinesTag, "GridMajor");
@@ -67,6 +67,13 @@ namespace ILNEditor.Drawing.Plotting
             set { source.ScaleLabelPosition = value; }
         }
 
+        [Category("Label")]
+        public float? LabelRotation
+        {
+            get { return source.LabelRotation; }
+            set { source.LabelRotation = value; }
+        }
+
         [Category("Axis")]
         public AxisNames AxisName
         {
@@ -105,9 +112,9 @@ namespace ILNEditor.Drawing.Plotting
         }
 
         [Category("Label")]
-        public new LabelWrapper Label
+        public LabelWrapper AxisLabel
         {
-            get { return label; }
+            get { return axisLabel; }
         }
 
         [Category("Label")]

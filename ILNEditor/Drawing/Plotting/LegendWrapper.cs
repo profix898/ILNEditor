@@ -12,12 +12,18 @@ namespace ILNEditor.Drawing.Plotting
     public class LegendWrapper : ScreenObjectWrapper
     {
         private readonly Legend source;
+        private readonly LabelWrapper defaultLabelStyle;
+        private readonly LegendItemWrapper defaultItemStyle;
 
         public LegendWrapper(Legend source, PanelEditor editor, string path, string name = null, string label = null)
             : base(source, editor, path, BuildName(name, editor.Panel, source, Legend.LegendTag),
                    String.IsNullOrEmpty(label) ? GetLegendLabel(source, editor.Panel) : label)
         {
             this.source = source;
+
+            defaultLabelStyle = new LabelWrapper(source.DefaultLabelStyle ?? new Label(), editor, path, TickCollection.TickLabelTag, "DefaultLabelStyle");
+            if (source.DefaultItemStyle != null)
+                defaultItemStyle = new LegendItemWrapper(source.DefaultItemStyle, editor, path, LegendItem.LegendItemTag);
         }
 
         #region Legend
@@ -27,6 +33,25 @@ namespace ILNEditor.Drawing.Plotting
         {
             get { return source.LegendItemSize; }
             set { source.LegendItemSize = value; }
+        }
+
+        [Category("Legend")]
+        public float Padding
+        {
+            get { return source.Padding; }
+            set { source.Padding = value; }
+        }
+
+        [Category("Legend")]
+        public LabelWrapper DefaultLabelStyle
+        {
+            get { return defaultLabelStyle; }
+        }
+
+        [Category("Legend")]
+        public LegendItemWrapper DefaultItemStyle
+        {
+            get { return defaultItemStyle; }
         }
 
         #endregion
