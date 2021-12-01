@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <FileVersion>$(Version)</FileVersion>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <Copyright>Copyright © 2017-2021 Thilo Viereck</Copyright>
@@ -17,8 +17,8 @@
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 	<ItemGroup>
-      <PackageReference Include="ILNumerics.Computing" Version="6.0.115" />
-      <PackageReference Include="ILNumerics.Drawing" Version="6.0.115" />
-      <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.115" />
+      <PackageReference Include="ILNumerics.Computing" Version="6.0.124" />
+      <PackageReference Include="ILNumerics.Drawing" Version="6.0.124" />
+      <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.124" />
 	</ItemGroup>
 </Project>
