@@ -74,7 +74,7 @@ menu.Add("Click Me", null, (sender, args) => { /* do something*/ });
 ### Disclaimer
 ILNEditor is in an early phase of development and should be considered experimental.
 
-As of today (July 2021) the plot types in _ILNumerics.Toolboxes.Drawing2_ are not supported yet. However, you can inject support for custom types (and still unsupported types) by adding your own wrappers to the ```WrapperMap``` of panel editor. Of course, I hope to add support in the future.
+As of today (Jan 2023) the plot types in _ILNumerics.Toolboxes.Drawing2_ are not supported yet. However, you can inject support for custom types (and still unsupported types) by adding your own wrappers to the ```WrapperMap``` of panel editor. Of course, I hope to add support in the future.
 
 ### License
 ILNEditor is licensed under the terms of the MIT license (<http://opensource.org/licenses/MIT>, see LICENSE.txt).

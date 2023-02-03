@@ -2,10 +2,10 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>1.3.0</Version>
+    <Version>1.4.0</Version>
     <FileVersion>$(Version)</FileVersion>
     <AssemblyVersion>$(Version)</AssemblyVersion>
-    <Copyright>Copyright © 2017-2021 Thilo Viereck</Copyright>
+    <Copyright>Copyright © 2017-2023 Thilo Viereck</Copyright>
     <RepositoryUrl>https://github.com/profix898/ILNEditor</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Authors>Thilo Viereck</Authors>
@@ -13,12 +13,16 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Properties editor and plot browser for ILNumerics (http://ilnumerics.net/) scene graphs and plot cubes</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageOutputPath>./../</PackageOutputPath>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 	<ItemGroup>
-      <PackageReference Include="ILNumerics.Computing" Version="6.0.124" />
-      <PackageReference Include="ILNumerics.Drawing" Version="6.0.124" />
-      <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.124" />
+      <PackageReference Include="ILNumerics.Computing" Version="6.0.148" />
+      <PackageReference Include="ILNumerics.Drawing" Version="6.0.148" />
+      <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.148" />
 	</ItemGroup>
+  <ItemGroup>
+    <None Include="./../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
