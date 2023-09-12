@@ -1,8 +1,8 @@
 ILNEditor
 ==========
+[![Nuget](https://img.shields.io/nuget/v/ILNEditor?style=flat-square&logo=nuget&color=blue)](https://www.nuget.org/packages/ILNEditor)
 
-Editor for ILNumerics (http://ilnumerics.net/) scene graphs
-and plot cubes.
+Editor for ILNumerics (http://ilnumerics.net/) scene graphs and plot cubes.
 
 ## How to use
 
